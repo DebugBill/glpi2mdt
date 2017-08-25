@@ -10,13 +10,13 @@
                </short>
                <long>
                   <en>This plugin synchronises GLPI and MDT databases in order to manage Windows automatic deployment from GLPI and based on its data
-				      Still in very early stages of development, only a shell based proof of concept does exist. Stay tuned, more to come.
-					  If you're insterested in this tool, don't hesitate to contact the author and describe your current architecture 
-					  so he can make sure the plugin design is compatible with most environments</en>
+                      Still in very early stages of development, only a shell based proof of concept does exist. Stay tuned, more to come.
+		      If you're insterested in this tool, don't hesitate to contact the author and describe your current architecture 
+		      so he can make sure the plugin design is compatible with most environments</en>
                   <fr>Ce plugin synchronise les bases de données MDT et GLPI afin de gérer le déploiement automatic de Windows depuis GLPI et à partir de ses données
-				      Le développement ne fait que commencer et seule une preuve de concept en Shell est opérationnelle. Consultez régulièrement ce site pour plus d'informations.
-					  Si ce plugin vous intéresse n'hésitez pas à contacter l'auteur avec une description de votre architecture actuelle afin qu'il s'assure que ses 
-					  choix de design seront compatibles avec la plupart des environments</fr>
+                      Le développement ne fait que commencer et seule une preuve de concept en Shell est opérationnelle. Consultez régulièrement ce site pour plus d'informations.
+                      Si ce plugin vous intéresse n'hésitez pas à contacter l'auteur avec une description de votre architecture actuelle afin qu'il s'assure que ses 
+                      choix de design seront compatibles avec la plupart des environments</fr>
                </long>
             </description>
             <homepage>https://github.com/DebugBill/glpi2mdt</homepage>
