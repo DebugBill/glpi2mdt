@@ -19,8 +19,8 @@ before_script:
 #  - composer install --no-dev
 #  - mysql -u root -e 'create database glpitest;'
 #  - php tools/cliinstall.php --db=glpi-test --user=travis --tests
-#  - mv ../{LNAME} plugins/{LNAME}
-#  - cd plugins/{LNAME}
+#  - mv ../glpi2mdt plugins/{LNAME}
+#  - cd plugins/glpi2mdt
   - composer install -o
 
 
