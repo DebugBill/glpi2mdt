@@ -77,11 +77,11 @@ function plugin_glpi2mdt_check_prerequisites() {
    }
 
    // Just warns for GLPI != 9.1.6 as not tested but should work
-   #if (version_compare(GLPI_VERSION, '9.1.56', 'ne')) {
-   #      echo "This plugin is tested only with GLPI 9.1.6. Use with caution.<br>";
-   #}
+   // if (version_compare(GLPI_VERSION, '9.1.56', 'ne')) {
+   // echo "This plugin is tested only with GLPI 9.1.6. Use with caution.<br>";
+   // }
 
-   // The plugin needs to access the MSSQL MDT database 
+   // The plugin needs to access the MSSQL MDT database
    if (!extension_loaded("mssql")) {
       echo __('Incompatible PHP Installation. Requires module',
               'glpi2mdt'). " mssql";
