@@ -2,7 +2,7 @@
 /*
  -------------------------------------------------------------------------
  glpi2mdt plugin for GLPI
- Copyright (C) 2017 by the glpi2mdt Development Team.
+ Copyright (C) 2017 by Blaise Thauvin
 
  https://github.com/DebugBill/glpi2mdt
  -------------------------------------------------------------------------
@@ -30,7 +30,6 @@ define('PLUGIN_GLPI2MDT_VERSION', '0.0.1');
 
 /**
  * Init hooks of the plugin.
- * REQUIRED
  *
  * @return void
  */
@@ -38,40 +37,54 @@ function plugin_init_glpi2mdt() {
    global $PLUGIN_HOOKS;
 
    $PLUGIN_HOOKS['csrf_compliant']['glpi2mdt'] = true;
+
+   // Config page
+   if (Session::haveRight('config', UPDATE)) {
+      $PLUGIN_HOOKS['config_page']['glpi2mdt'] = 'config.php';
+   }
 }
 
 
 /**
  * Get the name and the version of the plugin
- * REQUIRED
  *
  * @return array
  */
 function plugin_version_glpi2mdt() {
-   return [
-      'name'           => 'glpi2mdt',
-      'version'        => PLUGIN_GLPI2MDT_VERSION,
-      'author'         => '<a href="http://www.teclib.com">Teclib\'</a>',
-      'license'        => '',
-      'homepage'       => '',
-      'minGlpiVersion' => '9.1'
-   ];
+   return array('name'           => 'GLPI 2 MDT',
+                'version'        => PLUGIN_GLPI2MDT_VERSION,
+                'author'         => 'Blaise Thauvin',
+                'license'        => 'GPLv3+',
+                'homepage'       => 'https://github.com/DebugBill/glpi2mdt',
+                'minGlpiVersion' => '9.1.1');// For compatibility / no install in version < 9.1.1
+
 }
 
 /**
  * Check pre-requisites before install
- * OPTIONNAL, but recommanded
  *
  * @return boolean
  */
 function plugin_glpi2mdt_check_prerequisites() {
-   // Strict version check (could be less strict, or could allow various version)
+   // GLPI 9.1.1 is the strict minimum in any case
    if (version_compare(GLPI_VERSION, '9.1', 'lt')) {
       if (method_exists('Plugin', 'messageIncompatible')) {
          echo Plugin::messageIncompatible('core', '9.1');
       } else {
          echo "This plugin requires GLPI >= 9.1";
       }
+      return false;
+   }
+
+   // Just warns for GLPI != 9.1.6 as not tested but should work
+   #if (version_compare(GLPI_VERSION, '9.1.56', 'ne')) {
+   #      echo "This plugin is tested only with GLPI 9.1.6. Use with caution.<br>";
+   #}
+
+   // The plugin needs to access the MSSQL MDT database 
+   if (!extension_loaded("mssql")) {
+      echo __('Incompatible PHP Installation. Requires module',
+              'glpi2mdt'). " mssql";
       return false;
    }
    return true;
