@@ -1,0 +1,31 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# 
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: 0.0.1"
+"Report-Msgid-Bugs-To: "
+"POT-Creation-Date: 2017-08-27 21:40+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE"
+"Last-Translator: Blaise Thauvin <glpi2mdt@thauvin.org>, 2017"
+"Language-Team: French (https://www.transifex.com/glpi2mdt/teams/78175/fr/)"
+"MIME-Version: 1.0"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit"
+"Language: fr"
+"Plural-Forms: nplurals=2; plural=(n > 1);"
+
+#: config.php:44
+msgid "This is the plugin config page"
+msgstr "Ceci est la page de configuration du plugin"
+
+#: setup.php:86
+msgid "Incompatible PHP Installation. Requires module"
+msgstr "Installation de PHP incompatible. Nécessite le module"
+
+#: setup.php:106
+msgid "Installed / not configured"
+msgstr "Installé / Non configuré"
