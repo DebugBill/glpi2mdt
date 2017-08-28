@@ -13,7 +13,7 @@
 
  glpi2mdt is free software; you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
- the Free Software Foundation; either version 2 of the License, or
+ the Free Software Foundation; either version 3 of the License, or
  (at your option) any later version.
 
  glpi2mdt is distributed in the hope that it will be useful,
@@ -42,6 +42,12 @@ function plugin_init_glpi2mdt() {
    if (Session::haveRight('config', UPDATE)) {
       $PLUGIN_HOOKS['config_page']['glpi2mdt'] = 'config.php';
    }
+
+   // Add tab on Computers page
+   Plugin::registerClass('PluginGlpi2mdtComputer', array('addtabon' => array('Computer')));
+  
+   // Add menu item to plugins/configuration
+   Plugin::registerClass('PluginGlpi2mdtConfig', array('addtabon' => array('Computer')));
 }
 
 

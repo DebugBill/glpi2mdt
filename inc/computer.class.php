@@ -28,20 +28,26 @@
 
 // ----------------------------------------------------------------------
 // Original Author of file: Blaise Thauvin
-// Purpose of file: Form to manipulation global configuration parameters
+// Purpose of file: Class to manipulate additional computer data
 // ----------------------------------------------------------------------
 
-// Entry menu case
-define('GLPI_ROOT', '../..');
-include (GLPI_ROOT . "/inc/includes.php");
+// Class of the defined type
+class PluginGlpi2mdtComputer extends CommonGLPI
+{
+     /**
+     * This function is called from GLPI to allow the plugin to insert one or more item
+     *  inside the left menu of a Itemtype.
+     */
+function getTabNameForItem(CommonGLPI $item, $withtemplate=0) {
+   return self::createTabEntry('Auto Install');
+}
 
-Session::checkRight("config", UPDATE);
-
-// To be available when plugin in not activated
-Plugin::load('glpi2mdt');
-
-Html::header("TITRE", $_SERVER['PHP_SELF'], "config", "plugins");
-_e("This is the plugin config page", 'glpi2mdt');
+    /**
+     * This function is called from GLPI to render the form when the user click
+     *  on the menu item generated from getTabNameForItem()
+     */
+static function displayTabContentForItem(CommonGLPI $item, $tabnum=1, $withtemplate=0)
+    {
          ?>
         <form action="../plugins/glpi2mdt/front/computer.form.php" method="post">
             <?php echo Html::hidden('id', array('value' => $item->getID())); ?>
@@ -59,4 +65,8 @@ _e("This is the plugin config page", 'glpi2mdt');
             </div>
         </form>
         <?php
-Html::footer();
+        return true;
+    }
+
+}
+

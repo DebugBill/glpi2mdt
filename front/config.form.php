@@ -30,33 +30,23 @@
 // Original Author of file: Blaise Thauvin
 // Purpose of file: Form to manipulation global configuration parameters
 // ----------------------------------------------------------------------
-
-// Entry menu case
-define('GLPI_ROOT', '../..');
-include (GLPI_ROOT . "/inc/includes.php");
-
-Session::checkRight("config", UPDATE);
-
-// To be available when plugin in not activated
-Plugin::load('glpi2mdt');
-
-Html::header("TITRE", $_SERVER['PHP_SELF'], "config", "plugins");
-_e("This is the plugin config page", 'glpi2mdt');
-         ?>
-        <form action="../plugins/glpi2mdt/front/computer.form.php" method="post">
-            <?php echo Html::hidden('id', array('value' => $item->getID())); ?>
-            <?php echo Html::hidden('_glpi_csrf_token', array('value' => Session::getNewCSRFToken())); ?>
-            <div class="spaced" id="tabsbody">
-                <table class="tab_cadre_fixe">
-                    <tr class="tab_bg_1">
-                        <td>
-                            New Computer name: &nbsp;&nbsp;&nbsp;
-                            <input type="text" name="name" size="40" class="ui-autocomplete-input" autocomplete="off"> &nbsp;&nbsp;&nbsp;
-                            <input type="submit" class="submit" value="CLONE" name="clone"/>
-                        </td>
-                    </tr>
-                </table>
-            </div>
-        </form>
-        <?php
-Html::footer();
+ 
+// Load GLPI 
+define('GLPI_ROOT', '../../..');
+include(GLPI_ROOT . '/inc/includes.php');
+ 
+if ($_POST && isset($_POST['DBServer']) && isset($_POST['id'])) {
+ 
+    // Check that a server name has been passed
+    if (!isset($_POST['DBServer']) or empty($_POST['DBServer'])) {
+        Html::displayErrorAndDie('Please specifiy server');
+    }
+ 
+    // Store configuration parameters
+   global $DB;
+   $DBServer = $_POST['DBServer'];
+   $query = "INSERT INTO `glpi_plugin_glpi2mdt_parameters`
+                       (`parameter`, `scope`, `value_char`, `is_deleted`)
+                       VALUES ('DBServer', 'global', '$DBServer', false)";
+   $DB->query($query) or die("Error saving database server name ". $DB->error()); 
+}

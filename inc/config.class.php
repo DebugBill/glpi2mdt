@@ -28,35 +28,50 @@
 
 // ----------------------------------------------------------------------
 // Original Author of file: Blaise Thauvin
-// Purpose of file: Form to manipulation global configuration parameters
+// Purpose of file: Plugin general settings management
 // ----------------------------------------------------------------------
 
-// Entry menu case
-define('GLPI_ROOT', '../..');
-include (GLPI_ROOT . "/inc/includes.php");
+// Class of the defined type
 
-Session::checkRight("config", UPDATE);
+class PluginGlpi2mdtConfig extends  CommonDropdown
+{
+     /**
+     * This function is called from GLPI to setup the dropdown
+     */
 
-// To be available when plugin in not activated
-Plugin::load('glpi2mdt');
+ static function getTypeName($nb=0) {
 
-Html::header("TITRE", $_SERVER['PHP_SELF'], "config", "plugins");
-_e("This is the plugin config page", 'glpi2mdt');
+      if ($nb > 0) {
+         return __('Plugin iGlpi2mdt Dropdowns', 'glpi2mdt');
+      }
+      return __('Plugin Glpi2mdt Dropdowns', 'glpi2mdt');
+   }
+
+    /**
+     * This function is called from GLPI to render the form when the user click
+     *  on the menu item generated from getTabNameForItem()
+     */
+static function displayTabContentForItem(CommonGLPI $item, $tabnum=1, $withtemplate=0)
+    {
          ?>
-        <form action="../plugins/glpi2mdt/front/computer.form.php" method="post">
+        <form action="../plugins/glpi2mdt/front/config.form.php" method="post">
             <?php echo Html::hidden('id', array('value' => $item->getID())); ?>
             <?php echo Html::hidden('_glpi_csrf_token', array('value' => Session::getNewCSRFToken())); ?>
             <div class="spaced" id="tabsbody">
                 <table class="tab_cadre_fixe">
                     <tr class="tab_bg_1">
                         <td>
-                            New Computer name: &nbsp;&nbsp;&nbsp;
-                            <input type="text" name="name" size="40" class="ui-autocomplete-input" autocomplete="off"> &nbsp;&nbsp;&nbsp;
-                            <input type="submit" class="submit" value="CLONE" name="clone"/>
+                            Database server name: &nbsp;&nbsp;&nbsp;
+                            <input type="text" name="dbserver" size="50" class="ui-autocomplete-input" autocomplete="off"> &nbsp;&nbsp;&nbsp;
+                            <input type="submit" class="submit" value="DBSERVER" name="DBServer"/>
                         </td>
                     </tr>
                 </table>
             </div>
         </form>
         <?php
-Html::footer();
+        return true;
+    }
+
+}
+
