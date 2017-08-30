@@ -30,31 +30,31 @@
 // Original Author of file: Blaise Thauvin
 // Purpose of file: Form to manipulate additional computer data
 // ----------------------------------------------------------------------
- 
-// Load GLPI 
+
+// Load GLPI
 define('GLPI_ROOT', '../../..');
 include(GLPI_ROOT . '/inc/includes.php');
- 
+
 if ($_POST && isset($_POST['clone']) && isset($_POST['id'])) {
- 
+
     // Check that a name has been passed
-    if (!isset($_POST['name']) or empty($_POST['name'])) {
-        Html::displayErrorAndDie('Please specified date');
-    }
- 
-    // Load the Computer to be cloned 
+   if (!isset($_POST['name']) or empty($_POST['name'])) {
+      Html::displayErrorAndDie('Please specified date');
+   }
+
+    // Load the Computer to be cloned
     $Computer = new Computer();
     $Computer->getFromDB($_POST['id']);
- 
+
     // Reset id and change the name
     $Computer->fields['id'] = 'NULL';
     $Computer->fields['name'] = $_POST['name'];
- 
+
     // Save the new Computer to the DataBase
     $Computer->addToDB();
- 
+
     // Redirect the user to the new Computer
     $url = explode("?", $_SERVER['HTTP_REFERER']);
     Html::redirect($url[0] . "?id=" . $Computer->getID());
- 
+
 }

@@ -30,23 +30,39 @@
 // Original Author of file: Blaise Thauvin
 // Purpose of file: Form to manipulation global configuration parameters
 // ----------------------------------------------------------------------
- 
-// Load GLPI 
-define('GLPI_ROOT', '../../..');
-include(GLPI_ROOT . '/inc/includes.php');
- 
-if ($_POST && isset($_POST['DBServer']) && isset($_POST['id'])) {
- 
-    // Check that a server name has been passed
-    if (!isset($_POST['DBServer']) or empty($_POST['DBServer'])) {
-        Html::displayErrorAndDie('Please specifiy server');
-    }
- 
-    // Store configuration parameters
-   global $DB;
-   $DBServer = $_POST['DBServer'];
-   $query = "INSERT INTO `glpi_plugin_glpi2mdt_parameters`
-                       (`parameter`, `scope`, `value_char`, `is_deleted`)
-                       VALUES ('DBServer', 'global', '$DBServer', false)";
-   $DB->query($query) or die("Error saving database server name ". $DB->error()); 
+
+include ("../../../inc/includes.php");
+
+Html::header(__('Features', 'glpi2mdt'), $_SERVER["PHP_SELF"]);
+
+//Session::checkRight('plugin_glpi2mdt_configuration', READ);
+
+html::header(__('Features', 'glpi2mdt'));
+
+$g2mConfig = new PluginGlpi2mdtConfig();
+
+// Save configuration data
+if (isset($_POST['SAVE'])) {
+   $data = $_POST;
+   foreach ($data as $key=>$value) {
+      $g2mConfig->updateValue($key, $value);
+   }
+   // Only reload page if Save button was pressed
+   Html::back();
 }
+
+$g2mConfig->loadConf();
+$g2mConfig->show();
+
+// Test connection (will save first ...)
+if (isset($_POST['TEST'])) {
+   $g2mConfig->showTestConnection();
+}
+
+// Initialise data (will NOT save first but use curently stored credentials)
+if (isset($_POST['INIT'])) {
+   $g2mConfig->showInitialise();
+}
+
+Html::footer();
+

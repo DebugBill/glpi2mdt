@@ -38,18 +38,17 @@ class PluginGlpi2mdtComputer extends CommonGLPI
      * This function is called from GLPI to allow the plugin to insert one or more item
      *  inside the left menu of a Itemtype.
      */
-function getTabNameForItem(CommonGLPI $item, $withtemplate=0) {
-   return self::createTabEntry('Auto Install');
-}
+   function getTabNameForItem(CommonGLPI $item, $withtemplate=0) {
+      return self::createTabEntry('Auto Install');
+   }
 
     /**
      * This function is called from GLPI to render the form when the user click
      *  on the menu item generated from getTabNameForItem()
      */
-static function displayTabContentForItem(CommonGLPI $item, $tabnum=1, $withtemplate=0)
-    {
+   static function displayTabContentForItem(CommonGLPI $item, $tabnum=1, $withtemplate=0) {
          ?>
-        <form action="../plugins/glpi2mdt/front/computer.form.php" method="post">
+           <form action="../plugins/glpi2mdt/front/computer.form.php" method="post">
             <?php echo Html::hidden('id', array('value' => $item->getID())); ?>
             <?php echo Html::hidden('_glpi_csrf_token', array('value' => Session::getNewCSRFToken())); ?>
             <div class="spaced" id="tabsbody">
@@ -63,10 +62,10 @@ static function displayTabContentForItem(CommonGLPI $item, $tabnum=1, $withtempl
                     </tr>
                 </table>
             </div>
-        </form>
-        <?php
-        return true;
-    }
+           </form>
+            <?php
+              return true;
+   }
 
 }
 
