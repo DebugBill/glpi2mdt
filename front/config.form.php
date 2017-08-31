@@ -37,8 +37,6 @@ Html::header(__('Features', 'glpi2mdt'), $_SERVER["PHP_SELF"]);
 
 //Session::checkRight('plugin_glpi2mdt_configuration', READ);
 
-html::header(__('Features', 'glpi2mdt'));
-
 $g2mConfig = new PluginGlpi2mdtConfig();
 
 // Save configuration data

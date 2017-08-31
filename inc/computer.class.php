@@ -31,7 +31,10 @@
 // Purpose of file: Class to manipulate additional computer data
 // ----------------------------------------------------------------------
 
-// Class of the defined type
+if (!defined('GLPI_ROOT')) {
+   die("Sorry. You can't access directly to this file");
+}
+
 class PluginGlpi2mdtComputer extends CommonGLPI
 {
      /**
@@ -42,23 +45,115 @@ class PluginGlpi2mdtComputer extends CommonGLPI
       return self::createTabEntry('Auto Install');
    }
 
+     /**
+     * Update GLPI database
+     */
+    function updateValue($post) {
+       global $DB; 
+ 
+       $result = $DB->query("SELECT column_name FROM glpi_plugin_glpi2mdt_descriptions WHERE is_deleted=false");
+       while ($line = $DB->fetch_array($result)) {
+          $parameters[$line['column_name']]=true;
+       }
+       if (isset($post['id']) and ($post['id'] > 0)) {
+          $id = $post['id'];
+          foreach ($post as $key=>$value) {
+             // only valid parameters may be inserted. The full list is in the "descriptions" database
+             if (isset($parameters[$key])) {
+                $query = "INSERT INTO glpi_dev.glpi_plugin_glpi2mdt_settings 
+                             (`id`, `type`, `key`, `value`)
+                             VALUES ($id, 'C', '$key', '$value')
+                             ON DUPLICATE KEY UPDATE value='$value'";
+                $DB->query($query) or die("Cannot update settings databse, query is $query");
+            }
+         }
+      }
+    }
+
+     /**
+     * Updates the MDT MSSQL database with information containted in GLPI's database
+     */
+     function updateMDT($id) {
+        global $DB;
+
+     }
+
+
+
     /**
      * This function is called from GLPI to render the form when the user click
      *  on the menu item generated from getTabNameForItem()
      */
    static function displayTabContentForItem(CommonGLPI $item, $tabnum=1, $withtemplate=0) {
+      global $DB;
+      // Load current settings from database
+      $id = $item->getID();
+      $osinstall = 'NO';
+      $tasksequence = '';
+      $query = "SELECT `key`, `value` FROM glpi_dev.glpi_plugin_glpi2mdt_settings WHERE type='C' and id='$id'";
+      $result = $DB->query($query);
+      while ($row=$DB->fetch_array($result)) {
+         $key = $row['key'];
+         $value = $row['value'];
+         if ($key == 'OSInstall' and $value == 'YES') {
+            $osinstall = 'YES';
+         }
+         if ($key == 'TaskSequenceID') {
+            $tasksequence = $value;
+         }
+         if ($key == 'roles') {
+            $roles = $value;
+         }
+         if ($key == 'applications') {
+            $applications = $value;
+         }
+
+      }
          ?>
            <form action="../plugins/glpi2mdt/front/computer.form.php" method="post">
-            <?php echo Html::hidden('id', array('value' => $item->getID())); ?>
+            <?php echo Html::hidden('id', array('value' => $id)); ?>
             <?php echo Html::hidden('_glpi_csrf_token', array('value' => Session::getNewCSRFToken())); ?>
             <div class="spaced" id="tabsbody">
                 <table class="tab_cadre_fixe">
                     <tr class="tab_bg_1">
+                        <?php
+                          echo "<td>".__('Enable automatic installation', 'glpi2mdt')." :</td>";
+                          echo "<td>";
+                          Dropdown::showFromArray("OSInstall", array(
+                             'YES' => "YES",
+                             'NO' => "NO"), array(
+                             'value' => "$osinstall")
+                          );
+                          echo "</td>";
+                           ?>
+                          </tr>
+                    </tr>
+                    <tr class="tab_bg_1">
                         <td>
-                            New Computer name: &nbsp;&nbsp;&nbsp;
-                            <input type="text" name="name" size="40" class="ui-autocomplete-input" autocomplete="off"> &nbsp;&nbsp;&nbsp;
-                            <input type="submit" class="submit" value="CLONE" name="clone"/>
+                            Task sequence: &nbsp;&nbsp;&nbsp;
+                        </td><td>
+                            <input type="text" name="TaskSequenceID" <?php echo 'value="'.$tasksequence.'"' ?> size="40" class="ui-autocomplete-input" autocomplete="off"> &nbsp;&nbsp;&nbsp;
                         </td>
+                    </tr>
+                    <tr class="tab_bg_1">
+                        <td>
+                            Applications: &nbsp;&nbsp;&nbsp;
+                        </td><td>
+                            <input type="text" name="applications"  <?php echo 'value="'.$applications.'"' ?>size="40" class="ui-autocomplete-input" autocomplete="off"> &nbsp;&nbsp;&nbsp;
+                        </td>
+                    </tr>
+                    <tr class="tab_bg_1">
+                        <td>
+                            Roles: &nbsp;&nbsp;&nbsp;
+                        </td><td>
+                            <input type="text" name="roles"  <?php echo 'value="'.$roles.'"' ?> size="40" class="ui-autocomplete-input" autocomplete="off"> &nbsp;&nbsp;&nbsp;
+                        </td>
+                    </tr>
+                    <tr class="tab_bg_1">
+                           <td>
+                            <input type="submit" class="submit" value="Save" name="SAVE"/>
+                           </td>
+                          </tr>
                     </tr>
                 </table>
             </div>

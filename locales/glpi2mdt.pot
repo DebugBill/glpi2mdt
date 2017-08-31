@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-08-28 00:27+0200\n"
+"POT-Creation-Date: 2017-08-30 15:34+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,14 +17,38 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: config.php:44
-msgid "This is the plugin config page"
+#: front/config.form.php:36 front/config.form.php:40
+msgid "Features"
 msgstr ""
 
-#: setup.php:86
+#: setup.php:99
 msgid "Incompatible PHP Installation. Requires module"
 msgstr ""
 
-#: setup.php:106
+#: setup.php:119
 msgid "Installed / not configured"
+msgstr ""
+
+#: inc/config.class.php:114
+msgid "Database server name"
+msgstr ""
+
+#: inc/config.class.php:121
+msgid "Database server port (optionnal)"
+msgstr ""
+
+#: inc/config.class.php:128
+msgid "Login"
+msgstr ""
+
+#: inc/config.class.php:135
+msgid "Password"
+msgstr ""
+
+#: inc/config.class.php:142
+msgid "Schema"
+msgstr ""
+
+#: inc/config.class.php:150
+msgid "Link mode"
 msgstr ""

@@ -46,6 +46,7 @@ class PluginGlpi2mdtConfig extends CommonDBTM {
       global $dbpassword;
       global $dbschema;
       global $mode;
+      global $fileshare;
 
       $dbserver='';
       $dbport=3306;
@@ -72,6 +73,8 @@ class PluginGlpi2mdtConfig extends CommonDBTM {
             $dbschema=$data['value_char']; }
          if ($data['parameter'] == 'Mode') {
             $mode=$data['value_char']; }
+         if ($data['parameter'] == 'Fileshare') {
+            $fileshare=$data['value_char']; }
       }
    }
 
@@ -79,7 +82,7 @@ class PluginGlpi2mdtConfig extends CommonDBTM {
    function updateValue($key, $value) {
       // Store configuration parameters
       global $DB;
-      if ($key == 'DBServer' or $key == 'DBLogin' or $key == 'DBPassword' or $key == 'DBSchema' or $key == 'Mode') {
+      if ($key == 'DBServer' or $key == 'DBLogin' or $key == 'DBPassword' or $key == 'DBSchema' or $key == 'Mode' or $key == 'Fileshare') {
          $query = "INSERT INTO `glpi_plugin_glpi2mdt_parameters`
                           (`parameter`, `scope`, `value_char`, `is_deleted`)
                           VALUES ('$key', 'global', '$value', false)
@@ -103,6 +106,7 @@ class PluginGlpi2mdtConfig extends CommonDBTM {
       global $dbpassword;
       global $dbschema;
       global $mode;
+      global $fileshare;
 
          ?>
            <form action="../front/config.form.php" method="post">
@@ -142,6 +146,14 @@ class PluginGlpi2mdtConfig extends CommonDBTM {
                               <?php echo __('Schema', 'glpi2mdt'); ?> : &nbsp;&nbsp;&nbsp;
                         </td><td>
                               <?php echo '<input type="text" name="DBSchema" value="'.$dbschema.'" size="50" class="ui-autocomplete-input" autocomplete="off"
+> &nbsp;&nbsp;&nbsp;' ?>
+                        </td>
+                    </tr>
+                    <tr class="tab_bg_1">
+                        <td>
+                              <?php echo __('Local path to deployment share', 'glpi2mdt'); ?> : &nbsp;&nbsp;&nbsp;
+                        </td><td>
+                              <?php echo '<input type="text" name="Fileshare" value="'.$fileshare.'" size="50" class="ui-autocomplete-input" autocomplete="off"
 > &nbsp;&nbsp;&nbsp;' ?>
                         </td>
                     </tr>
@@ -221,6 +233,7 @@ class PluginGlpi2mdtConfig extends CommonDBTM {
       global $dblogin;
       global $dbpassword;
       global $dbschema;
+      global $fileshare;
 
       // Connexion à MSSQL
       $link = mssql_connect($dbserver, $dblogin, $dbpassword);
@@ -229,9 +242,14 @@ class PluginGlpi2mdtConfig extends CommonDBTM {
           die('Impossible de se connecter à la base!');
       }
 
+      //
       // Load available settings fields and descriptions from MDT
+      //
       $result = mssql_query('SELECT  ColumnName, CategoryOrder, Category, Description
                               FROM dbo.Descriptions');
+
+      // Mark lines in order to detect deleted ones in the source database
+      $DB->query("UPDATE `glpi_plugin_glpi2mdt_descriptions` SET is_in_sync=false WHERE is_deleted=false");
       // There less than 300 lines, do an atomic insert/update
       while ($row = mssql_fetch_array($result)) {
          $column_name = $row['ColumnName'];
@@ -240,18 +258,25 @@ class PluginGlpi2mdtConfig extends CommonDBTM {
          $description = $row['Description'];
 
          $query = "INSERT INTO `glpi_plugin_glpi2mdt_descriptions`
-                    (`column_name`, `category_order`, `category`, `description`)
-                    VALUES ('$column_name', $category_order, '$category', '$description')
-                  ON DUPLICATE KEY UPDATE category_order=$category_order, category='$category', description='$description'";
+                    (`column_name`, `category_order`, `category`, `description`, `is_in_sync`, `is_deleted`)
+                    VALUES ('$column_name', $category_order, '$category', '$description', true, false)
+                  ON DUPLICATE KEY UPDATE category_order=$category_order, category='$category', description='$description', is_deleted=false, is_in_sync=true";
          $DB->query($query) or die("Error loading MDT descriptions to GLPI database. ". $DB->error());
       }
       $result = mssql_query('SELECT  count(*) as nb FROM dbo.Descriptions');
       $row = mssql_fetch_array($result);
       $nb = $row['nb'];
       echo "$nb lines loaded into table 'descriptions'."."<br>";
+      $result = $DB->query("SELECT count(*) as nb FROM `glpi_plugin_glpi2mdt_descriptions` WHERE `is_in_sync`=false");
+      $row = $DB->fetch_array($result);
+      $nb = $row['nb'];
+      $DB->query("UPDATE `glpi_plugin_glpi2mdt_descriptions` SET is_in_sync=true, is_deleted=true 
+                      WHERE is_in_sync=false AND is_deleted=false");
+      echo "$nb lines deleted into table 'descriptions'."."<br><br>";
 
-
+      //
       // Load available roles from MDT
+      //
       $result = mssql_query('SELECT  ID, Role FROM dbo.RoleIdentity');
 
       // Mark lines in order to detect deleted ones in the source database
@@ -266,38 +291,42 @@ class PluginGlpi2mdtConfig extends CommonDBTM {
                   ON DUPLICATE KEY UPDATE role='$role', is_deleted=false, is_in_sync=true";
          $DB->query($query) or die("Error loading MDT roles to GLPI database. ". $DB->error());
       }
-      
+
       // Mark lines which are not in MDT anymore as deleted
       $DB->query("UPDATE `glpi_plugin_glpi2mdt_roles` SET is_in_sync=true, is_deleted=true 
-                                                      WHERE is_in_sync=false AND is_deleted=false");
+                    WHERE is_in_sync=false AND is_deleted=false");
 
       $result = mssql_query('SELECT  count(*) as nb FROM dbo.RoleIdentity');
       $row = mssql_fetch_array($result);
       $nb = $row['nb'];
       echo "$nb lines loaded into table 'roles'."."<br>";
 
-
+      //
       // Load available applications from MDT
-      $result = mssql_query('SELECT  Type, ID, Sequence, Applications FROM dbo.Settings_Applications');
+      //
+      $result = mssql_query('SELECT DISTINCT Applications FROM dbo.Settings_Applications');
       // Mark lines in order to detect deleted ones in the source database
       $DB->query("UPDATE `glpi_plugin_glpi2mdt_applications` SET is_in_sync=false WHERE is_deleted=false");
       while ($row = mssql_fetch_array($result)) {
-         $type = $row['Type'];
-         $id = $row['ID'];
-         $sequence = $row['Sequence'];
-         $application = $row['Applications'];
+         $id = $row['Applications'];
 
          $query = "INSERT INTO `glpi_plugin_glpi2mdt_applications`
-                    (`id`, `type`, `sequence`, `application`, `is_deleted`, `is_in_sync`)
-                    VALUES ('$id', '$type', '$sequence', '$application', false, true)
-                  ON DUPLICATE KEY UPDATE application='$application', is_deleted=false, is_in_sync=true";
+                    (`id`, `application`, `is_deleted`, `is_in_sync`)
+                    VALUES ('$id', '$id', false, true)
+                  ON DUPLICATE KEY UPDATE is_deleted=false, is_in_sync=true";
          $DB->query($query) or die("Error loading MDT applications to GLPI database. ". $DB->error());
       }
-      $result = mssql_query('SELECT  count(*) as nb FROM dbo.Settings_Applications');
+      $result = mssql_query('SELECT count(*) as nb FROM (SELECT DISTINCT Applications FROM dbo.Settings_Applications) s');
       $row = mssql_fetch_array($result);
       $nb = $row['nb'];
       echo "$nb lines loaded into table 'applications'."."<br>";
-
+      // Mark lines which are not in MDT anymore as deleted
+      $result = $DB->query("SELECT count(*) as nb FROM `glpi_plugin_glpi2mdt_applications` WHERE `is_in_sync`=false");
+      $row = $DB->fetch_array($result);
+      $nb = $row['nb'];
+      $DB->query("UPDATE `glpi_plugin_glpi2mdt_applications` SET is_in_sync=true, is_deleted=true 
+                      WHERE is_in_sync=false AND is_deleted=false");
+      echo "$nb lines deleted into table 'applications'."."<br><br>";
 
       // Cleaning
       mssql_free_result($result);
