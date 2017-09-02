@@ -1,0 +1,133 @@
+# Srings to be translated for glpi2mdt.
+# Copyright (C) 2017 Blaise Thauvin
+# This file is distributed under the same license as the glpi2mdt package.
+# Blaise Thauvin <glpi2mdt at thauvin.org>, 2017.
+# 
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: 0.0.1\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-09-02 16:20+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: Blaise Thauvin <glpi2mdt@thauvin.org>, 2017\n"
+"Language-Team: French (https://www.transifex.com/glpi2mdt/teams/78175/fr/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: fr\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: front/computer.form.php:36 front/config.form.php:36
+msgid "Features"
+msgstr "Fonctions"
+
+#: setup.php:99 setup.php:104
+msgid "Incompatible PHP Installation. Requires module"
+msgstr "Installation de PHP incompatible. Nécessite le module"
+
+#: setup.php:123
+msgid "Installed / not configured"
+msgstr "Installé / Non configuré"
+
+#: inc/computer.class.php:193
+msgid "Enable automatic installation"
+msgstr "Activer l'installation automatique"
+
+#: inc/config.class.php:129
+msgid "Database server name"
+msgstr "Nom DNS du serveur de base de données"
+
+#: inc/config.class.php:137
+msgid "Database server port (optionnal)"
+msgstr "Port du serveur de base de données (optionnel)"
+
+#: inc/config.class.php:145
+msgid "Login"
+msgstr "Utilisateur"
+
+#: inc/config.class.php:153
+msgid "Password"
+msgstr "Mot de passe"
+
+#: inc/config.class.php:161
+msgid "Schema"
+msgstr "Schéma"
+
+#: inc/config.class.php:169
+msgid "Local path to deployment share control directory"
+msgstr "Chemin local vers le répertoire \"control\" du partage de déploiement"
+
+#: inc/config.class.php:177
+msgid "Local admin password"
+msgstr "Mot de passe administrateur local"
+
+#: inc/config.class.php:185
+msgid "Local admin password complexity"
+msgstr "Complexité du mot de passe admin local"
+
+#: inc/config.class.php:188
+msgid "Same password on all machines"
+msgstr "Mot de passe identique sur toutes les machines"
+
+#: inc/config.class.php:189
+msgid "Password is hostname"
+msgstr "Le mot de passe est le nom de machine"
+
+#: inc/config.class.php:190
+msgid "append '-%hostname%' to password"
+msgstr "Ajouter \"-%hostname%\" au mot de passe"
+
+#: inc/config.class.php:198
+msgid "Link mode"
+msgstr "Mode de jumelage"
+
+#: inc/config.class.php:201
+msgid "Strict Master-Slave"
+msgstr "Maître-Esclave strict"
+
+#: inc/config.class.php:202
+msgid "Loose Master-Slave"
+msgstr "Maître-Esclave souple"
+
+#: inc/config.class.php:203
+msgid "Master-Master"
+msgstr "Maître-Maître"
+
+#: inc/config.class.php:211
+msgid "Save"
+msgstr "Sauver"
+
+#: inc/config.class.php:216
+msgid "Test connection"
+msgstr "Tester la connexion"
+
+#: inc/config.class.php:218
+msgid "Initialise data"
+msgstr "Initialiser les données"
+
+#: inc/config.class.php:243
+msgid "Database login OK!"
+msgstr "Connexion à la base réussie!"
+
+#: inc/config.class.php:249
+msgid "Schema selection OK!"
+msgstr "Sélection du schéma réussie!"
+
+#: inc/config.class.php:251
+msgid "Schema selection KO!"
+msgstr "Sélection du schéma échouée"
+
+#: inc/config.class.php:254
+msgid "Database login KO!"
+msgstr "Echec de connexion à la base!"
+
+#: inc/config.class.php:371 inc/config.class.php:407 inc/config.class.php:438
+#: inc/config.class.php:474
+msgid "lines loaded into table"
+msgstr "ligne(s) chargées dans la table"
+
+#: inc/config.class.php:378 inc/config.class.php:416 inc/config.class.php:445
+#: inc/config.class.php:483
+msgid "lines deleted from table"
+msgstr "ligne(s) supprimées de la table"
