@@ -54,7 +54,7 @@ function plugin_glpi2mdt_install() {
                        VALUES (1, 'database_version', 'global', 1, false)";
       $DB->query($query) or die("error updating glpi_plugin_glpi2mdt_parameters ". $DB->error());
    }
-   
+
    // Individual settings for computers, models and roles
    if (!TableExists("glpi_plugin_glpi2mdt_settings")) {
       $query = "CREATE TABLE `glpi_plugin_glpi2mdt_settings` (
@@ -82,7 +82,7 @@ function plugin_glpi2mdt_install() {
 
       $DB->query($query) or die("error creating glpi_plugin_glpi2mdt_roles ". $DB->error());
    }
-   
+
    // Available applications, extracted from XML file on installation share
    if (!TableExists("glpi_plugin_glpi2mdt_applications")) {
       $query = "CREATE TABLE `glpi_plugin_glpi2mdt_applications` (  
@@ -96,7 +96,6 @@ function plugin_glpi2mdt_install() {
                    `is_in_sync` boolean NOT NULL DEFAULT true,  
                 PRIMARY KEY (`guid`)
                 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
-
 
       $DB->query($query) or die("error creating glpi_plugin_glpi2mdt_applications ". $DB->error());
    }
@@ -112,7 +111,7 @@ function plugin_glpi2mdt_install() {
                 PRIMARY KEY (`guid`)
                 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
 
-   $DB->query($query) or die("error creating glpi_plugin_glpi2mdt_application_groups ". $DB->error());
+      $DB->query($query) or die("error creating glpi_plugin_glpi2mdt_application_groups ". $DB->error());
    }
 
    if (!TableExists("glpi_plugin_glpi2mdt_application_group_links")) {

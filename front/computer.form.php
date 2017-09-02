@@ -48,6 +48,6 @@ if ((isset($_POST['SAVE'])) and (isset($_POST['id']))) {
    // Only reload page if Save button was pressed
 }
 
-// Reload page 
+// Reload page
 Html::back();
 

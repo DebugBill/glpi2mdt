@@ -48,106 +48,110 @@ class PluginGlpi2mdtComputer extends CommonGLPI
      /**
      * Update GLPI database
      */
-    function updateValue($post) {
-       global $DB; 
- 
-       $result = $DB->query("SELECT column_name FROM glpi_plugin_glpi2mdt_descriptions WHERE is_deleted=false");
-       while ($line = $DB->fetch_array($result)) {
-          $parameters[$line['column_name']]=true;
-       }
-       if (isset($post['id']) and ($post['id'] > 0)) {
-          $id = $post['id'];
-          foreach ($post as $key=>$value) {
-             // only valid parameters may be inserted. The full list is in the "descriptions" database
-             if (isset($parameters[$key])) {
-                $query = "INSERT INTO glpi_dev.glpi_plugin_glpi2mdt_settings 
+   function updateValue($post) {
+      global $DB;
+
+      $result = $DB->query("SELECT column_name FROM glpi_plugin_glpi2mdt_descriptions WHERE is_deleted=false");
+      while ($line = $DB->fetch_array($result)) {
+         $parameters[$line['column_name']]=true;
+      }
+      if (isset($post['id']) and ($post['id'] > 0)) {
+         $id = $post['id'];
+         foreach ($post as $key=>$value) {
+            // only valid parameters may be inserted. The full list is in the "descriptions" database
+            if (isset($parameters[$key])) {
+               $query = "INSERT INTO glpi_dev.glpi_plugin_glpi2mdt_settings 
                              (`id`, `type`, `key`, `value`)
                              VALUES ($id, 'C', '$key', '$value')
                              ON DUPLICATE KEY UPDATE value='$value'";
-                $DB->query($query) or die("Cannot update settings databse, query is $query");
+               $DB->query($query) or die("Cannot update settings databse, query is $query");
             }
          }
       }
-    }
+   }
 
      /**
      * Updates the MDT MSSQL database with information contained in GLPI's database
      *  Parameter is the GLPI object ID, here a computer
      */
-     function updateMDT($id) {
-        global $DB;
-        global $dbserver;
-        global $dbport;
-        global $dblogin;
-        global $dbpassword;
-        global $dbschema;
-        global $adminpassword;
+   function updateMDT($id) {
+      global $DB;
+      $dbserver = $globalconfig['DBServer'];;
+      $dbport = $globalconfig['DBPort'];
+      $dblogin = $globalconfig['DBLogin'];
+      $dbpassword= $globalconfig['DBPassword'];
+      $dbschema = $config['DBSchema'];
+      $mode = $globalconfig['Mode'];
+      $fileshare = $globalconfig['FileShare'];
+      $localadmin = $globalconfig['LocalAdmin'];
+      $complexity = $globalconfig['Complexity'];
 
-        // Get login parameters from database and connect to MSQSL server
-        PluginGlpi2mdtConfig::loadConf();      
-        $link = mssql_connect($dbserver, $dblogin, $dbpassword) 
-           or die("<h1><font color='red'>Database login KO!</font></h1><br>");
-        mssql_select_db($dbschema, $link)
-           or die("Cannot switch to schema $dbschema on MSSQL server");
-        
-        // Get data for current computer
-        $result = $DB->query("SELECT name, uuid, serial, otherserial
+      // Get login parameters from database and connect to MSQSL server
+      PluginGlpi2mdtConfig::loadConf();
+      $link = mssql_connect($dbserver, $dblogin, $dbpassword)
+       or die("<h1><font color='red'>Database login KO!</font></h1><br>");
+      mssql_select_db($dbschema, $link)
+       or die("Cannot switch to schema $dbschema on MSSQL server");
+
+      // Get data for current computer
+      $result = $DB->query("SELECT name, uuid, serial, otherserial
                               FROM glpi_computers    
                               WHERE id=$id AND is_deleted=false");
-        $common = $DB->fetch_array($result);
-        
-        
-        // Delete existing records in MDT bearing same name, uuid, serial or mac adresses 
-        $uuid = $common['uuid'];
-        $name = $common['name'];
-        $serial = $common['serial'];
-        $assettag = $common['otherserial'];
-        $query = "DELETE FROM $dbschema.dbo.ComputerIdentity 
+      $common = $DB->fetch_array($result);
+
+      // Delete existing records in MDT bearing same name, uuid, serial or mac adresses
+      $uuid = $common['uuid'];
+      $name = $common['name'];
+      $serial = $common['serial'];
+      $assettag = $common['otherserial'];
+      $query = "DELETE FROM $dbschema.dbo.ComputerIdentity 
                      WHERE (UUID<>'' AND UUID='$uuid')
                         OR (Description<>'' AND Description='$name')
                         OR (SerialNumber<>'' AND SerialNumber='$serial')";
-        mssql_query("$query", $link) or die(mssql_get_last_message());
-        $macs = $DB->query("SELECT UPPER(n.mac) as mac
+      mssql_query("$query", $link) or die(mssql_get_last_message());
+      $macs = $DB->query("SELECT UPPER(n.mac) as mac
                               FROM glpi_computers c, glpi_networkports n
                               WHERE c.id=$id AND c.id=n.items_id AND itemtype='Computer'
                                 AND n.instantiation_type='NetworkPortEthernet' AND n.mac<>'' 
                                 AND c.is_deleted=FALSE AND n.is_deleted=false");
-        unset($values);
-        while ($line = $DB->fetch_array($macs)) {
-           $mac = $line['mac'];
-           $query = "DELETE FROM dbo.ComputerIdentity WHERE MacAddress<>'' AND MacAddress='$mac'";
-           mssql_query($query, $link) or die(mssql_get_last_message()."<br><br>".$query);
-           $values = $values."('$name', '$uuid', '$serial', '$assettag', '$mac'), ";
-        }
-        // TODO: clean up related tables where orphan records may now reside
-        if (isset($values)) $values = substr($values, 0, -2);
-        $query = "INSERT INTO $dbschema.dbo.ComputerIdentity (Description, UUID, SerialNumber, AssetTag, MacAddress) VALUES $values";
-        mssql_query("$query") or die(mssql_get_last_message()."<br><br>".$query);
+      unset($values);
+      while ($line = $DB->fetch_array($macs)) {
+         $mac = $line['mac'];
+         $query = "DELETE FROM dbo.ComputerIdentity WHERE MacAddress<>'' AND MacAddress='$mac'";
+         mssql_query($query, $link) or die(mssql_get_last_message()."<br><br>".$query);
+         $values = $values."('$name', '$uuid', '$serial', '$assettag', '$mac'), ";
+      }
+      // TODO: clean up related tables where orphan records may now reside
+      if (isset($values)) {
+         $values = substr($values, 0, -2);
+      }
+      $query = "INSERT INTO $dbschema.dbo.ComputerIdentity (Description, UUID, SerialNumber, AssetTag, MacAddress) VALUES $values";
+      mssql_query("$query") or die(mssql_get_last_message()."<br><br>".$query);
 
-        // Retreive newly created entries ids in order to add the settings. Name is enough as we cleaned bogus entries in the previous phase
-        $query = "SELECT ID FROM dbo.ComputerIdentity WHERE Description='$name'";
-        $result = mssql_query($query, $link) or die(mssql_get_last_message()."<br><br>".$query);
-        $ids = "(";
-        $values = '';
-        $adminpasscomposite = $adminpassword.'-'.$name;
-        while ($row = mssql_fetch_array($result)) {
-           $mdtid = $row['ID'];
-           $ids = $ids.$mdtid.", ";
-           $values = $values."('C', $mdtid, '$name', '$name', '$name', '$adminpasscomposite'), ";
-        }
-        $ids = substr($ids, 0, -2).") ";
-        $values = substr($values, 0, -2);
-        $query = "INSERT INTO dbo.Settings (Type, ID, ComputerName, OSDComputerName, FullName, AdminPassword) VALUES $values";
-        mssql_query($query, $link) or die(mssql_get_last_message()."<br><br>".$query);
-        
-        // Update settings with additional parameters
-        $result = $DB->query("SELECT `key`, `value` FROM glpi_plugin_glpi2mdt_settings WHERE id=$id AND type='C';");
-        while ($pair = $DB->fetch_array($result)) {
-           $key = $pair['key'];
-           $value = $pair['value'];
-           $query = "UPDATE dbo.Settings SET $key='$value' WHERE ID IN $ids;";
-           mssql_query("$query") or die (mssql_get_last_message()."<br><br>".$query);
-        }
+      // Retreive newly created entries ids in order to add the settings. Name is enough as we cleaned bogus entries in the previous phase
+      $query = "SELECT ID FROM dbo.ComputerIdentity WHERE Description='$name'";
+      $result = mssql_query($query, $link) or die(mssql_get_last_message()."<br><br>".$query);
+      $ids = "(";
+      $values = '';
+      $adminpasscomposite = $localadmin.'-'.$name;
+      while ($row = mssql_fetch_array($result)) {
+         $mdtid = $row['ID'];
+         $ids = $ids.$mdtid.", ";
+         $values = $values."('C', $mdtid, '$name', '$name', '$name', '$adminpasscomposite'), ";
+      }
+      $ids = substr($ids, 0, -2).") ";
+      $values = substr($values, 0, -2);
+      $query = "INSERT INTO dbo.Settings (Type, ID, ComputerName, OSDComputerName, FullName, AdminPassword) VALUES $values";
+      mssql_query($query, $link) or die(mssql_get_last_message()."<br><br>".$query);
+
+      // Update settings with additional parameters
+      $result = $DB->query("SELECT `key`, `value` FROM glpi_plugin_glpi2mdt_settings WHERE id=$id AND type='C';");
+      while ($pair = $DB->fetch_array($result)) {
+         $key = $pair['key'];
+         $value = $pair['value'];
+         $query = "UPDATE dbo.Settings SET $key='$value' WHERE ID IN $ids;";
+         mssql_query("$query") or die (mssql_get_last_message()."<br><br>".$query);
+      }
    }
 
 
@@ -167,21 +171,22 @@ class PluginGlpi2mdtComputer extends CommonGLPI
       while ($row=$DB->fetch_array($result)) {
          $key = $row['key'];
          $value = $row['value'];
-         if ($key == 'OSInstall' and ($value == 'YES' or $value == 'NO')) 
+         if ($key == 'OSInstall' and ($value == 'YES' or $value == 'NO')) {
             $osinstall = $value);
-         else
+         } else {
             $osinstall = ''}
-         if ($key == 'TaskSequenceID') {
-            $tasksequence = $value;
-         }
-         if ($key == 'roles') {
-            $roles = $value;
-         }
-         if ($key == 'applications') {
-            $applications = $value;
-         }
-
       }
+      if ($key == 'TaskSequenceID') {
+         $tasksequence = $value;
+      }
+      if ($key == 'roles') {
+         $roles = $value;
+      }
+      if ($key == 'applications') {
+         $applications = $value;
+      }
+
+   }
          ?>
            <form action="../plugins/glpi2mdt/front/computer.form.php" method="post">
             <?php echo Html::hidden('id', array('value' => $id)); ?>
@@ -202,32 +207,32 @@ class PluginGlpi2mdtComputer extends CommonGLPI
                           </tr>
                     </tr>
                     <tr class="tab_bg_1">
-                       <?php
+                        <?php
                           echo '<td>'."Task sequence".': &nbsp;&nbsp;&nbsp;</td>';
                           echo "<td>";
                           $result = $DB->query("SELECT id, name FROM glpi_plugin_glpi2mdt_task_sequences 
                                                   WHERE is_deleted=false AND hide=false AND enable=true");
-                          while ($row = $DB->fetch_array($result)) {
-                             $tasksequenceids[$row['id']]=$row['name'];
-                          }
+                        while ($row = $DB->fetch_array($result)) {
+                           $tasksequenceids[$row['id']]=$row['name'];
+                        }
                           Dropdown::showFromArray("TaskSequenceID", $tasksequenceids,
                              array('value' => "$tasksequence"));
                           echo "</td>";
-                       ?>
+                        ?>
                     </tr>
                     <tr class="tab_bg_1">
-                       <?php
+                        <?php
                           echo '<td>'."Application".': &nbsp;&nbsp;&nbsp;</td>';
                           echo "<td>";
                           $result = $DB->query("SELECT guid, shortname FROM glpi_plugin_glpi2mdt_applications 
                                                   WHERE is_deleted=false AND hide=false AND enable=true");
-                          while ($row = $DB->fetch_array($result)) {
-                             $allapplications[$row['guid']]=$row['shortname'];
-                          }
+                        while ($row = $DB->fetch_array($result)) {
+                           $allapplications[$row['guid']]=$row['shortname'];
+                        }
                           Dropdown::showFromArray("applications", $allapplications,
                              array('value' => "$applications"));
                           echo "</td>";
-                       ?>                        
+                        ?>                        
                     </tr>
                     <tr class="tab_bg_1">
                         <td>
@@ -247,7 +252,7 @@ class PluginGlpi2mdtComputer extends CommonGLPI
            </form>
             <?php
               return true;
-   }
+}
 
 }
 

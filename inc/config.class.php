@@ -37,6 +37,20 @@ if (!defined('GLPI_ROOT')) {
 
 class PluginGlpi2mdtConfig extends CommonDBTM {
 
+   // Post parameters valid for configuration form and their expected content
+   static $validkeys=array(
+                 'DBServer' => 'txt',
+                 'DBLogin' => 'txt',
+                 'DBPassword' => 'txt',
+                 'DBSchema' => 'txt',
+                 'DBPort' => 'num',
+                 'Mode' => 'txt',
+                 'Fileshare' => 'txt',
+                 'LocalAdmin' => 'txt',
+                 'Complexity' => 'txt'
+                );
+   static $globalconfig;
+
    // Load plugin settings
    function loadConf() {
       global $DB;
@@ -61,6 +75,16 @@ class PluginGlpi2mdtConfig extends CommonDBTM {
       $result=$DB->query($query) or die("Error loading parameters from GLPI database ". $DB->error());
 
       while ($data=$DB->fetch_array($result)) {
+         $key = $data['parameter'];
+         $valchar = $data['value_char'];
+         $valnum = $data['value_num'];
+         if isset($validkeys[$parameter]) {
+            if ($validkeys[$parameter] == 'txt') {
+               $globalconfig[$parameter] = $valuechar;
+            } else {
+               $globalconfig[$parameter] = $valuenum;
+            }
+         }
          if ($data['parameter'] == 'DBServer') {
             $dbserver=$data['value_char']; }
          if ($data['parameter'] == 'DBPort') {
@@ -82,17 +106,7 @@ class PluginGlpi2mdtConfig extends CommonDBTM {
    function updateValue($key, $value) {
       // Store configuration parameters
       global $DB;
-      $validkeys=array(
-                 'DBServer' => 'txt',
-                 'DBLogin' => 'txt', 
-                 'DBPassword' => 'txt',
-                 'DBSchema' => 'txt',
-                 'Mode' => 'txt',
-                 'Fileshare' => 'txt',
-                 'LocalAdmin' => 'txt',
-                 'Complexity' => 'txt',
-                 'DBPort' => 'num'
-                );
+
       if ($validkeys[$key] == 'txt') {
          $query = "INSERT INTO `glpi_plugin_glpi2mdt_parameters`
                           (`parameter`, `scope`, `value_char`, `is_deleted`)
@@ -110,14 +124,14 @@ class PluginGlpi2mdtConfig extends CommonDBTM {
    }
 
    function show() {
-      global $DB;
-      global $dbserver;
-      global $dbport;
-      global $dblogin;
-      global $dbpassword;
-      global $dbschema;
-      global $mode;
-      global $fileshare;
+      global $DB;i
+      $dbserver = $globalconfig['DBServer'];;
+      $dbport = $globalconfig['DBPort'];
+      $dblogin = $globalconfig['DBLogin'];
+      $dbpassword= $globalconfig['DBPassword'];
+      $dbschema = $config['DBSchema'];
+      $mode = $globalconfig['Mode'];
+      $fileshare = $globalconfig['FileShare'];
 
          ?>
            <form action="../front/config.form.php" method="post">
@@ -227,11 +241,11 @@ class PluginGlpi2mdtConfig extends CommonDBTM {
 
    // Test connection
    function showTestConnection() {
-      global $dbserver;
-      global $dbport;
-      global $dblogin;
-      global $dbpassword;
-      global $dbschema;
+      $dbserver = $globalconfig['DBServer'];;
+      $dbport = $globalconfig['DBPort'];
+      $dblogin = $globalconfig['DBLogin'];
+      $dbpassword= $globalconfig['DBPassword'];
+      $dbschema= $config['DBSchema'];
       ?>
       <table class="tab_cadre_fixe">
       <tr class="tab_bg_1">
@@ -239,19 +253,20 @@ class PluginGlpi2mdtConfig extends CommonDBTM {
             <?php
             // Connection to MSSQL
             $link = mssql_connect($dbserver, $dblogin, $dbpassword);
-            if ($link) { 
+            if ($link) {
                echo "<h1><font color='green'> "._("Database login OK!")."</font></h1><br>";
                // Simple query to get database version
                $version = mssql_query('SELECT @@VERSION');
                $row = mssql_fetch_array($version);
                echo "Server is: <br>".$row[0]."<br>";
-               if (mssql_select_db($dbschema, $link))
+               if (mssql_select_db($dbschema, $link)) {
                   echo "<h1><font color='green'>"._("Schema selection OK!")."</font></h1><br>";
-               else
+               } else {
                   echo "<h1><font color='red'>"._("Schema selection KO!")."</font></h1><br>";
-            }
-            else 
+               }
+            } else {
                echo "<h1><font color='red'>"._("Database login KO!")."</font></h1><br>";
+            }
 
             // Cleaning
             mssql_free_result($version);
@@ -278,8 +293,9 @@ class PluginGlpi2mdtConfig extends CommonDBTM {
       // Connexion à MSSQL
       $link = mssql_connect($dbserver, $dblogin, $dbpassword);
 
-      if (!$link || !mssql_select_db($dbschema, $link)) 
+      if (!$link || !mssql_select_db($dbschema, $link)) {
           die('Cannot connect to MDT MSSQL database!');
+      }
 
       //
       // Load available settings fields and descriptions from MDT
@@ -338,35 +354,40 @@ class PluginGlpi2mdtConfig extends CommonDBTM {
       $nb = $row['nb'];
       echo "<tr class='tab_bg_1'><td>$nb "."lines loaded into table 'roles'.".'</td></tr>';
 
-
       // Cleaning
       mssql_free_result($result);
       mssql_close($link);
 
       //
-      // Load data from XML files in the deployment share 
+      // Load data from XML files in the deployment share
       //
       // Applications
       // Mark lines in order to detect deleted ones in the source database
       $DB->query("UPDATE glpi_plugin_glpi2mdt_applications SET is_in_sync=false WHERE is_deleted=false");
-      $applications = simplexml_load_file($fileshare.'/Applications.xml') 
+      $applications = simplexml_load_file($fileshare.'/Applications.xml')
               or die("Cannot load file $fileshare/Applications.xml");
       $nb = 0;
       foreach ($applications->application as $application) {
          $name = $application->Name;
          $guid = $application['guid'];
-         if (isset($application['enable']) and ($application['enable'] == 'True')) $enable = 'true'; else $enable = 'false';
-         if (isset($application['hide']) and ($application['hide'] == 'True')) $hide = 'true'; else $hide = 'false';
-         $shortname = $application->ShortName;
-         $version = $application->Version;
+         if (isset($application['enable']) and ($application['enable'] == 'True')) {
+            $enable = 'true'; } else {
+            $enable = 'false';
+            }
+            if (isset($application['hide']) and ($application['hide'] == 'True')) {
+               $hide = 'true'; } else {
+               $hide = 'false';
+               }
+               $shortname = $application->ShortName;
+               $version = $application->Version;
 
-         $query = "INSERT INTO glpi_plugin_glpi2mdt_applications
+               $query = "INSERT INTO glpi_plugin_glpi2mdt_applications
                     (`guid`, `name`, `shortname`, `version`, `hide`, `enable`, `is_deleted`, `is_in_sync`)
                     VALUES ('$guid', '$name', '$shortname', '$version', $hide, $enable, false, true)
                   ON DUPLICATE KEY UPDATE name='$name', shortname='$shortname', version='$version', hide=$hide, 
                                           enable=$enable, is_deleted=false, is_in_sync=true";
-         $DB->query($query) or die("Error loading MDT applications to GLPI database. ". $DB->error());
-         $nb += 1;
+               $DB->query($query) or die("Error loading MDT applications to GLPI database. ". $DB->error());
+               $nb += 1;
       }
       echo "<tr class='tab_bg_1'><td>$nb "._("lines loaded into table")." 'applications'.</td>";
       // Mark lines which are not in MDT anymore as deleted
@@ -387,22 +408,28 @@ class PluginGlpi2mdtConfig extends CommonDBTM {
       foreach ($groups->group as $group) {
          $name = $group->Name;
          $guid = $group['guid'];
-         if (isset($group['enable']) and ($group['enable'] == 'True')) $enable = 'true'; else $enable = 'false';
-         if (isset($group['hide']) and ($group['hide'] == 'True') and ($name <> 'hidden')) $hide = 'true'; else $hide = 'false';
+         if (isset($group['enable']) and ($group['enable'] == 'True')) {
+            $enable = 'true'; } else {
+            $enable = 'false';
+            }
+            if (isset($group['hide']) and ($group['hide'] == 'True') and ($name <> 'hidden')) {
+               $hide = 'true'; } else {
+               $hide = 'false';
+               }
 
-         $query = "INSERT INTO glpi_plugin_glpi2mdt_application_groups
+               $query = "INSERT INTO glpi_plugin_glpi2mdt_application_groups
                     (`guid`, `name`, `hide`, `enable`, `is_deleted`, `is_in_sync`)
                     VALUES ('$guid', '$name', $hide, $enable, false, true)
                   ON DUPLICATE KEY UPDATE name='$name', hide=$hide, enable=$enable, is_deleted=false, is_in_sync=true";
-         $DB->query($query) or die("Error loading MDT application groups to GLPI database. ". $DB->error());
-         $nb += 1;
-         foreach ($group->member as $application_guid) {
-            $query = "INSERT INTO glpi_plugin_glpi2mdt_application_group_links
+               $DB->query($query) or die("Error loading MDT application groups to GLPI database. ". $DB->error());
+               $nb += 1;
+               foreach ($group->member as $application_guid) {
+                  $query = "INSERT INTO glpi_plugin_glpi2mdt_application_group_links
                     (`group_guid`, `application_guid`, `is_deleted`, `is_in_sync`)
                     VALUES ('$guid', '$application_guid', false, true)
                   ON DUPLICATE KEY UPDATE is_deleted=false, is_in_sync=true";
-         $DB->query($query) or die("Error loading MDT application-group links to GLPI database. ". $DB->error());
-         }
+                  $DB->query($query) or die("Error loading MDT application-group links to GLPI database. ". $DB->error());
+               }
       }
       echo "<tr class='tab_bg_1'><td>$nb "._("lines loaded into table")." 'application groups'.</td>";
       // Mark lines which are not in MDT anymore as deleted
@@ -425,15 +452,21 @@ class PluginGlpi2mdtConfig extends CommonDBTM {
          $name = $ts->Name;
          $guid = $ts['guid'];
          $id = $ts->ID;
-         if (isset($ts['enable']) and ($ts['enable'] == 'True')) $enable = 'true'; else $enable = 'false';
-         if (isset($ts['hide']) and ($ts['hide'] == 'True')) $hide = 'true'; else $hide = 'false';
+         if (isset($ts['enable']) and ($ts['enable'] == 'True')) {
+            $enable = 'true'; } else {
+            $enable = 'false';
+            }
+            if (isset($ts['hide']) and ($ts['hide'] == 'True')) {
+               $hide = 'true'; } else {
+               $hide = 'false';
+               }
 
-         $query = "INSERT INTO glpi_plugin_glpi2mdt_task_sequences
+               $query = "INSERT INTO glpi_plugin_glpi2mdt_task_sequences
                     (`id`, `guid`, `name`, `hide`, `enable`, `is_deleted`, `is_in_sync`)
                     VALUES ('$id', '$guid', '$name', $hide, $enable, false, true)
                   ON DUPLICATE KEY UPDATE guid='$guid', name='$name', hide=$hide, enable=$enable, is_deleted=false, is_in_sync=true";
-         $DB->query($query) or die("Error loading MDT task sequences into GLPI database. ". $DB->error());
-         $nb += 1;
+               $DB->query($query) or die("Error loading MDT task sequences into GLPI database. ". $DB->error());
+               $nb += 1;
       }
       echo "<tr class='tab_bg_1'><td>$nb "._("lines loaded into table")." 'task_sequences'.</td>";
       // Mark lines which are not in MDT anymore as deleted
@@ -454,22 +487,28 @@ class PluginGlpi2mdtConfig extends CommonDBTM {
       foreach ($groups->group as $group) {
          $name = $group->Name;
          $guid = $group['guid'];
-         if (isset($group['enable']) and ($group['enable'] == 'True')) $enable = 'true'; else $enable = 'false';
-         if (isset($group['hide']) and ($group['hide'] == 'True') and ($name <> 'hidden')) $hide = 'true'; else $hide = 'false';
+         if (isset($group['enable']) and ($group['enable'] == 'True')) {
+            $enable = 'true'; } else {
+            $enable = 'false';
+            }
+            if (isset($group['hide']) and ($group['hide'] == 'True') and ($name <> 'hidden')) {
+               $hide = 'true'; } else {
+               $hide = 'false';
+               }
 
-         $query = "INSERT INTO glpi_plugin_glpi2mdt_task_sequence_groups
+               $query = "INSERT INTO glpi_plugin_glpi2mdt_task_sequence_groups
                     (`guid`, `name`, `hide`, `enable`, `is_deleted`, `is_in_sync`)
                     VALUES ('$guid', '$name', $hide, $enable, false, true)
                   ON DUPLICATE KEY UPDATE name='$name', hide=$hide, enable=$enable, is_deleted=false, is_in_sync=true";
-         $DB->query($query) or die("Error loading MDT task sequence groups to GLPI database. ". $DB->error());
-         $nb += 1;
-         foreach ($group->member as $sequence_guid) {
-            $query = "INSERT INTO glpi_plugin_glpi2mdt_application_group_links
+               $DB->query($query) or die("Error loading MDT task sequence groups to GLPI database. ". $DB->error());
+               $nb += 1;
+               foreach ($group->member as $sequence_guid) {
+                  $query = "INSERT INTO glpi_plugin_glpi2mdt_application_group_links
                     (`group_guid`, ``sequence_guid`, `is_deleted`, `is_in_sync`)
                     VALUES ('$guid', '$sequence_guid', false, true)
                   ON DUPLICATE KEY UPDATE is_deleted=false, is_in_sync=true";
-         $DB->query($query) or die("Error loading MDT sequence-group links to GLPI database. ". $DB->error());
-         }
+                  $DB->query($query) or die("Error loading MDT sequence-group links to GLPI database. ". $DB->error());
+               }
       }
       echo "<tr class='tab_bg_1'><td>$nb "._("lines loaded into table")." 'task sequence groups'.</td>";
       // Mark lines which are not in MDT anymore as deleted
