@@ -62,7 +62,7 @@ function plugin_glpi2mdt_install() {
                    `type` varchar(1) COLLATE utf8_unicode_ci NOT NULL,
                    `key` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
                    `value` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
-                   `is_in_sync` tinyint(1) NOT NULL DEFAULT true,
+                   `is_in_sync` boolean NOT NULL DEFAULT true,
                 PRIMARY KEY (`id`, `type`, `key`)
                 ) ENGINE=MyISAM AUTO_INCREMENT=34 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
 
@@ -85,31 +85,91 @@ function plugin_glpi2mdt_install() {
    
    // Available applications, extracted from XML file on installation share
    if (!TableExists("glpi_plugin_glpi2mdt_applications")) {
-      $query = "CREATE TABLE `glpi_plugin_glpi2mdt_applications` (
-                   `id` varchar(40) NOT NULL,
-                   `application` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-                   `is_deleted` boolean NOT NULL DEFAULT false,
-                   `is_in_sync` boolean NOT NULL DEFAULT true,
-                PRIMARY KEY (`id`)
-                ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
+      $query = "CREATE TABLE `glpi_plugin_glpi2mdt_applications` (  
+                   `guid` varchar(255) COLLATE utf8_unicode_ci NOT NULL,  
+                   `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,  
+                   `shortname` varchar(255) COLLATE utf8_unicode_ci NOT NULL,  
+                   `version` varchar(255) COLLATE utf8_unicode_ci NOT NULL,  
+                   `hide` boolean NOT NULL DEFAULT false,  
+                   `enable` boolean NOT NULL DEFAULT true,  
+                   `is_deleted` boolean NOT NULL DEFAULT false,  
+                   `is_in_sync` boolean NOT NULL DEFAULT true,  
+                PRIMARY KEY (`guid`)
+                ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
+
 
       $DB->query($query) or die("error creating glpi_plugin_glpi2mdt_applications ". $DB->error());
    }
-   // Available task sequences, extracted from XML file on installation share
-   if (!TableExists("glpi_plugin_glpi2mdt_tasksequences")) {
-      $query = "CREATE TABLE `glpi_plugin_glpi2mdt_tasksequences` (
-                  `id` int(11) NOT NULL auto_increment,
-                  `parameter` varchar(50) collate utf8_unicode_ci default NULL,
-                  `scope` varchar(50) collate utf8_unicode_ci NOT NULL default 'global',
-                  `value_num` decimal(9,2) signed default null,
-                  `value_char` varchar(50) collate utf8_unicode_ci default NULL,
-                  `is_deleted` boolean NOT NULL default false,
-                  `is_in_sync` boolean NOT NULL DEFAULT true,
-                PRIMARY KEY (`id`)
-                ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
 
-      $DB->query($query) or die("error creating glpi_plugin_glpi2mdt_tasksequences ". $DB->error());
+   if (!TableExists("glpi_plugin_glpi2mdt_application_groups")) {
+      $query = "CREATE TABLE `glpi_plugin_glpi2mdt_application_groups` (  
+                   `guid` varchar(255) COLLATE utf8_unicode_ci NOT NULL,  
+                   `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+                   `hide` boolean NOT NULL DEFAULT false,  
+                   `enable` boolean NOT NULL DEFAULT '1',  
+                   `is_deleted` boolean NOT NULL DEFAULT false,  
+                   `is_in_sync` boolean NOT NULL DEFAULT true,  
+                PRIMARY KEY (`guid`)
+                ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
+
+   $DB->query($query) or die("error creating glpi_plugin_glpi2mdt_application_groups ". $DB->error());
    }
+
+   if (!TableExists("glpi_plugin_glpi2mdt_application_group_links")) {
+      $query = "CREATE TABLE `glpi_plugin_glpi2mdt_task_application_group_links` (  
+                   `group_guid` varchar(38) COLLATE utf8_unicode_ci NOT NULL,  
+                   `application_guid` varchar(38) COLLATE utf8_unicode_ci NOT NULL,  
+                   `is_deleted` boolean NOT NULL DEFAULT false,  
+                   `is_in_sync` boolean NOT NULL DEFAULT true,  
+                PRIMARY KEY (`group_guid`, `application_guid`)
+                ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
+
+      $DB->query($query) or die("error creating glpi_plugin_glpi2mdt_application_group_links ". $DB->error());
+   }
+
+   // Available task sequences, extracted from XML file on installation share
+   if (!TableExists("glpi_plugin_glpi2mdt_task_sequences")) {
+      $query = "CREATE TABLE `glpi_plugin_glpi2mdt_task_sequences` (  
+                   `id` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+                   `guid` varchar(38) COLLATE utf8_unicode_ci NOT NULL,  
+                   `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,  
+                   `hide` boolean NOT NULL DEFAULT false,  
+                   `enable` boolean NOT NULL DEFAULT true,  
+                   `is_deleted` boolean NOT NULL DEFAULT false,  
+                   `is_in_sync` boolean NOT NULL DEFAULT true,  
+                PRIMARY KEY (`id`)
+                ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
+
+      $DB->query($query) or die("error creating glpi_plugin_glpi2mdt_task_sequences ". $DB->error());
+   }
+
+   if (!TableExists("glpi_plugin_glpi2mdt_task_sequence_groups")) {
+      $query = "CREATE TABLE `glpi_plugin_glpi2mdt_task_sequence_groups` (  
+                   `guid` varchar(38) COLLATE utf8_unicode_ci NOT NULL,  
+                   `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,  
+                   `hide` boolean NOT NULL DEFAULT false,  
+                   `enable` boolean NOT NULL DEFAULT true,  
+                   `is_deleted` boolean NOT NULL DEFAULT false,  
+                   `is_in_sync` boolean NOT NULL DEFAULT true,  
+                PRIMARY KEY (`guid`)
+                ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
+
+      $DB->query($query) or die("error creating glpi_plugin_glpi2mdt_task_sequence_groups ". $DB->error());
+   }
+
+   if (!TableExists("glpi_plugin_glpi2mdt_task_sequence_group_links")) {
+      $query = "CREATE TABLE `glpi_plugin_glpi2mdt_task_sequence_group_links` (  
+                   `group_guid` varchar(38) COLLATE utf8_unicode_ci NOT NULL,  
+                   `sequence_guid` varchar(38) COLLATE utf8_unicode_ci NOT NULL,  
+                   `is_deleted` boolean NOT NULL DEFAULT '0',  
+                   `is_in_sync` boolean NOT NULL DEFAULT '1',  
+                PRIMARY KEY (`group_guid`, `sequence_guid`)
+                ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
+
+      $DB->query($query) or die("error creating glpi_plugin_glpi2mdt_task_sequence_group_links ". $DB->error());
+   }
+
+   // All valid parameters for MDT objects
    if (!TableExists("glpi_plugin_glpi2mdt_descriptions")) {
       $query = "CREATE TABLE `glpi_plugin_glpi2mdt_descriptions` (
                   `column_name` varchar(255) collate utf8_unicode_ci NOT NULL,
@@ -134,25 +194,9 @@ function plugin_glpi2mdt_install() {
 function plugin_glpi2mdt_uninstall() {
    global $DB;
 
-   if (TableExists("glpi_plugin_glpi2mdt_parameters")) {
-      $query = "DROP TABLE `glpi_plugin_glpi2mdt_parameters`";
-      $DB->query($query) or die("error deleting glpi_plugin_glpi2mdt_parameters");
-   }
-   if (TableExists("glpi_plugin_glpi2mdt_roles")) {
-      $query = "DROP TABLE `glpi_plugin_glpi2mdt_roles`";
-      $DB->query($query) or die("error deleting glpi_plugin_glpi2mdt_roles");
-   }
-   if (TableExists("glpi_plugin_glpi2mdt_applications")) {
-      $query = "DROP TABLE `glpi_plugin_glpi2mdt_applications`";
-      $DB->query($query) or die("error deleting glpi_plugin_glpi2mdt_applications");
-   }
-   if (TableExists("glpi_plugin_glpi2mdt_tasksequences")) {
-      $query = "DROP TABLE `glpi_plugin_glpi2mdt_tasksequences`";
-      $DB->query($query) or die("error deleting glpi_plugin_glpi2mdt_tasksequences");
-   }
-   if (TableExists("glpi_plugin_glpi2mdt_descriptions")) {
-      $query = "DROP TABLE `glpi_plugin_glpi2mdt_descriptions`";
-      $DB->query($query) or die("error deleting glpi_plugin_glpi2mdt_descriptions");
+   $result = $DB->query("SHOW TABLES LIKE 'glpi_plugin_glpi2mdt_%';");
+   foreach ($rows = $DB->fetch_array($result) as $column=>$table) {
+      $DB->query("DROP TABLE $table");  // or die("error deleting table $table ".$DB->error());
    }
    return true;
 }

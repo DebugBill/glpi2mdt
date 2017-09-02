@@ -33,7 +33,7 @@
 
 include ("../../../inc/includes.php");
 
-Html::header(__('Features', 'glpi2mdt'), $_SERVER["PHP_SELF"]);
+Html::header(_('Features'), $_SERVER["PHP_SELF"]);
 
 //Session::checkRight('plugin_glpi2mdt_configuration', READ);
 
@@ -43,7 +43,7 @@ $g2mComputer = new PluginGlpi2mdtComputer();
 if ((isset($_POST['SAVE'])) and (isset($_POST['id']))) {
    $data = $_POST;
    $g2mComputer->updateValue($_POST);
-   $g2mComputer->updateMDT($id);
+   $g2mComputer->updateMDT($_POST['id']);
 
    // Only reload page if Save button was pressed
 }

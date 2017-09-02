@@ -33,7 +33,7 @@
 
 include ("../../../inc/includes.php");
 
-Html::header(__('Features', 'glpi2mdt'), $_SERVER["PHP_SELF"]);
+Html::header(_('Features'), $_SERVER["PHP_SELF"]);
 
 //Session::checkRight('plugin_glpi2mdt_configuration', READ);
 

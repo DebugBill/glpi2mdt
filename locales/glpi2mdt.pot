@@ -1,54 +1,132 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# Srings to be translated for glpi2mdt.
+# Copyright (C) 2017 Blaise Thauvin
+# This file is distributed under the same license as the glpi2mdt package.
+# Blaise Thauvin <glpi2mdt at thauvin.org>, 2017.
 #
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: 0.0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-08-30 15:34+0200\n"
+"POT-Creation-Date: 2017-09-02 16:20+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
+"Last-Translator: Blaise Thauvin\n"
+"Language-Team: \n"
+"Language: English\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: front/config.form.php:36 front/config.form.php:40
+#: front/computer.form.php:36 front/config.form.php:36
 msgid "Features"
 msgstr ""
 
-#: setup.php:99
+#: setup.php:99 setup.php:104
 msgid "Incompatible PHP Installation. Requires module"
 msgstr ""
 
-#: setup.php:119
+#: setup.php:123
 msgid "Installed / not configured"
 msgstr ""
 
-#: inc/config.class.php:114
+#: inc/computer.class.php:193
+msgid "Enable automatic installation"
+msgstr ""
+
+#: inc/config.class.php:129
 msgid "Database server name"
 msgstr ""
 
-#: inc/config.class.php:121
+#: inc/config.class.php:137
 msgid "Database server port (optionnal)"
 msgstr ""
 
-#: inc/config.class.php:128
+#: inc/config.class.php:145
 msgid "Login"
 msgstr ""
 
-#: inc/config.class.php:135
+#: inc/config.class.php:153
 msgid "Password"
 msgstr ""
 
-#: inc/config.class.php:142
+#: inc/config.class.php:161
 msgid "Schema"
 msgstr ""
 
-#: inc/config.class.php:150
+#: inc/config.class.php:169
+msgid "Local path to deployment share control directory"
+msgstr ""
+
+#: inc/config.class.php:177
+msgid "Local admin password"
+msgstr ""
+
+#: inc/config.class.php:185
+msgid "Local admin password complexity"
+msgstr ""
+
+#: inc/config.class.php:188
+msgid "Same password on all machines"
+msgstr ""
+
+#: inc/config.class.php:189
+msgid "Password is hostname"
+msgstr ""
+
+#: inc/config.class.php:190
+msgid "append '-%hostname%' to password"
+msgstr ""
+
+#: inc/config.class.php:198
 msgid "Link mode"
+msgstr ""
+
+#: inc/config.class.php:201
+msgid "Strict Master-Slave"
+msgstr ""
+
+#: inc/config.class.php:202
+msgid "Loose Master-Slave"
+msgstr ""
+
+#: inc/config.class.php:203
+msgid "Master-Master"
+msgstr ""
+
+#: inc/config.class.php:211
+msgid "Save"
+msgstr ""
+
+#: inc/config.class.php:216
+msgid "Test connection"
+msgstr ""
+
+#: inc/config.class.php:218
+msgid "Initialise data"
+msgstr ""
+
+#: inc/config.class.php:243
+msgid "Database login OK!"
+msgstr ""
+
+#: inc/config.class.php:249
+msgid "Schema selection OK!"
+msgstr ""
+
+#: inc/config.class.php:251
+msgid "Schema selection KO!"
+msgstr ""
+
+#: inc/config.class.php:254
+msgid "Database login KO!"
+msgstr ""
+
+#: inc/config.class.php:371 inc/config.class.php:407 inc/config.class.php:438
+#: inc/config.class.php:474
+msgid "lines loaded into table"
+msgstr ""
+
+#: inc/config.class.php:378 inc/config.class.php:416 inc/config.class.php:445
+#: inc/config.class.php:483
+msgid "lines deleted from table"
 msgstr ""
