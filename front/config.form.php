@@ -62,5 +62,9 @@ if (isset($_POST['INIT'])) {
    $g2mConfig->showInitialise();
 }
 
+// Check for new version of the plugin
+if (isset($_POST['UPDATE'])) {
+   PluginGlpi2mdtToolbox::checkNewVersionAvailable(false, false);
+}
 Html::footer();
 

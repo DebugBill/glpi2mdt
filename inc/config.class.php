@@ -47,7 +47,9 @@ class PluginGlpi2mdtConfig extends CommonDBTM {
                  'Mode' => 'txt',
                  'FileShare' => 'txt',
                  'LocalAdmin' => 'txt',
-                 'Complexity' => 'txt'
+                 'Complexity' => 'txt',
+                 'CheckNewVersion' => 'num',
+                 'ReportUsage' => 'num'
                 );
    public $globalconfig;
 
@@ -98,14 +100,9 @@ class PluginGlpi2mdtConfig extends CommonDBTM {
 
    function show() {
       global $DB;
-      $globalconfig = $this->globalconfig;
-      $dbserver = $globalconfig['DBServer'];
-      $dbport = $globalconfig['DBPort'];
-      $dblogin = $globalconfig['DBLogin'];
-      $dbpassword= $globalconfig['DBPassword'];
-      $dbschema = $globalconfig['DBSchema'];
-      $localadmin = $globalconfig['LocalAdmin'];
 
+                          $yesno[true] = __('YES', 'glpi2mdt');
+                          $yesno[false] = __('NO', 'glpi2mdt');
          ?>
            <form action="../front/config.form.php" method="post">
             <?php echo Html::hidden('_glpi_csrf_token', array('value' => Session::getNewCSRFToken())); ?>
@@ -115,7 +112,7 @@ class PluginGlpi2mdtConfig extends CommonDBTM {
                         <td>
                               <?php echo _e('Database server name', 'glpi2mdt'); ?> : &nbsp;&nbsp;&nbsp;
                         </td><td>
-                              <?php echo '<input type="text" name="DBServer" value="'.$dbserver.'" size="50" class="ui-autocomplete-input" 
+                              <?php echo '<input type="text" name="DBServer" value="'.$this->globalconfig['DBServer'].'" size="50" class="ui-autocomplete-input" 
                                            autocomplete="off" required pattern="[a-Z0-9.]"> &nbsp;&nbsp;&nbsp;' ?>
                         </td>
                     </tr>
@@ -123,7 +120,7 @@ class PluginGlpi2mdtConfig extends CommonDBTM {
                         <td>
                               <?php echo _e('Database server port (optionnal)', 'glpi2mdt'); ?> : &nbsp;&nbsp;&nbsp;
                         </td><td>
-                              <?php echo '<input type="text" name="DBPort" value="'.$dbport.'" size="50" class="ui-autocomplete-input" 
+                              <?php echo '<input type="text" name="DBPort" value="'.$this->globalconfig['DBPort'].'" size="50" class="ui-autocomplete-input" 
                                            autocomplete="off" inputmode="numeric"> &nbsp;&nbsp;&nbsp;' ?>
                         </td>
                     </tr>
@@ -131,7 +128,7 @@ class PluginGlpi2mdtConfig extends CommonDBTM {
                         <td>
                               <?php echo _e('Login', 'glpi2mdt'); ?> : &nbsp;&nbsp;&nbsp;
                         </td><td>
-                              <?php echo '<input type="text" name="DBLogin" value="'.$dblogin.'" size="50" class="ui-autocomplete-input" 
+                              <?php echo '<input type="text" name="DBLogin" value="'.$this->globalconfig['DBLogin'].'" size="50" class="ui-autocomplete-input" 
                                            autocomplete="off" required pattern="[a-Z0-9]"> &nbsp;&nbsp;&nbsp;' ?>
                         </td>
                     </tr>
@@ -139,7 +136,7 @@ class PluginGlpi2mdtConfig extends CommonDBTM {
                         <td>
                               <?php echo _e('Password', 'glpi2mdt'); ?> : &nbsp;&nbsp;&nbsp;
                         </td><td>
-                              <?php echo '<input type="password" name="DBPassword" value="'.$dbpassword.'" size="50" class="ui-autocomplete-input" 
+                              <?php echo '<input type="password" name="DBPassword" value="'.$this->globalconfig['DBPassword'].'" size="50" class="ui-autocomplete-input" 
                                            autocomplete="off" required> &nbsp;&nbsp;&nbsp;' ?>
                         </td>
                     </tr>
@@ -147,7 +144,7 @@ class PluginGlpi2mdtConfig extends CommonDBTM {
                         <td>
                               <?php echo _e('Schema', 'glpi2mdt'); ?> : &nbsp;&nbsp;&nbsp;
                         </td><td>
-                              <?php echo '<input type="text" name="DBSchema" value="'.$dbschema.'" size="50" class="ui-autocomplete-input" 
+                              <?php echo '<input type="text" name="DBSchema" value="'.$this->globalconfig['DBSchema'].'" size="50" class="ui-autocomplete-input" 
                                            autocomplete="off" required pattern="[a-Z0-9]"> &nbsp;&nbsp;&nbsp;' ?>
                         </td>
                     </tr>
@@ -163,7 +160,7 @@ class PluginGlpi2mdtConfig extends CommonDBTM {
                         <td>
                               <?php echo _e('Local admin password', 'glpi2mdt'); ?> : &nbsp;&nbsp;&nbsp;
                         </td><td>
-                              <?php echo '<input type="text" name="LocalAdmin" value="'.$localadmin.'" size="50" class="ui-autocomplete-input" 
+                              <?php echo '<input type="text" name="LocalAdmin" value="'.$this->globalconfig['LocalAdmin'].'" size="50" class="ui-autocomplete-input" 
                                           autocomplete="off" required> &nbsp;&nbsp;&nbsp;' ?>
                         </td>
                     </tr>
@@ -177,7 +174,7 @@ class PluginGlpi2mdtConfig extends CommonDBTM {
                              'Basic' => __('Same password on all machines', 'glpi2mdt'),
                              'Trivial' => __('Password is hostname', 'glpi2mdt'),
                              'Unique' => __('append \'-%hostname%\' to password', 'glpi2mdt')), array(
-                             'value' => "$complexity")
+                             'value' => "$this->globalconfig['Complexity']")
                           );
                           echo "</td>";
                            ?>
@@ -192,13 +189,41 @@ class PluginGlpi2mdtConfig extends CommonDBTM {
                              'Strict' => __('Strict Master-Slave', 'glpi2mdt'),
                              'Loose' => __('Loose Master-Slave', 'glpi2mdt'),
                              'Master' => __('Master-Master', 'glpi2mdt')), array(
-                             'value' => "$mode"));
+                             'value' => "$this->globalconfig['Mode']"));
                            echo "</td>";
                            ?>
                           </tr>
+                   <tr class="tab_bg_1">
+                          <td>
+                        <?php
+                          echo _e('Automatically check for new versions', 'glpi2mdt');
+                          echo "</td><td>";
+                          Dropdown::showFromArray("CheckNewVersion", $yesno,
+                             array(
+                             'value' => $this->globalconfig['CheckNewVersion'])
+                          );
+                          echo "</td>";
+                        ?>
+                          </tr>
+                   <tr class="tab_bg_1">
+                          <td>
+                        <?php
+                          echo _e('Report usage data (anonymous data to help in designing the plugin)', 'glpi2mdt');
+                          echo "</td><td>";
+                          Dropdown::showFromArray("ReportUsage", $yesno,
+                             array(
+                             'value' => $this->globalconfig['ReportUsage'])
+                          );
+                          echo "</td>";
+                        ?>
+                          </tr>
+ 
                           <tr class="tab_bg_1">
                            <td>
                             <input type="submit" class="submit" value="<?php _e("Save", 'glpi2mdt') ?>" name="SAVE"/>
+                           </td>
+                           </td><td>
+                            <input type="submit" class="submit" value=" <?php _e("Check new version", 'glpi2mdt') ?>" name="UPDATE"/>
                            </td>
                           </tr>
                           <tr class="tab_bg_1">
