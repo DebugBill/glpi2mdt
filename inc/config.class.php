@@ -184,16 +184,16 @@ class PluginGlpi2mdtConfig extends CommonDBTM {
                           </tr>                    
                     <tr class="tab_bg_1">
                           <td>
-                         <?php
-                          echo _e('Link mode', 'glpi2mdt');
-                          echo "</td><td>";
-                          $value = $this->globalconfig['Mode'];
-                          Dropdown::showFromArray("Mode", array(
+                           <?php
+                           echo _e('Link mode', 'glpi2mdt');
+                           echo "</td><td>";
+                           $value = $this->globalconfig['Mode'];
+                           Dropdown::showFromArray("Mode", array(
                              'Strict' => __('Strict Master-Slave', 'glpi2mdt'),
                              'Loose' => __('Loose Master-Slave', 'glpi2mdt'),
                              'Master' => __('Master-Master', 'glpi2mdt')), array(
-                             'value' => "$mode")); 
-                          echo "</td>";
+                             'value' => "$mode"));
+                           echo "</td>";
                            ?>
                           </tr>
                           <tr class="tab_bg_1">

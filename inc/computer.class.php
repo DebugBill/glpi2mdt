@@ -200,7 +200,7 @@ class PluginGlpi2mdtComputer extends CommonGLPI
                           echo _e('Enable automatic installation', 'glpi2mdt');
                           echo "</td><td>";
                           $yesno['YES'] = __('YES', 'glpi2mdt');
-                          $yesno['NO'] = __('NO', 'glpi2mdt'); 
+                          $yesno['NO'] = __('NO', 'glpi2mdt');
                           Dropdown::showFromArray("OSInstall", $yesno,
                              array(
                              'value' => "$osinstall")
@@ -212,7 +212,7 @@ class PluginGlpi2mdtComputer extends CommonGLPI
                     <tr class="tab_bg_1">
                         <?php
                           echo '<td>';
-                          echo _e("Task sequence",'glpi2mdt');
+                          echo _e("Task sequence", 'glpi2mdt');
                           echo ': &nbsp;&nbsp;&nbsp;</td>';
                           echo "<td>";
                           $result = $DB->query("SELECT id, name FROM glpi_plugin_glpi2mdt_task_sequences 
@@ -259,7 +259,7 @@ class PluginGlpi2mdtComputer extends CommonGLPI
            </form>
             <?php
               return true;
-}
+   }
 }
 
 
