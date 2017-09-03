@@ -87,11 +87,13 @@ class PluginGlpi2mdtComputer extends CommonGLPI
       $complexity = $globalconfig['Complexity'];
 
       // Get login parameters from database and connect to MSQSL server
-      PluginGlpi2mdtConfig::loadConf();
-      $link = mssql_connect($dbserver, $dblogin, $dbpassword)
+      $glpi2mdtconfig = new PluginGlpi2mdtConfig;
+      $glpi2mdtconfig->loadConf();
+      $globalconfig = $glpi2mdtconfig->globalconfig;
+      $link = mssql_connect($globalconfig['DBServer'], $globalconfig['DBLogin'], $globalconfig['DBPassword'])
        or die("<h1><font color='red'>Database login KO!</font></h1><br>");
-      mssql_select_db($dbschema, $link)
-       or die("Cannot switch to schema $dbschema on MSSQL server");
+      mssql_select_db($globalconfig['DBSchema'], $link)
+       or die("<h1><font color='red'>Cannot switch to schema $dbschema on MSSQL server</font></h1><br>");
 
       // Get data for current computer
       $result = $DB->query("SELECT name, uuid, serial, otherserial
@@ -172,9 +174,9 @@ class PluginGlpi2mdtComputer extends CommonGLPI
          $key = $row['key'];
          $value = $row['value'];
          if ($key == 'OSInstall' and ($value == 'YES' or $value == 'NO')) {
-            $osinstall = $value);
+            $osinstall = $value;
          } else {
-            $osinstall = ''}
+            $osinstall = ''; }
       }
       if ($key == 'TaskSequenceID') {
          $tasksequence = $value;
@@ -186,7 +188,6 @@ class PluginGlpi2mdtComputer extends CommonGLPI
          $applications = $value;
       }
 
-   }
          ?>
            <form action="../plugins/glpi2mdt/front/computer.form.php" method="post">
             <?php echo Html::hidden('id', array('value' => $id)); ?>
@@ -195,11 +196,13 @@ class PluginGlpi2mdtComputer extends CommonGLPI
                 <table class="tab_cadre_fixe">
                     <tr class="tab_bg_1">
                         <?php
-                          echo "<td>"._('Enable automatic installation')." :</td>";
                           echo "<td>";
-                          Dropdown::showFromArray("OSInstall", array(
-                             'YES' => "YES",
-                             'NO' => "NO"), array(
+                          echo _e('Enable automatic installation', 'glpi2mdt');
+                          echo "</td><td>";
+                          $yesno['YES'] = __('YES', 'glpi2mdt');
+                          $yesno['NO'] = __('NO', 'glpi2mdt'); 
+                          Dropdown::showFromArray("OSInstall", $yesno,
+                             array(
                              'value' => "$osinstall")
                           );
                           echo "</td>";
@@ -208,7 +211,9 @@ class PluginGlpi2mdtComputer extends CommonGLPI
                     </tr>
                     <tr class="tab_bg_1">
                         <?php
-                          echo '<td>'."Task sequence".': &nbsp;&nbsp;&nbsp;</td>';
+                          echo '<td>';
+                          echo _e("Task sequence",'glpi2mdt');
+                          echo ': &nbsp;&nbsp;&nbsp;</td>';
                           echo "<td>";
                           $result = $DB->query("SELECT id, name FROM glpi_plugin_glpi2mdt_task_sequences 
                                                   WHERE is_deleted=false AND hide=false AND enable=true");
@@ -222,7 +227,9 @@ class PluginGlpi2mdtComputer extends CommonGLPI
                     </tr>
                     <tr class="tab_bg_1">
                         <?php
-                          echo '<td>'."Application".': &nbsp;&nbsp;&nbsp;</td>';
+                          echo '<td>';
+                          echo _e('Application', 'glpi2mdt');
+                          echo ': &nbsp;&nbsp;&nbsp;</td>';
                           echo "<td>";
                           $result = $DB->query("SELECT guid, shortname FROM glpi_plugin_glpi2mdt_applications 
                                                   WHERE is_deleted=false AND hide=false AND enable=true");
@@ -238,7 +245,7 @@ class PluginGlpi2mdtComputer extends CommonGLPI
                         <td>
                             Roles: &nbsp;&nbsp;&nbsp;
                         </td><td>
-                            <input type="text" name="roles"  <?php echo 'value="'.$roles.'"' ?> size="40" class="ui-autocomplete-input" autocomplete="off"> &nbsp;&nbsp;&nbsp;
+                            <input type="text" name="<?php _e('roles', 'glpi2mdt') ?>"  <?php echo 'value="'.$roles.'"' ?> size="40" class="ui-autocomplete-input" autocomplete="off"> &nbsp;&nbsp;&nbsp;
                         </td>
                     </tr>
                     <tr class="tab_bg_1">
@@ -253,6 +260,6 @@ class PluginGlpi2mdtComputer extends CommonGLPI
             <?php
               return true;
 }
-
 }
+
 

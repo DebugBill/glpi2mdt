@@ -44,7 +44,7 @@ msgstr "Port du serveur de base de données (optionnel)"
 
 #: inc/config.class.php:145
 msgid "Login"
-msgstr "Utilisateur"
+msgstr "Identifiant"
 
 #: inc/config.class.php:153
 msgid "Password"
@@ -96,7 +96,7 @@ msgstr "Maître-Maître"
 
 #: inc/config.class.php:211
 msgid "Save"
-msgstr "Sauver"
+msgstr "Enregistrer"
 
 #: inc/config.class.php:216
 msgid "Test connection"
@@ -116,7 +116,7 @@ msgstr "Sélection du schéma réussie!"
 
 #: inc/config.class.php:251
 msgid "Schema selection KO!"
-msgstr "Sélection du schéma échouée"
+msgstr "Echec de sélection du schéma!"
 
 #: inc/config.class.php:254
 msgid "Database login KO!"

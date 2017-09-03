@@ -38,67 +38,40 @@ if (!defined('GLPI_ROOT')) {
 class PluginGlpi2mdtConfig extends CommonDBTM {
 
    // Post parameters valid for configuration form and their expected content
-   static $validkeys=array(
+   private $validkeys=array(
                  'DBServer' => 'txt',
                  'DBLogin' => 'txt',
                  'DBPassword' => 'txt',
                  'DBSchema' => 'txt',
                  'DBPort' => 'num',
                  'Mode' => 'txt',
-                 'Fileshare' => 'txt',
+                 'FileShare' => 'txt',
                  'LocalAdmin' => 'txt',
                  'Complexity' => 'txt'
                 );
-   static $globalconfig;
+   public $globalconfig;
 
    // Load plugin settings
    function loadConf() {
       global $DB;
-      global $dbserver;
-      global $dbport;
-      global $dblogin;
-      global $dbpassword;
-      global $dbschema;
-      global $mode;
-      global $fileshare;
+      $validkeys = $this->validkeys;
 
-      $dbserver='';
-      $dbport=3306;
-      $dblogin='';
-      $dbpassowrd='';
-      $dbschema='';
+      $dbport=1433;
       $mode='Strict';
 
       $query = "SELECT `parameter`, `value_char`, `value_num`
                 FROM `glpi_plugin_glpi2mdt_parameters`
-                WHERE `is_deleted` = 0 AND `scope`= 'global'";
+                WHERE `is_deleted` = false AND `scope`= 'global'";
       $result=$DB->query($query) or die("Error loading parameters from GLPI database ". $DB->error());
 
-      while ($data=$DB->fetch_array($result)) {
-         $key = $data['parameter'];
-         $valchar = $data['value_char'];
-         $valnum = $data['value_num'];
-         if isset($validkeys[$parameter]) {
-            if ($validkeys[$parameter] == 'txt') {
-               $globalconfig[$parameter] = $valuechar;
+      while ($data = $DB->fetch_array($result)) {
+         if (isset($validkeys[$data['parameter']])) {
+            if ($validkeys[$data['parameter']] == 'txt') {
+               $this->globalconfig[$data['parameter']] = $data['value_char'];
             } else {
-               $globalconfig[$parameter] = $valuenum;
+               $this->globalconfig[$data['parameter']] = $data['value_num'];
             }
          }
-         if ($data['parameter'] == 'DBServer') {
-            $dbserver=$data['value_char']; }
-         if ($data['parameter'] == 'DBPort') {
-            $dbport=$data['value_num']; }
-         if ($data['parameter'] == 'DBLogin') {
-            $dblogin=$data['value_char']; }
-         if ($data['parameter'] == 'DBPassword') {
-            $dbpassword=$data['value_char']; }
-         if ($data['parameter'] == 'DBSchema') {
-            $dbschema=$data['value_char']; }
-         if ($data['parameter'] == 'Mode') {
-            $mode=$data['value_char']; }
-         if ($data['parameter'] == 'Fileshare') {
-            $fileshare=$data['value_char']; }
       }
    }
 
@@ -106,16 +79,16 @@ class PluginGlpi2mdtConfig extends CommonDBTM {
    function updateValue($key, $value) {
       // Store configuration parameters
       global $DB;
-
+      $validkeys = $this->validkeys;
       if ($validkeys[$key] == 'txt') {
-         $query = "INSERT INTO `glpi_plugin_glpi2mdt_parameters`
+         $query = "INSERT INTO glpi_plugin_glpi2mdt_parameters
                           (`parameter`, `scope`, `value_char`, `is_deleted`)
                           VALUES ('$key', 'global', '$value', false)
                    ON DUPLICATE KEY UPDATE value_char='$value', value_num=NULL, is_deleted=false";
          $DB->query($query) or die("Database error: ". $DB->error());
       }
       if ($validkeys[$key] == 'num' and $value > 0) {
-         $query = "INSERT INTO `glpi_plugin_glpi2mdt_parameters`
+         $query = "INSERT INTO glpi_plugin_glpi2mdt_parameters
                           (`parameter`, `scope`, `value_num`, `is_deleted`)
                           VALUES ('$key', 'global', '$value', false)
                    ON DUPLICATE KEY UPDATE value_num='$value', value_char=NULL, is_deleted=false";
@@ -124,14 +97,14 @@ class PluginGlpi2mdtConfig extends CommonDBTM {
    }
 
    function show() {
-      global $DB;i
-      $dbserver = $globalconfig['DBServer'];;
+      global $DB;
+      $globalconfig = $this->globalconfig;
+      $dbserver = $globalconfig['DBServer'];
       $dbport = $globalconfig['DBPort'];
       $dblogin = $globalconfig['DBLogin'];
       $dbpassword= $globalconfig['DBPassword'];
-      $dbschema = $config['DBSchema'];
-      $mode = $globalconfig['Mode'];
-      $fileshare = $globalconfig['FileShare'];
+      $dbschema = $globalconfig['DBSchema'];
+      $localadmin = $globalconfig['LocalAdmin'];
 
          ?>
            <form action="../front/config.form.php" method="post">
@@ -140,7 +113,7 @@ class PluginGlpi2mdtConfig extends CommonDBTM {
                 <table class="tab_cadre_fixe">
                     <tr class="tab_bg_1">
                         <td>
-                              <?php echo _('Database server name'); ?> : &nbsp;&nbsp;&nbsp;
+                              <?php echo _e('Database server name', 'glpi2mdt'); ?> : &nbsp;&nbsp;&nbsp;
                         </td><td>
                               <?php echo '<input type="text" name="DBServer" value="'.$dbserver.'" size="50" class="ui-autocomplete-input" 
                                            autocomplete="off" required pattern="[a-Z0-9.]"> &nbsp;&nbsp;&nbsp;' ?>
@@ -148,7 +121,7 @@ class PluginGlpi2mdtConfig extends CommonDBTM {
                     </tr>
                     <tr class="tab_bg_1">
                         <td>
-                              <?php echo _('Database server port (optionnal)'); ?> : &nbsp;&nbsp;&nbsp;
+                              <?php echo _e('Database server port (optionnal)', 'glpi2mdt'); ?> : &nbsp;&nbsp;&nbsp;
                         </td><td>
                               <?php echo '<input type="text" name="DBPort" value="'.$dbport.'" size="50" class="ui-autocomplete-input" 
                                            autocomplete="off" inputmode="numeric"> &nbsp;&nbsp;&nbsp;' ?>
@@ -156,7 +129,7 @@ class PluginGlpi2mdtConfig extends CommonDBTM {
                     </tr>
                     <tr class="tab_bg_1">
                         <td>
-                              <?php echo _('Login'); ?> : &nbsp;&nbsp;&nbsp;
+                              <?php echo _e('Login', 'glpi2mdt'); ?> : &nbsp;&nbsp;&nbsp;
                         </td><td>
                               <?php echo '<input type="text" name="DBLogin" value="'.$dblogin.'" size="50" class="ui-autocomplete-input" 
                                            autocomplete="off" required pattern="[a-Z0-9]"> &nbsp;&nbsp;&nbsp;' ?>
@@ -164,7 +137,7 @@ class PluginGlpi2mdtConfig extends CommonDBTM {
                     </tr>
                     <tr class="tab_bg_1">
                         <td>
-                              <?php echo _('Password'); ?> : &nbsp;&nbsp;&nbsp;
+                              <?php echo _e('Password', 'glpi2mdt'); ?> : &nbsp;&nbsp;&nbsp;
                         </td><td>
                               <?php echo '<input type="password" name="DBPassword" value="'.$dbpassword.'" size="50" class="ui-autocomplete-input" 
                                            autocomplete="off" required> &nbsp;&nbsp;&nbsp;' ?>
@@ -172,7 +145,7 @@ class PluginGlpi2mdtConfig extends CommonDBTM {
                     </tr>
                     <tr class="tab_bg_1">
                         <td>
-                              <?php echo _('Schema'); ?> : &nbsp;&nbsp;&nbsp;
+                              <?php echo _e('Schema', 'glpi2mdt'); ?> : &nbsp;&nbsp;&nbsp;
                         </td><td>
                               <?php echo '<input type="text" name="DBSchema" value="'.$dbschema.'" size="50" class="ui-autocomplete-input" 
                                            autocomplete="off" required pattern="[a-Z0-9]"> &nbsp;&nbsp;&nbsp;' ?>
@@ -180,56 +153,59 @@ class PluginGlpi2mdtConfig extends CommonDBTM {
                     </tr>
                     <tr class="tab_bg_1">
                         <td>
-                              <?php echo _('Local path to deployment share control directory'); ?> : &nbsp;&nbsp;&nbsp;
+                              <?php echo _e('Local path to deployment share control directory', 'glpi2mdt'); ?> : &nbsp;&nbsp;&nbsp;
                         </td><td>
-                              <?php echo '<input type="text" name="Fileshare" value="'.$fileshare.'" size="50" class="ui-autocomplete-input" 
-                                          autocomplete="off" required pattern="[a-Z0-9./\\$]"> &nbsp;&nbsp;&nbsp;' ?>
+                              <?php echo '<input type="text" name="FileShare" value="'.$this->globalconfig['FileShare'].'" size="50" class="ui-autocomplete-input" 
+                                          autocomplete="off" required > &nbsp;&nbsp;&nbsp;' ?>
                         </td>
                     </tr>
                     <tr class="tab_bg_1">
                         <td>
-                              <?php echo _('Local admin password'); ?> : &nbsp;&nbsp;&nbsp;
+                              <?php echo _e('Local admin password', 'glpi2mdt'); ?> : &nbsp;&nbsp;&nbsp;
                         </td><td>
                               <?php echo '<input type="text" name="LocalAdmin" value="'.$localadmin.'" size="50" class="ui-autocomplete-input" 
                                           autocomplete="off" required> &nbsp;&nbsp;&nbsp;' ?>
                         </td>
                     </tr>
                     <tr class="tab_bg_1">
+                          <td>
                         <?php
-                          echo "<td>"._('Local admin password complexity')." :</td>";
-                          echo "<td>";
+                          echo _e('Local admin password complexity', 'glpi2mdt');
+                          echo "</td><td>";
+                          $complexity = $this->globalconfig['Complexity'];
                           Dropdown::showFromArray("Complexity", array(
-                             'Basic' => _("Same password on all machines"),
-                             'Trivial' => _("Password is hostname"),
-                             'Unique' => _("append '-%hostname%' to password"),
-                             'value' => "$Complexity")
+                             'Basic' => __('Same password on all machines', 'glpi2mdt'),
+                             'Trivial' => __('Password is hostname', 'glpi2mdt'),
+                             'Unique' => __('append \'-%hostname%\' to password', 'glpi2mdt')), array(
+                             'value' => "$complexity")
                           );
                           echo "</td>";
                            ?>
                           </tr>                    
                     <tr class="tab_bg_1">
-                        <?php
-                          echo "<td>"._('Link mode')." :</td>";
-                          echo "<td>";
+                          <td>
+                         <?php
+                          echo _e('Link mode', 'glpi2mdt');
+                          echo "</td><td>";
+                          $value = $this->globalconfig['Mode'];
                           Dropdown::showFromArray("Mode", array(
-                             'Strict' => _("Strict Master-Slave"),
-                             'Loose' => _("Loose Master-Slave"),
-                             'Master' => _("Master-Master")), array(
-                             'value' => "$Mode")
-                          );
+                             'Strict' => __('Strict Master-Slave', 'glpi2mdt'),
+                             'Loose' => __('Loose Master-Slave', 'glpi2mdt'),
+                             'Master' => __('Master-Master', 'glpi2mdt')), array(
+                             'value' => "$mode")); 
                           echo "</td>";
                            ?>
                           </tr>
                           <tr class="tab_bg_1">
                            <td>
-                            <input type="submit" class="submit" value=<<?php _("Save") ?> name="SAVE"/>
+                            <input type="submit" class="submit" value="<?php _e("Save", 'glpi2mdt') ?>" name="SAVE"/>
                            </td>
                           </tr>
                           <tr class="tab_bg_1">
                            <td>
-                            <input type="submit" class="submit" value=<<?php _("Test connection") ?> name="TEST"/>
+                            <input type="submit" class="submit" value=" <?php _e("Test connection", 'glpi2mdt') ?>" name="TEST"/>
                            </td><td>
-                            <input type="submit" class="submit" value=<<?php _("Initialise data") ?> name="INIT"/>
+                            <input type="submit" class="submit" value=" <?php _e("Initialise data", 'glpi2mdt') ?>" name="INIT"/>
                            </td>
                           </tr>
                       </table>
@@ -241,31 +217,34 @@ class PluginGlpi2mdtConfig extends CommonDBTM {
 
    // Test connection
    function showTestConnection() {
-      $dbserver = $globalconfig['DBServer'];;
-      $dbport = $globalconfig['DBPort'];
-      $dblogin = $globalconfig['DBLogin'];
-      $dbpassword= $globalconfig['DBPassword'];
-      $dbschema= $config['DBSchema'];
       ?>
       <table class="tab_cadre_fixe">
       <tr class="tab_bg_1">
          <td>
             <?php
             // Connection to MSSQL
-            $link = mssql_connect($dbserver, $dblogin, $dbpassword);
+            $link = mssql_connect($this->globalconfig['DBServer'], $this->globalconfig['DBLogin'], $this->globalconfig['DBPassword']);
             if ($link) {
-               echo "<h1><font color='green'> "._("Database login OK!")."</font></h1><br>";
+               echo "<h1><font color='green'>";
+               echo _e("Database login OK!", 'glpi2mdt');
+               echo "</font></h1><br>";
                // Simple query to get database version
                $version = mssql_query('SELECT @@VERSION');
                $row = mssql_fetch_array($version);
                echo "Server is: <br>".$row[0]."<br>";
-               if (mssql_select_db($dbschema, $link)) {
-                  echo "<h1><font color='green'>"._("Schema selection OK!")."</font></h1><br>";
+               if (mssql_select_db($this->globalconfig['DBSchema'], $link)) {
+                  echo "<h1><font color='green'>";
+                  echo _e("Schema selection OK!", 'glpi2mdt');
+                  echo "</font></h1><br>";
                } else {
-                  echo "<h1><font color='red'>"._("Schema selection KO!")."</font></h1><br>";
+                  echo "<h1><font color='red'>";
+                  echo _e("Schema selection KO!", 'glpi2mdt');
+                  echo "</font></h1><br>";
                }
             } else {
-               echo "<h1><font color='red'>"._("Database login KO!")."</font></h1><br>";
+               echo "<h1><font color='red'>";
+               echo _e("Database login KO!", 'glpi2mdt');
+               echo "</font></h1><br>";
             }
 
             // Cleaning
@@ -282,18 +261,12 @@ class PluginGlpi2mdtConfig extends CommonDBTM {
    // Initialise data, load local tables from MDT MSSQL server
    function showInitialise() {
       global $DB;
-      global $dbserver;
-      global $dbport;
-      global $dblogin;
-      global $dbpassword;
-      global $dbschema;
-      global $fileshare;
 
       echo '<table class="tab_cadre_fixe">';
       // Connexion à MSSQL
-      $link = mssql_connect($dbserver, $dblogin, $dbpassword);
+       $link = mssql_connect($this->globalconfig['DBServer'], $this->globalconfig['DBLogin'], $this->globalconfig['DBPassword']);
 
-      if (!$link || !mssql_select_db($dbschema, $link)) {
+      if (!$link || !mssql_select_db($this->globalconfig['DBSchema'], $link)) {
           die('Cannot connect to MDT MSSQL database!');
       }
 
@@ -319,13 +292,13 @@ class PluginGlpi2mdtConfig extends CommonDBTM {
                   ON DUPLICATE KEY UPDATE category_order=$category_order, category='$category', description='$description', is_deleted=false, is_in_sync=true";
          $DB->query($query) or die("Error loading MDT descriptions to GLPI database. ". $DB->error());
       }
-      echo "<tr class='tab_bg_1'><td>$nb "."lines loaded into table 'descriptions'.".'</td>';
+      echo "<tr class='tab_bg_1'><td>$nb ".__("lines loaded into table", 'glpi2mdt')."'descriptions'.".'</td>';
       $result = $DB->query("SELECT count(*) as nb FROM `glpi_plugin_glpi2mdt_descriptions` WHERE `is_in_sync`=false");
       $row = $DB->fetch_array($result);
       $nb = $row['nb'];
       $DB->query("UPDATE glpi_plugin_glpi2mdt_descriptions SET is_in_sync=true, is_deleted=true 
                       WHERE is_in_sync=false AND is_deleted=false");
-      echo "<td>$nb "."lines deleted from table 'descriptions'.".'</td></tr>';
+      echo "<td>$nb ".__("lines deleted from table", 'glpi2mdt')." 'descriptions'.".'</td></tr>';
 
       //
       // Load available roles from MDT
@@ -352,7 +325,7 @@ class PluginGlpi2mdtConfig extends CommonDBTM {
       $result = mssql_query('SELECT  count(*) as nb FROM dbo.RoleIdentity');
       $row = mssql_fetch_array($result);
       $nb = $row['nb'];
-      echo "<tr class='tab_bg_1'><td>$nb "."lines loaded into table 'roles'.".'</td></tr>';
+      echo "<tr class='tab_bg_1'><td>$nb ".__("lines loaded into table", 'glpi2mdt')." 'roles'.".'</td></tr>';
 
       // Cleaning
       mssql_free_result($result);
@@ -364,8 +337,8 @@ class PluginGlpi2mdtConfig extends CommonDBTM {
       // Applications
       // Mark lines in order to detect deleted ones in the source database
       $DB->query("UPDATE glpi_plugin_glpi2mdt_applications SET is_in_sync=false WHERE is_deleted=false");
-      $applications = simplexml_load_file($fileshare.'/Applications.xml')
-              or die("Cannot load file $fileshare/Applications.xml");
+      $applications = simplexml_load_file($this->globalconfig['FileShare'].'/Applications.xml')
+              or die("Cannot load file $this->globalconfig['FileShare']/Applications.xml");
       $nb = 0;
       foreach ($applications->application as $application) {
          $name = $application->Name;
@@ -389,21 +362,21 @@ class PluginGlpi2mdtConfig extends CommonDBTM {
                $DB->query($query) or die("Error loading MDT applications to GLPI database. ". $DB->error());
                $nb += 1;
       }
-      echo "<tr class='tab_bg_1'><td>$nb "._("lines loaded into table")." 'applications'.</td>";
+      echo "<tr class='tab_bg_1'><td>$nb ".__("lines loaded into table", 'glpi2mdt')." 'applications'.</td>";
       // Mark lines which are not in MDT anymore as deleted
       $result = $DB->query("SELECT count(*) as nb FROM glpi_plugin_glpi2mdt_applications WHERE `is_in_sync`=false");
       $row = $DB->fetch_array($result);
       $nb = $row['nb'];
       $DB->query("UPDATE glpi_plugin_glpi2mdt_applications SET is_in_sync=true, is_deleted=true 
                       WHERE is_in_sync=false AND is_deleted=false");
-      echo "<td>$nb "._("lines deleted from table")."'applications' </td><tr>";
+      echo "<td>$nb ".__("lines deleted from table", 'glpi2mdt')."'applications' </td><tr>";
 
       // Application groups
       // Mark lines in order to detect deleted ones in the source database
       $DB->query("UPDATE glpi_plugin_glpi2mdt_application_groups SET is_in_sync=false WHERE is_deleted=false");
       $DB->query("UPDATE glpi_plugin_glpi2mdt_application_group_link SET is_in_sync=false WHERE is_deleted=false");
-      $groups = simplexml_load_file($fileshare.'/ApplicationGroups.xml')
-              or die("Cannot load file $fileshare/ApplicationGroups.xml");
+      $groups = simplexml_load_file($this->globalconfig['FileShare'].'/ApplicationGroups.xml')
+              or die("Cannot load file $this->globalconfig['FileShare']/ApplicationGroups.xml");
       $nb = 0;
       foreach ($groups->group as $group) {
          $name = $group->Name;
@@ -431,7 +404,7 @@ class PluginGlpi2mdtConfig extends CommonDBTM {
                   $DB->query($query) or die("Error loading MDT application-group links to GLPI database. ". $DB->error());
                }
       }
-      echo "<tr class='tab_bg_1'><td>$nb "._("lines loaded into table")." 'application groups'.</td>";
+      echo "<tr class='tab_bg_1'><td>$nb ".__("lines loaded into table", 'glpi2mdt')." 'application groups'.</td>";
       // Mark lines which are not in MDT anymore as deleted
       $result = $DB->query("SELECT count(*) as nb FROM glpi_plugin_glpi2mdt_application_groups WHERE `is_in_sync`=false");
       $row = $DB->fetch_array($result);
@@ -440,13 +413,13 @@ class PluginGlpi2mdtConfig extends CommonDBTM {
                       WHERE is_in_sync=false AND is_deleted=false");
       $DB->query("DELETE FROM glpi_plugin_glpi2mdt_application_group_links 
                       WHERE is_in_sync=false AND is_deleted=false");
-      echo "<td>$nb "._("lines deleted from table")." 'application_group_links'.</td></tr>";
+      echo "<td>$nb ".__("lines deleted from table", 'glpi2mdt')." 'application_group_links'.</td></tr>";
 
       // Task sequences
       // Mark lines in order to detect deleted ones in the source database
       $DB->query("UPDATE glpi_plugin_glpi2mdt_task_sequences SET is_in_sync=false WHERE is_deleted=false");
-      $tss = simplexml_load_file($fileshare.'/TaskSequences.xml')
-              or die("Cannot load file $fileshare/TaskSequences.xml");
+      $tss = simplexml_load_file($this->globalconfig['FileShare'].'/TaskSequences.xml')
+              or die("Cannot load file $this->globalconfig['FileShare']/TaskSequences.xml");
       $nb = 0;
       foreach ($tss->ts as $ts) {
          $name = $ts->Name;
@@ -468,21 +441,21 @@ class PluginGlpi2mdtConfig extends CommonDBTM {
                $DB->query($query) or die("Error loading MDT task sequences into GLPI database. ". $DB->error());
                $nb += 1;
       }
-      echo "<tr class='tab_bg_1'><td>$nb "._("lines loaded into table")." 'task_sequences'.</td>";
+      echo "<tr class='tab_bg_1'><td>$nb ".__("lines loaded into table", 'glpi2mdt')." 'task_sequences'.</td>";
       // Mark lines which are not in MDT anymore as deleted
       $result = $DB->query("SELECT count(*) as nb FROM glpi_plugin_glpi2mdt_task_sequences WHERE `is_in_sync`=false");
       $row = $DB->fetch_array($result);
       $nb = $row['nb'];
       $DB->query("UPDATE glpi_plugin_glpi2mdt_task_sequences SET is_in_sync=true, is_deleted=true 
                       WHERE is_in_sync=false AND is_deleted=false");
-      echo "<td>$nb "._("lines deleted from table")." 'task_sequence'.</td></tr>";
+      echo "<td>$nb ".__("lines deleted from table", 'glpi2mdt')." 'task_sequence'.</td></tr>";
 
       // Task sequence groups
       // Mark lines in order to detect deleted ones in the source database
       $DB->query("UPDATE glpi_plugin_glpi2mdt_task_sequence_groups SET is_in_sync=false WHERE is_deleted=false");
       $DB->query("UPDATE glpi_plugin_glpi2mdt_task_sequence_group_link SET is_in_sync=false WHERE is_deleted=false");
-      $groups = simplexml_load_file($fileshare.'/TaskSequenceGroups.xml')
-              or die("Cannot load file $fileshare/TaskSequenceGroups.xml");
+      $groups = simplexml_load_file($this->globalconfig['FileShare'].'/TaskSequenceGroups.xml')
+              or die("Cannot load file $this->globalconfig['FileShare']/TaskSequenceGroups.xml");
       $nb = 0;
       foreach ($groups->group as $group) {
          $name = $group->Name;
@@ -510,7 +483,7 @@ class PluginGlpi2mdtConfig extends CommonDBTM {
                   $DB->query($query) or die("Error loading MDT sequence-group links to GLPI database. ". $DB->error());
                }
       }
-      echo "<tr class='tab_bg_1'><td>$nb "._("lines loaded into table")." 'task sequence groups'.</td>";
+      echo "<tr class='tab_bg_1'><td>$nb ".__("lines loaded into table", 'glpi2mdt')." 'task sequence groups'.</td>";
       // Mark lines which are not in MDT anymore as deleted
       $result = $DB->query("SELECT count(*) as nb FROM glpi_plugin_glpi2mdt_task_sequence_groups WHERE `is_in_sync`=false");
       $row = $DB->fetch_array($result);
@@ -519,7 +492,7 @@ class PluginGlpi2mdtConfig extends CommonDBTM {
                       WHERE is_in_sync=false AND is_deleted=false");
       $DB->query("DELETE FROM glpi_plugin_glpi2mdt_task_sequence_group_links 
                       WHERE is_in_sync=false AND is_deleted=false");
-      echo "<td>$nb "._("lines deleted from table")." 'task_sequence_group_links'.</td></tr></table>";
+      echo "<td>$nb ".__("lines deleted from table", 'glpi2mdt')." 'task_sequence_group_links'.</td></tr></table>";
    }
 
 }
