@@ -17,10 +17,6 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: front/computer.form.php:36 front/config.form.php:36
-msgid "Features"
-msgstr ""
-
 #: setup.php:99 setup.php:104
 msgid "Incompatible PHP Installation. Requires module"
 msgstr ""
@@ -29,104 +25,128 @@ msgstr ""
 msgid "Installed / not configured"
 msgstr ""
 
-#: inc/computer.class.php:193
-msgid "Enable automatic installation"
-msgstr ""
-
-#: inc/config.class.php:129
+#: inc/config.class.php:116
 msgid "Database server name"
 msgstr ""
 
-#: inc/config.class.php:137
+#: inc/config.class.php:124
 msgid "Database server port (optionnal)"
 msgstr ""
 
-#: inc/config.class.php:145
+#: inc/config.class.php:132
 msgid "Login"
 msgstr ""
 
-#: inc/config.class.php:153
+#: inc/config.class.php:140
 msgid "Password"
 msgstr ""
 
-#: inc/config.class.php:161
+#: inc/config.class.php:148
 msgid "Schema"
 msgstr ""
 
-#: inc/config.class.php:169
+#: inc/config.class.php:156
 msgid "Local path to deployment share control directory"
 msgstr ""
 
-#: inc/config.class.php:177
+#: inc/config.class.php:164
 msgid "Local admin password"
 msgstr ""
 
-#: inc/config.class.php:185
+#: inc/config.class.php:173
 msgid "Local admin password complexity"
 msgstr ""
 
-#: inc/config.class.php:188
+#: inc/config.class.php:177
 msgid "Same password on all machines"
 msgstr ""
 
-#: inc/config.class.php:189
+#: inc/config.class.php:178
 msgid "Password is hostname"
 msgstr ""
 
-#: inc/config.class.php:190
+#: inc/config.class.php:179
 msgid "append '-%hostname%' to password"
 msgstr ""
 
-#: inc/config.class.php:198
+#: inc/config.class.php:188
 msgid "Link mode"
 msgstr ""
 
-#: inc/config.class.php:201
+#: inc/config.class.php:192
 msgid "Strict Master-Slave"
 msgstr ""
 
-#: inc/config.class.php:202
+#: inc/config.class.php:193
 msgid "Loose Master-Slave"
 msgstr ""
 
-#: inc/config.class.php:203
+#: inc/config.class.php:194
 msgid "Master-Master"
 msgstr ""
 
-#: inc/config.class.php:211
+#: inc/config.class.php:201
 msgid "Save"
 msgstr ""
 
-#: inc/config.class.php:216
+#: inc/config.class.php:206
 msgid "Test connection"
 msgstr ""
 
-#: inc/config.class.php:218
+#: inc/config.class.php:208
 msgid "Initialise data"
 msgstr ""
 
-#: inc/config.class.php:243
+#: inc/config.class.php:229
 msgid "Database login OK!"
 msgstr ""
 
-#: inc/config.class.php:249
+#: inc/config.class.php:237
 msgid "Schema selection OK!"
 msgstr ""
 
-#: inc/config.class.php:251
+#: inc/config.class.php:241
 msgid "Schema selection KO!"
 msgstr ""
 
-#: inc/config.class.php:254
+#: inc/config.class.php:246
 msgid "Database login KO!"
 msgstr ""
 
-#: inc/config.class.php:371 inc/config.class.php:407 inc/config.class.php:438
-#: inc/config.class.php:474
+#: inc/config.class.php:295 inc/config.class.php:328 inc/config.class.php:365
+#: inc/config.class.php:407 inc/config.class.php:444 inc/config.class.php:486
 msgid "lines loaded into table"
 msgstr ""
 
-#: inc/config.class.php:378 inc/config.class.php:416 inc/config.class.php:445
-#: inc/config.class.php:483
+#: inc/config.class.php:301 inc/config.class.php:372 inc/config.class.php:416
+#: inc/config.class.php:451 inc/config.class.php:495
 msgid "lines deleted from table"
+msgstr ""
+
+#: inc/computer.class.php:200
+msgid "Enable automatic installation"
+msgstr ""
+
+#: inc/computer.class.php:202
+msgid "YES"
+msgstr ""
+
+#: inc/computer.class.php:203
+msgid "NO"
+msgstr ""
+
+#: inc/computer.class.php:215
+msgid "Task sequence"
+msgstr ""
+
+#: inc/computer.class.php:231
+msgid "Application"
+msgstr ""
+
+#: inc/computer.class.php:248
+msgid "roles"
+msgstr ""
+
+#: front/computer.form.php:36
+msgid "Features"
 msgstr ""
