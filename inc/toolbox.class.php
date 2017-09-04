@@ -51,8 +51,9 @@ class PluginGlpi2mdtToolbox {
     *
     * @return string explaining the result
    **/
-   static function checkNewVersionAvailable($cron=true, $messageafterredirect=false) {
+   static function cronCheckUpdate($cron=true, $messageafterredirect=false) {
       global $DB;
+      $currentversion = PLUGIN_GLPI2MDT_VERSION;
 
       //      if (!$auto
       //          && !Session::haveRight('backup', Backup::CHECKUPDATE)) {
@@ -84,22 +85,31 @@ class PluginGlpi2mdtToolbox {
             return $error;
          }
       } else {
+         $gets = "?PHP=".phpversion()."&G2M=$currentversion";
          // Are we allowed to report usage data?
-         $DB->query("SELECT value_num FROM glpi_plugin_glpi2mdt_parameters 
-                     WHERE is_deleted=false AND scope='global' AND parameter='ReportUsage' AND value_CHAR='YES'");
-         if ($DB->numrows($result) == 1) {
-            Toolbox::getURLContent("http://glpi2mdt.thauvin.org/report.php?version=PLUGIN_GLPI2MDT_VERSION");
+         $query = "SELECT value_char FROM glpi_plugin_glpi2mdt_parameters
+                     WHERE is_deleted=false AND scope='global' AND parameter='ReportUsage'";
+         if ($DB->fetch_assoc($DB->query($query))['value_char'] == 'YES') {
+            $AP = $DB->fetch_row($DB->query("SELECT count(*) FROM glpi_plugin_glpi2mdt_applications WHERE is_deleted=false"))[0];
+            $AG = $DB->fetch_row($DB->query("SELECT count(*) FROM glpi_plugin_glpi2mdt_application_groups WHERE is_deleted=false"))[0];
+            $TS = $DB->fetch_row($DB->query("SELECT count(*) FROM glpi_plugin_glpi2mdt_task_sequences WHERE is_deleted=false"))[0];
+            $TG = $DB->fetch_row($DB->query("SELECT count(*) FROM glpi_plugin_glpi2mdt_task_sequence_groups WHERE is_deleted=false"))[0];
+            $RO = $DB->fetch_row($DB->query("SELECT count(*) FROM glpi_plugin_glpi2mdt_roles WHERE is_deleted=false"))[0];
+            $MO = 0; //$DB->fetch_row($DB->query("SELECT count(*) FROM glpi_plugin_glpi2mdt_models WHERE is_deleted=false"))[0];
+            $PK = 0; //$DB->fetch_row($DB->query("SELECT count(*) FROM glpi_plugin_glpi2mdt_packages WHERE is_deleted=false"))[0];
+            $ST = $DB->fetch_row($DB->query("SELECT count(*) FROM glpi_plugin_glpi2mdt_settings"))[0];
+            $gets = $get."&AP=$AP&AG=$AG&TS=$TS&TG=$TG&RO=$RO&MO=$MO&PK=$PK&ST=$ST";
          }
-         $newversion = sprintf(__('A new version of plugin glpi2mdt is available: %s.'), $latest_version);
-         $uptodate = sprintf(__('You have the latest available version of glpi2mdti: %s.'), $latest_version);
+         Toolbox::getURLContent("http://glpi2mdt.thauvin.org/report.php".$gets);
+         $newversion = sprintf(__('A new version of plugin glpi2mdt is available: v%s'), $latest_version);
+         $uptodate = sprintf(__('You have the latest available version of glpi2mdti: v%s'), $latest_version);
          $repository = __('You will find it on GitHub.com.');
-
          $query = "INSERT INTO glpi_plugin_glpi2mdt_parameters
                           (`parameter`, `scope`, `value_char`, `is_deleted`)
                           VALUES ('LatestVersion', 'global', '$latest_version', false)
-                   ON DUPLICATE KEY UPDATE value_char='$latst_version', value_num=NULL, is_deleted=false";
+                   ON DUPLICATE KEY UPDATE value_char='$latest_version', value_num=NULL, is_deleted=false";
          $DB->query($query) or die("Database error: ". $DB->error());
-         if (version_compare(PLUGIN_GLPI2MDT_VERSION, $latest_version, '<')) {
+         if (version_compare($currentversion, $latest_version, '<')) {
 
             if (!$auto) {
                if ($messageafterredirect) {
@@ -138,4 +148,13 @@ class PluginGlpi2mdtToolbox {
       return 1;
    }
 
+   /**
+    * Get name of this type by language of the user connected
+    *
+    * @param integer $nb number of elements
+    * @return string name of this type
+    */
+   static function getTypeName($nb=0) {
+      return __('Check for glpi2mdt plugin updates', 'glpi2mdt');
+   }
 }

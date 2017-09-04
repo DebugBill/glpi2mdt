@@ -64,7 +64,7 @@ if (isset($_POST['INIT'])) {
 
 // Check for new version of the plugin
 if (isset($_POST['UPDATE'])) {
-   PluginGlpi2mdtToolbox::checkNewVersionAvailable(false, false);
+   PluginGlpi2mdtToolbox::cronCheckUpdate(false, true);
 }
 Html::footer();
 

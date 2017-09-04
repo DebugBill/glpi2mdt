@@ -27,7 +27,7 @@
  */
 
 /**
- * Plugin install process
+ * Plugin install process, create databases and crontasks
  *
  * @return boolean
  */
@@ -65,7 +65,7 @@ function plugin_glpi2mdt_install() {
                    `value` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
                    `is_in_sync` boolean NOT NULL DEFAULT true,
                 PRIMARY KEY (`id`, `type`, `key`),
-                INDEX `is_in_sync`(`is_in_sync`( ASC)
+                INDEX `is_in_sync`(`is_in_sync` ASC)
                 ) ENGINE=MyISAM AUTO_INCREMENT=34 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
 
        $DB->query($query) or die("error creating glpi_plugin_glpi2mdt_settings ". $DB->error());
@@ -80,7 +80,7 @@ function plugin_glpi2mdt_install() {
                   `is_in_sync` boolean NOT NULL default false,
                 PRIMARY KEY (`id`),
                 INDEX `is_deleted` (`is_deleted` ASC),
-                INDEX `is_in_sync`(`is_in_sync`( ASC)
+                INDEX `is_in_sync`(`is_in_sync` ASC)
                 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
 
       $DB->query($query) or die("error creating glpi_plugin_glpi2mdt_roles ". $DB->error());
@@ -99,7 +99,7 @@ function plugin_glpi2mdt_install() {
                    `is_in_sync` boolean NOT NULL DEFAULT true,  
                 PRIMARY KEY (`guid`),
                 INDEX `is_deleted` (`is_deleted` ASC),
-                INDEX `is_in_sync`(`is_in_sync`( ASC)
+                INDEX `is_in_sync`(`is_in_sync` ASC)
                 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
 
       $DB->query($query) or die("error creating glpi_plugin_glpi2mdt_applications ". $DB->error());
@@ -115,7 +115,7 @@ function plugin_glpi2mdt_install() {
                    `is_in_sync` boolean NOT NULL DEFAULT true,  
                 PRIMARY KEY (`guid`),
                 INDEX `is_deleted` (`is_deleted` ASC),
-                INDEX `is_in_sync`(`is_in_sync`( ASC)
+                INDEX `is_in_sync`(`is_in_sync` ASC)
                 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
 
       $DB->query($query) or die("error creating glpi_plugin_glpi2mdt_application_groups ". $DB->error());
@@ -129,7 +129,7 @@ function plugin_glpi2mdt_install() {
                    `is_in_sync` boolean NOT NULL DEFAULT true,  
                 PRIMARY KEY (`group_guid`, `application_guid`),
                 INDEX `is_deleted` (`is_deleted` ASC),
-                INDEX `is_in_sync`(`is_in_sync`( ASC)
+                INDEX `is_in_sync`(`is_in_sync` ASC)
                 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
 
       $DB->query($query) or die("error creating glpi_plugin_glpi2mdt_application_group_links ". $DB->error());
@@ -147,7 +147,7 @@ function plugin_glpi2mdt_install() {
                    `is_in_sync` boolean NOT NULL DEFAULT true,  
                 PRIMARY KEY (`id`),
                 INDEX `is_deleted` (`is_deleted` ASC),
-                INDEX `is_in_sync`(`is_in_sync`( ASC)
+                INDEX `is_in_sync`(`is_in_sync` ASC)
                 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
 
       $DB->query($query) or die("error creating glpi_plugin_glpi2mdt_task_sequences ". $DB->error());
@@ -163,7 +163,7 @@ function plugin_glpi2mdt_install() {
                    `is_in_sync` boolean NOT NULL DEFAULT true,  
                 PRIMARY KEY (`guid`),
                 INDEX `is_deleted` (`is_deleted` ASC),
-                INDEX `is_in_sync`(`is_in_sync`( ASC)
+                INDEX `is_in_sync`(`is_in_sync` ASC)
                 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
 
       $DB->query($query) or die("error creating glpi_plugin_glpi2mdt_task_sequence_groups ". $DB->error());
@@ -177,7 +177,7 @@ function plugin_glpi2mdt_install() {
                    `is_in_sync` boolean NOT NULL DEFAULT '1',  
                 PRIMARY KEY (`group_guid`, `sequence_guid`),
                 INDEX `is_deleted` (`is_deleted` ASC),
-                INDEX `is_in_sync`(`is_in_sync`( ASC)
+                INDEX `is_in_sync`(`is_in_sync` ASC)
                 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
 
       $DB->query($query) or die("error creating glpi_plugin_glpi2mdt_task_sequence_group_links ". $DB->error());
@@ -194,11 +194,17 @@ function plugin_glpi2mdt_install() {
                   `is_in_sync` boolean NOT NULL DEFAULT true,
                 PRIMARY KEY (`column_name`),
                 INDEX `is_deleted` (`is_deleted` ASC),
-                INDEX `is_in_sync`(`is_in_sync`( ASC)
+                INDEX `is_in_sync`(`is_in_sync` ASC)
                 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
 
       $DB->query($query) or die("error creating glpi_plugin_glpi2mdt_descriptions ". $DB->error());
    }
+
+   // Create or update crontasks for Master-Master mode and automatic updates checks
+   CronTask::Register('PluginGlpi2mdtToolbox', 'checkUpdate', (3600 * 24),
+                         array('mode' => 2, 'allowmode' => 3, 'logs_lifetime' => 30,
+                               'comment' => 'Daily task checking for updates'));
+
    return true;
 }
 
@@ -211,8 +217,8 @@ function plugin_glpi2mdt_uninstall() {
    global $DB;
 
    $result = $DB->query("SHOW TABLES LIKE 'glpi_plugin_glpi2mdt_%';");
-   foreach ($rows = $DB->fetch_array($result) as $column=>$table) {
-      $DB->query("DROP TABLE $table");  // or die("error deleting table $table ".$DB->error());
+   while ($row = $DB->fetch_row($result)) {
+      $DB->query("DROP TABLE $row[0]") or die("error deleting table $row[0] ".$DB->error());
    }
    return true;
 }
