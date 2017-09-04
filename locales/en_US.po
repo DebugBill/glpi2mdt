@@ -18,47 +18,43 @@ msgstr ""
 "Language: en_US\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: front/computer.form.php:36 front/config.form.php:36
-msgid "Features"
-msgstr "Features"
+#: inc/toolbox.class.php:158
+msgid "Check for glpi2mdt plugin updates"
+msgstr ""
 
-#: setup.php:99 setup.php:104
-msgid "Incompatible PHP Installation. Requires module"
-msgstr "Incompatible PHP Installation. Requires module"
+#: inc/config.class.php:119 inc/computer.class.php:202
+msgid "YES"
+msgstr "Yes"
 
-#: setup.php:123
-msgid "Installed / not configured"
-msgstr "Installed / not configured"
+#: inc/config.class.php:120 inc/computer.class.php:203
+msgid "NO"
+msgstr "No"
 
-#: inc/computer.class.php:193
-msgid "Enable automatic installation"
-msgstr "Enable automatic installation"
-
-#: inc/config.class.php:129
+#: inc/config.class.php:128
 msgid "Database server name"
 msgstr "Database server name"
 
-#: inc/config.class.php:137
-msgid "Database server port (optionnal)"
-msgstr "Database server port (optionnal)"
+#: inc/config.class.php:136
+msgid "Database server port"
+msgstr ""
 
-#: inc/config.class.php:145
+#: inc/config.class.php:144
 msgid "Login"
 msgstr "Login"
 
-#: inc/config.class.php:153
+#: inc/config.class.php:152
 msgid "Password"
 msgstr "Password"
 
-#: inc/config.class.php:161
+#: inc/config.class.php:160
 msgid "Schema"
 msgstr "Schema"
 
-#: inc/config.class.php:169
+#: inc/config.class.php:168
 msgid "Local path to deployment share control directory"
 msgstr "Local path to deployment share control directory"
 
-#: inc/config.class.php:177
+#: inc/config.class.php:176
 msgid "Local admin password"
 msgstr "Local admin password"
 
@@ -78,56 +74,100 @@ msgstr "Password is hostname"
 msgid "append '-%hostname%' to password"
 msgstr "append '-%hostname%' to password"
 
-#: inc/config.class.php:198
+#: inc/config.class.php:199
 msgid "Link mode"
 msgstr "Link mode"
 
-#: inc/config.class.php:201
+#: inc/config.class.php:202
 msgid "Strict Master-Slave"
 msgstr "Strict Master-Slave"
 
-#: inc/config.class.php:202
+#: inc/config.class.php:203
 msgid "Loose Master-Slave"
 msgstr "Loose Master-Slave"
 
-#: inc/config.class.php:203
+#: inc/config.class.php:204
 msgid "Master-Master"
 msgstr "Master-Master"
 
-#: inc/config.class.php:211
+#: inc/config.class.php:212
+msgid "Automatically check for new versions"
+msgstr ""
+
+#: inc/config.class.php:223
+msgid "Report usage data (anonymous data to help in designing the plugin)"
+msgstr ""
+
+#: inc/config.class.php:234
 msgid "Save"
 msgstr "Save"
 
-#: inc/config.class.php:216
+#: inc/config.class.php:237
+msgid "Check new version"
+msgstr ""
+
+#: inc/config.class.php:242
 msgid "Test connection"
 msgstr "Test connection"
 
-#: inc/config.class.php:218
+#: inc/config.class.php:244
 msgid "Initialise data"
 msgstr "Initialise data"
 
-#: inc/config.class.php:243
+#: inc/config.class.php:265
 msgid "Database login OK!"
 msgstr "Database login OK!"
 
-#: inc/config.class.php:249
+#: inc/config.class.php:273
 msgid "Schema selection OK!"
 msgstr "Schema selection OK!"
 
-#: inc/config.class.php:251
+#: inc/config.class.php:277
 msgid "Schema selection KO!"
 msgstr "Schema selection KO!"
 
-#: inc/config.class.php:254
+#: inc/config.class.php:282
 msgid "Database login KO!"
 msgstr "Database login KO!"
 
-#: inc/config.class.php:371 inc/config.class.php:407 inc/config.class.php:438
-#: inc/config.class.php:474
+#: inc/config.class.php:331 inc/config.class.php:364 inc/config.class.php:401
+#: inc/config.class.php:443 inc/config.class.php:480 inc/config.class.php:522
 msgid "lines loaded into table"
 msgstr "line(s) loaded into table"
 
-#: inc/config.class.php:378 inc/config.class.php:416 inc/config.class.php:445
-#: inc/config.class.php:483
+#: inc/config.class.php:337 inc/config.class.php:408 inc/config.class.php:452
+#: inc/config.class.php:487 inc/config.class.php:531
 msgid "lines deleted from table"
 msgstr "line's) deleted from table"
+
+#: inc/computer.class.php:200
+msgid "Enable automatic installation"
+msgstr "Enable automatic installation"
+
+#: inc/computer.class.php:215
+msgid "Task sequence"
+msgstr "Task sequence"
+
+#: inc/computer.class.php:231
+msgid "Application"
+msgstr "Application"
+
+#: inc/computer.class.php:248
+msgid "roles"
+msgstr "roles"
+
+#: front/computer.form.php:36
+msgid "Features"
+msgstr "Features"
+
+#: front/config.form.php:36
+msgid "Setup"
+msgstr ""
+
+#: setup.php:99 setup.php:104
+msgid "Incompatible PHP Installation. Requires module"
+msgstr "Incompatible PHP Installation. Requires module"
+
+#: setup.php:123
+msgid "Installed / not configured"
+msgstr "Installed / not configured"

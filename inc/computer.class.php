@@ -76,15 +76,6 @@ class PluginGlpi2mdtComputer extends CommonGLPI
      */
    function updateMDT($id) {
       global $DB;
-      $dbserver = $globalconfig['DBServer'];;
-      $dbport = $globalconfig['DBPort'];
-      $dblogin = $globalconfig['DBLogin'];
-      $dbpassword= $globalconfig['DBPassword'];
-      $dbschema = $config['DBSchema'];
-      $mode = $globalconfig['Mode'];
-      $fileshare = $globalconfig['FileShare'];
-      $localadmin = $globalconfig['LocalAdmin'];
-      $complexity = $globalconfig['Complexity'];
 
       // Get login parameters from database and connect to MSQSL server
       $glpi2mdtconfig = new PluginGlpi2mdtConfig;
@@ -115,7 +106,8 @@ class PluginGlpi2mdtComputer extends CommonGLPI
                               FROM glpi_computers c, glpi_networkports n
                               WHERE c.id=$id AND c.id=n.items_id AND itemtype='Computer'
                                 AND n.instantiation_type='NetworkPortEthernet' AND n.mac<>'' 
-                                AND c.is_deleted=FALSE AND n.is_deleted=false");
+                                AND c.is_deleted=FALSE AND n.is_deleted=false")
+                         or die(mssql_get_last_message());
       unset($values);
       while ($line = $DB->fetch_array($macs)) {
          $mac = $line['mac'];
@@ -135,7 +127,16 @@ class PluginGlpi2mdtComputer extends CommonGLPI
       $result = mssql_query($query, $link) or die(mssql_get_last_message()."<br><br>".$query);
       $ids = "(";
       $values = '';
-      $adminpasscomposite = $localadmin.'-'.$name;
+
+      // Build password according to rules
+      if ($globalconfig['Complexity'] == 'Trivial') {
+         $adminpasscomposite = $name;
+      } else if ($globalconfig['Complexity'] == 'Unique') {
+         $adminpasscomposite = $globalconfig['LocalAdmin'].'-'.$name;
+      } else { // Default case, Basic
+         $adminpasscomposite = $globalconfig['LocalAdmin'];
+      }
+
       while ($row = mssql_fetch_array($result)) {
          $mdtid = $row['ID'];
          $ids = $ids.$mdtid.", ";

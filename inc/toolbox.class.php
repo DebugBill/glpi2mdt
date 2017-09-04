@@ -98,7 +98,7 @@ class PluginGlpi2mdtToolbox {
             $MO = 0; //$DB->fetch_row($DB->query("SELECT count(*) FROM glpi_plugin_glpi2mdt_models WHERE is_deleted=false"))[0];
             $PK = 0; //$DB->fetch_row($DB->query("SELECT count(*) FROM glpi_plugin_glpi2mdt_packages WHERE is_deleted=false"))[0];
             $ST = $DB->fetch_row($DB->query("SELECT count(*) FROM glpi_plugin_glpi2mdt_settings"))[0];
-            $gets = $get."&AP=$AP&AG=$AG&TS=$TS&TG=$TG&RO=$RO&MO=$MO&PK=$PK&ST=$ST";
+            $gets = $gets."&AP=$AP&AG=$AG&TS=$TS&TG=$TG&RO=$RO&MO=$MO&PK=$PK&ST=$ST";
          }
          Toolbox::getURLContent("http://glpi2mdt.thauvin.org/report.php".$gets);
          $newversion = sprintf(__('A new version of plugin glpi2mdt is available: v%s'), $latest_version);

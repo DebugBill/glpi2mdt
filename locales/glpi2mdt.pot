@@ -1,44 +1,33 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# Srings to be translated for glpi2mdt.
+# Copyright (C) 2017 Blaise Thauvin
+# This file is distributed under the same license as the glpi2mdt package.
+# Blaise Thauvin <glpi2mdt at thauvin.org>, 2017.
+# 
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: 0.0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-09-04 07:12+0200\n"
+"POT-Creation-Date: 2017-09-02 16:20+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
+"Last-Translator: Blaise Thauvin <glpi2mdt at thauvin.org>, 2017\n"
+"Language-Team: French (https://www.transifex.com/glpi2mdt/teams/78175/fr/)\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: en\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: inc/computer.class.php:200
-msgid "Enable automatic installation"
+#: inc/toolbox.class.php:158
+msgid "Check for glpi2mdt plugin updates"
 msgstr ""
 
-#: inc/computer.class.php:202 inc/config.class.php:119
+#: inc/config.class.php:119 inc/computer.class.php:202
 msgid "YES"
 msgstr ""
 
-#: inc/computer.class.php:203 inc/config.class.php:120
+#: inc/config.class.php:120 inc/computer.class.php:203
 msgid "NO"
-msgstr ""
-
-#: inc/computer.class.php:215
-msgid "Task sequence"
-msgstr ""
-
-#: inc/computer.class.php:231
-msgid "Application"
-msgstr ""
-
-#: inc/computer.class.php:248
-msgid "roles"
 msgstr ""
 
 #: inc/config.class.php:128
@@ -151,8 +140,28 @@ msgstr ""
 msgid "lines deleted from table"
 msgstr ""
 
+#: inc/computer.class.php:200
+msgid "Enable automatic installation"
+msgstr ""
+
+#: inc/computer.class.php:215
+msgid "Task sequence"
+msgstr ""
+
+#: inc/computer.class.php:231
+msgid "Application"
+msgstr ""
+
+#: inc/computer.class.php:248
+msgid "roles"
+msgstr ""
+
 #: front/computer.form.php:36
 msgid "Features"
+msgstr ""
+
+#: front/config.form.php:36
+msgid "Setup"
 msgstr ""
 
 #: setup.php:99 setup.php:104
