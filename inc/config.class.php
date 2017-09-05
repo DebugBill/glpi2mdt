@@ -175,7 +175,7 @@ class PluginGlpi2mdtConfig extends CommonDBTM {
                         <td>
                               <?php echo _e('Local admin password', 'glpi2mdt'); ?> : &nbsp;&nbsp;&nbsp;
                         </td><td>
-                              <?php echo '<input type="text" name="LocalAdmin" value="'.$this->globalconfig['LocalAdmin'].'" size="50" class="ui-autocomplete-input" 
+                              <?php echo '<input type="password" name="LocalAdmin" value="'.$this->globalconfig['LocalAdmin'].'" size="50" class="ui-autocomplete-input" 
                                           autocomplete="off" required> &nbsp;&nbsp;&nbsp;' ?>
                         </td>
                     </tr>
@@ -248,6 +248,12 @@ class PluginGlpi2mdtConfig extends CommonDBTM {
                   </div>
               </form>
                <?php
+               // Show alert if a new version is available
+               $currentversion = PLUGIN_GLPI2MDT_VERSION;
+               $latestversion = $this->globalconfig['LatestVersion'];
+               if (version_compare($currentversion, $latest_version, '<')) {
+                  sprintf(__('A new version of plugin glpi2mdt is available: v%s'), $latestversion);
+               }
                return true;
    }
 
