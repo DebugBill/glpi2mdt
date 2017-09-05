@@ -42,6 +42,9 @@
                   <tag>MDT</tag>
 				  <tag>Microsoft Deployment Toolkit</tag>
 				  <tag>Deployment</tag>
+                                  <tag>MDT</tag>
+                                  <tag>SCCM</tag>
+                                  <tag>Automation</tag>
 				  <tag>Provisionning</tag>
                </en>
                <fr>
@@ -52,5 +55,6 @@
             </tags>
             <screenshots>
                <screenshot>https://raw.githubusercontent.com/DebugBill/glpi2mdt/screenshot01.jpg</screenshot>
+               <screenshot>https://raw.githubusercontent.com/DebugBill/glpi2mdt/screenshot02.jpg</screenshot>
             </screenshots>
          </root>
