@@ -197,7 +197,7 @@ function plugin_glpi2mdt_install() {
                  `is_deleted` tinyint(4) NOT NULL DEFAULT '0',
                  `glpi_plugin_glpi2mdt_modelscol` varchar(45) DEFAULT NULL,
                 PRIMARY KEY (`make`, `tech_code`),
-                UNIKE KEY (`id`),
+                UNIQUE KEY (`id`),
                 INDEX `is_deleted` (`is_deleted` ASC),
                 INDEX `is_in_sync`(`is_in_sync` ASC)
                 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
