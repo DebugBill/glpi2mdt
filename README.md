@@ -19,7 +19,7 @@ In order to work well the plugin needs to have as much informations as possible 
 The plugin will therefore get its full potential when used in conjunction with "Fusion Inventory".
 
 
-##Prerequisites
+## Prerequisites
 
 * MDT must be installed in a MS-SQL database accessible from the GLPI server
 * MDT must be fully operationnal by itself. The plugin will not fix a faulty MDT installation, it is only remote-controlling it.
@@ -34,7 +34,7 @@ Still, it works for us, in our specific environment!
 The plugin is available in French and English, other translators welcome.
 
 
-##TODOs:
+## TODOs
 * Add rights management. Currently anyone can do anything
 * Make it possible to choose more than one application. Manage groups (this is mainly UI interface stuff, the code can already handle it. My main question is how many applications are avalaible on average MDT servers? Our has only 5, but in a previous company we had hundreds. The gui would not be the same....)
 * Handle roles, models, packages in the same way applications are handled (but are you using those features in MDT)?

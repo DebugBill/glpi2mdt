@@ -58,6 +58,7 @@ class PluginGlpi2mdtComputer extends CommonGLPI
       }
       if (isset($post['id']) and ($post['id'] > 0)) {
          $id = $post['id'];
+         $DB->query("DELETE FROM glpi_plugin_glpi2mdt_settings WHERE id=$id and type='C'");
          foreach ($post as $key=>$value) {
             // only valid parameters may be inserted. The full list is in the "descriptions" database
             if (isset($parameters[$key])) {
@@ -67,7 +68,7 @@ class PluginGlpi2mdtComputer extends CommonGLPI
                              ON DUPLICATE KEY UPDATE value='$value'";
                $DB->query($query) or die("Cannot update settings databse, query is $query");
             }
-            if ($key == 'Applications') {
+            if (($key == 'Applications') and ($value <> 'none')) {
                $query = "INSERT INTO glpi_dev.glpi_plugin_glpi2mdt_settings 
                              (`id`, `category`, `type`, `key`, `value`)
                              VALUES ($id, 'A','C', '$key', '$value')
@@ -166,6 +167,7 @@ class PluginGlpi2mdtComputer extends CommonGLPI
          $mdtid = $row['ID'];
          $ids = $ids.$mdtid.", ";
          $values = $values."('C', $mdtid, '$name', '$name', '$name', '$adminpasscomposite'), ";
+         $arrayid[$row['ID']] = $row['ID'];
       }
       $ids = substr($ids, 0, -2).") ";
       $values = substr($values, 0, -2);
@@ -199,14 +201,16 @@ class PluginGlpi2mdtComputer extends CommonGLPI
             or die("Cannot select additional applications.<br>". $query."<br><br>".$DB->error());
       $query = "DELETE FROM $dbschema.dbo.Settings_Applications WHERE type='C' AND ID='$id'";
       mssql_query("$query") or die (mssql_get_last_message()."<br><br>".$query);
-      $seq=0;
+      $seq = 0;
       while ($pair = $DB->fetch_array($result)) {
          $seq += 1;
          $key = $pair['key'];
          $value = $pair['value'];
-         $query = "INSERT INTO $dbschema.dbo.Settings_Applications (Type, ID, Sequence, Applications)
-                VALUES ('C', '$id', $seq, '$value');";
-         mssql_query("$query") or die (mssql_get_last_message()."<br><br>".$query);
+         foreach ($arrayid as $mdtid) {
+            $query = "INSERT INTO $dbschema.dbo.Settings_Applications (Type, ID, Sequence, Applications)
+                   VALUES ('C', '$mdtid', $seq, '$value');";
+            mssql_query("$query") or die (mssql_get_last_message()."<br><br>".$query);
+         }
       }
 
    }
@@ -284,6 +288,7 @@ class PluginGlpi2mdtComputer extends CommonGLPI
                         echo _e('Application', 'glpi2mdt');
                         echo ': &nbsp;&nbsp;&nbsp;</td>';
                         echo "<td>";
+                        $allapplications['none'] = __('None', 'glpi2mdt');
                         $result = $DB->query("SELECT guid, shortname FROM glpi_plugin_glpi2mdt_applications 
                                                   WHERE is_deleted=false AND hide=false AND enable=true");
                         while ($row = $DB->fetch_array($result)) {
