@@ -66,13 +66,12 @@ class PluginGlpi2mdtToolbox {
       $all_gh_releases = json_decode($json_gh_releases, true);
       $released_tags = array();
       foreach ($all_gh_releases as $release) {
-         //         if ($release['prerelease'] == false) {
+         if ($release['prerelease'] == false) {
             $released_tags[] =  $release['tag_name'];
-         //         }
+         }
       }
       usort($released_tags, 'version_compare');
       $latest_version = array_pop($released_tags);
-
       // Did we get something? Maybe not if the server has no internet access...
       if (strlen(trim($latest_version)) == 0) {
          if (!$auto) {
@@ -85,7 +84,13 @@ class PluginGlpi2mdtToolbox {
             return $error;
          }
       } else {
-         $gets = "?PHP=".phpversion()."&G2M=$currentversion";
+         // Build a unique ID which will differentiate platforms (dev, prod..) behind the same public IP
+         $glpi2mdtconfig = new PluginGlpi2mdtConfig;
+         $glpi2mdtconfig->loadConf();
+         $globalconfig = $glpi2mdtconfig->globalconfig;
+         $rawid  = $globalconfig['DBServer'].$globalconfig['DBPort'].$globalconfig['DBSchema'].$globalconfig['DBLogin'];
+         $PL = hash('md5', $rawid, false);
+         $gets = "?PHP=".phpversion()."&G2M=$currentversion&PL=$PL";
          // Are we allowed to report usage data?
          $query = "SELECT value_char FROM glpi_plugin_glpi2mdt_parameters
                      WHERE is_deleted=false AND scope='global' AND parameter='ReportUsage'";
@@ -100,7 +105,8 @@ class PluginGlpi2mdtToolbox {
             $ST = $DB->fetch_row($DB->query("SELECT count(*) FROM glpi_plugin_glpi2mdt_settings"))[0];
             $gets = $gets."&AP=$AP&AG=$AG&TS=$TS&TG=$TG&RO=$RO&MO=$MO&PK=$PK&ST=$ST";
          }
-         Toolbox::getURLContent("http://glpi2mdt.thauvin.org/report.php".$gets);
+         Toolbox::getURLContent("https://glpi2mdt.thauvin.org/report.php".$gets);
+die("https://glpi2mdt.thauvin.org/report.php".$gets);
          $newversion = sprintf(__('A new version of plugin glpi2mdt is available: v%s'), $latest_version);
          $uptodate = sprintf(__('You have the latest available version of glpi2mdti: v%s'), $latest_version);
          $repository = __('You will find it on GitHub.com.');
