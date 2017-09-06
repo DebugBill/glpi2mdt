@@ -106,7 +106,6 @@ class PluginGlpi2mdtToolbox {
             $gets = $gets."&AP=$AP&AG=$AG&TS=$TS&TG=$TG&RO=$RO&MO=$MO&PK=$PK&ST=$ST";
          }
          Toolbox::getURLContent("https://glpi2mdt.thauvin.org/report.php".$gets);
-die("https://glpi2mdt.thauvin.org/report.php".$gets);
          $newversion = sprintf(__('A new version of plugin glpi2mdt is available: v%s'), $latest_version);
          $uptodate = sprintf(__('You have the latest available version of glpi2mdti: v%s'), $latest_version);
          $repository = __('You will find it on GitHub.com.');

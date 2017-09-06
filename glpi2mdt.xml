@@ -16,7 +16,7 @@ Version 0.0.1 is functionnal though very limited. The README and INSTALL files i
 If you're insterested in this plugin, don't hesitate to contact the author and describe your current architecture so he can make sure the plugin design is compatible with most environments</en>
                   <fr>Ce plugin synchronise les bases de données MDT et GLPI afin de gérer le déploiement automatique de Windows depuis GLPI et à partir de ses données.
 
-La version 0.0.1 est opérationnelle bien que très limitée. Le fichiers README et INSTALL de la distribution vous donneront plus de détails sur ce qui est en place et ce qu'il est prévu d'ajouter en priorité.
+La version 0.0.1 est opérationnelle bien que très limitée. Les fichiers README et INSTALL de la distribution vous donneront plus de détails sur ce qui est en place et ce qu'il est prévu d'ajouter en priorité.
 
 Si ce plugin vous intéresse n'hésitez pas à contacter l'auteur avec une description de votre architecture actuelle afin qu'il s'assure que ses choix de design seront compatibles avec la plupart des environments.</fr>
                </long>
