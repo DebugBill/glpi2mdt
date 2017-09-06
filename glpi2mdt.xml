@@ -9,18 +9,12 @@
                   <fr>Déploiement Automatisé de Windows: Gérez Microsoft Deployment Toolkit (MDT) depuis GLPI </fr>
                </short>
                <long>
-                  <en>This plugin synchronises GLPI and MDT databases in order to manage Windows automatic deployment from GLPI and based on its data
-                      Still in very early stages of development, only a shell based proof of concept does exist. Stay tuned, more to come.
-		      If you're insterested in this tool, don't hesitate to contact the author and describe your current architecture 
-		      so he can make sure the plugin design is compatible with most environments</en>
-                  <fr>Ce plugin synchronise les bases de données MDT et GLPI afin de gérer le déploiement automatic de Windows depuis GLPI et à partir de ses données
-                      Le développement ne fait que commencer et seule une preuve de concept en Shell est opérationnelle. Consultez régulièrement ce site pour plus d'informations.
-                      Si ce plugin vous intéresse n'hésitez pas à contacter l'auteur avec une description de votre architecture actuelle afin qu'il s'assure que ses 
-                      choix de design seront compatibles avec la plupart des environments</fr>
+                  <en>This plugin synchronises GLPI and MDT databases in order to manage Windows automatic deployment from GLPI and based on its data. <br> Version 0.0.1 is functionnal though very limited. The README and INSTALL files in the distribution package will give you more information as to what is already available and what I plan to deliver next. <br>If you're insterested in this plugin, don't hesitate to contact the author and describe your current architecture so he can make sure the plugin design is compatible with most environments</en>
+                  <fr>Ce plugin synchronise les bases de données MDT et GLPI afin de gérer le déploiement automatique de Windows depuis GLPI et à partir de ses données.<br> La version 0.0.1 est opérationnelle bien que très limitée. Le fichiers README et INSTALL de la distribution vous donneront plus de détails sur ce qui est en place et ce qu'il est prévu d'ajouter en priorité.<br>Si ce plugin vous intéresse n'hésitez pas à contacter l'auteur avec une description de votre architecture actuelle afin qu'il s'assure que ses choix de design seront compatibles avec la plupart des environments.</fr>
                </long>
             </description>
             <homepage>https://github.com/DebugBill/glpi2mdt</homepage>
-            <download>https://github.com/DebugBill/glpi2mdt/archive/master.zip</download>
+            <download>ihttps://github.com/DebugBill/glpi2mdt/archive/0.0.1.tar.gz</download>
             <issues>https://github.com/DebugBill/glpi2mdt/issues</issues>
             <readme>https://raw.githubusercontent.com/DebugBill/glpi2mdt/README.md</readme>
             <authors>
