@@ -22,7 +22,7 @@ Si ce plugin vous intéresse n'hésitez pas à contacter l'auteur avec une descr
                </long>
             </description>
             <homepage>https://github.com/DebugBill/glpi2mdt</homepage>
-            <download>https://github.com/DebugBill/glpi2mdt/archive/0.0.1.tar.gz</download>
+            <download>https://github.com/DebugBill/glpi2mdt/releases/download/0.0.1/glpi2mdt-0.0.1.tar.gz</download>
             <issues>https://github.com/DebugBill/glpi2mdt/issues</issues>
             <readme>https://raw.githubusercontent.com/DebugBill/glpi2mdt/master/README.md</readme>
             <authors>
