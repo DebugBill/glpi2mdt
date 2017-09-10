@@ -18,6 +18,13 @@ In order to work well the plugin needs to have as much informations as possible 
 
 The plugin will therefore get its full potential when used in conjunction with "Fusion Inventory".
 
+## Restrictions
+This plugin works fine on my specific configuration 
+* MDT 2013 on Server 2012
+* MS-SQL 2012
+* GLPI 9.1.6 on Linux 
+* PHP 5.5 
+It is developed and tested in this environment only. If you experience problem with a different configuration please report the issue on GitHub. I'll do my best to make it compatible with other setups as long as I am aware of the issue.
 
 ## Prerequisites
 

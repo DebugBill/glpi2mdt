@@ -4,7 +4,7 @@
 ## Initial setup
 * Install the plugin like any other. 
 * Go to menu Configuration/Plugin. Click on **install** then **activate**. This will create additional tables within your GLPI database.
-* Mount your deployement share locally on the GLPI server (read-only is OK, only the "Control" directory is necessary)
+* Mount your deployement share locally on the GLPI server (read-only is OK, only the "Control" directory is necessary. Pay attention to SE-Linux restirctions. PHP may not be able to read the files without proper configuration)
 * Once the plugin is activated you can click on its name in the "Plugins" page to get to the configuraiton page
 
 * Configure the plugin: credentials to the MDT database, path to the "control" directory, local admin password to be used for computers..... Save! The "port" is ignored as of version 0.0.1

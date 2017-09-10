@@ -35,27 +35,27 @@ if (!defined('GLPI_ROOT')) {
    die("Sorry. You can't access directly to this file");
 }
 
-class PluginGlpi2mdtComputer extends CommonGLPI
-{
-     /**
-     * This function is called from GLPI to allow the plugin to insert one or more items
-     *  inside the left menu of a Itemtype.
-     */
+class PluginGlpi2mdtComputer extends CommonGLPI {
+   /**
+   * This function is called from GLPI to allow the plugin to insert one or more items
+   *  inside the left menu of a Itemtype.
+   */
    function getTabNameForItem(CommonGLPI $item, $withtemplate=0) {
-      return self::createTabEntry('Auto Install');
+      return self::createTabEntry(__('Auto Install'), 'glpi2mdt');
    }
 
-     /**
-     * Update GLPI database
-     */
+   /**
+   * Update GLPI database
+   */
    function updateValue($post) {
       global $DB;
 
       // Build array of valid parameters
       $result = $DB->query("SELECT column_name FROM glpi_plugin_glpi2mdt_descriptions WHERE is_deleted=false");
       while ($line = $DB->fetch_array($result)) {
-         $parameters[$line['column_name']]=true;
+         $parameters[$line['column_name']] = true;
       }
+
       if (isset($post['id']) and ($post['id'] > 0)) {
          $id = $post['id'];
          $DB->query("DELETE FROM glpi_plugin_glpi2mdt_settings WHERE id=$id and type='C'");
@@ -75,16 +75,37 @@ class PluginGlpi2mdtComputer extends CommonGLPI
                              ON DUPLICATE KEY UPDATE value='$value'";
                $DB->query($query) or die("Cannot update settings databse, query is $query");
             }
+            if (($key == 'OSInstallExpire')) {
+               $timestamp = strtotime($value);
+               if ($timestamp > 0) {
+                  $query = "INSERT INTO glpi_dev.glpi_plugin_glpi2mdt_settings 
+                             (`id`, `category`, `type`, `key`, `value`)
+                             VALUES ($id, 'C','C', '$key', '$timestamp')
+                             ON DUPLICATE KEY UPDATE value='$timestamp'";
+               } else {
+                  $query = "DELETE FROM glpi_dev.glpi_plugin_glpi2mdt_settings WHERE id=$id AND category='C' AND type='C' AND key='$key';";
+               }
+               $DB->query($query);
+            }
          }
       }
    }
 
    /**
    * Updates the MDT MSSQL database with information contained in GLPI's database
-   *  Parameter is the GLPI object ID, here a computer
+   *
+   * @param  GLPI object ID, here a computer
+   * @param  Expire: will only reset "OSInstall flag set to true and coupling mode is not "strict master slave"
+   * @return string type for the cron list page
    */
    function updateMDT($id) {
       global $DB;
+
+      // Build array of valid parameters
+      $result = $DB->query("SELECT column_name FROM glpi_plugin_glpi2mdt_descriptions WHERE is_deleted=false");
+      while ($line = $DB->fetch_array($result)) {
+         $parameters[$line['column_name']] = true;
+      }
 
       // Get login parameters from database and connect to MSQSL server
       $glpi2mdtconfig = new PluginGlpi2mdtConfig;
@@ -125,14 +146,15 @@ class PluginGlpi2mdtComputer extends CommonGLPI
       $macs = substr($macs, 0, -2).") ";
       $values =  substr($values, 0, -2)." ";
       if ($macs ==  "MacAddress IN ()") {
-         $macs='true';
+         $macs='false';
          $values= "('$name', '$uuid', '$serial', '$assettag', '')";
       }
       // Get list of ids
       $query = "SELECT ID FROM $dbschema.dbo.ComputerIdentity 
                   WHERE (UUID<>'' AND UUID='$uuid')
                      OR (Description<>'' AND Description='$name')
-                     OR (SerialNumber<>'' AND SerialNumber='$serial') AND $macs";
+                     OR (SerialNumber<>'' AND SerialNumber='$serial') 
+                     OR $macs";
       $result = mssql_query("$query", $link) or die("Can't read IDs to delete<br><br>".$query."<br><br>".mssql_get_last_message());
 
       // build a list of IDs
@@ -192,7 +214,9 @@ class PluginGlpi2mdtComputer extends CommonGLPI
          $key = $pair['key'];
          $value = $pair['value'];
          $query = "UPDATE dbo.Settings SET $key='$value' WHERE ID IN $ids;";
-         mssql_query("$query") or die (mssql_get_last_message()."<br><br>".$query);
+         if ($parameter[$key]) {
+            mssql_query("$query") or die (mssql_get_last_message()."<br><br>".$query);
+         }
       }
 
       // Update applications table
@@ -212,37 +236,39 @@ class PluginGlpi2mdtComputer extends CommonGLPI
             mssql_query("$query") or die (mssql_get_last_message()."<br><br>".$query);
          }
       }
-
    }
 
    /**
      * This function is called from GLPI to render the form when the user click
      *  on the menu item generated from getTabNameForItem()
-     */
+   */
    static function displayTabContentForItem(CommonGLPI $item, $tabnum=1, $withtemplate=0) {
       global $DB;
       // Load current settings from database
       $id = $item->getID();
       $osinstall = 'NO';
-      $tasksequence = '';
-      $query = "SELECT `key`, `value` FROM glpi_dev.glpi_plugin_glpi2mdt_settings WHERE type='C' AND category='C' AND id='$id'";
+      $osinstallexpire = date('Y-m-d H:i', 300*ceil(time()/300) + (3600*24));
+
+      $query = "SELECT `key`, `value` FROM glpi_dev.glpi_plugin_glpi2mdt_settings WHERE type='C' AND id='$id'";
       $result = $DB->query($query);
       while ($row=$DB->fetch_array($result)) {
-         $key = $row['key'];
-         $value = $row['value'];
-         if ($key == 'OSInstall' and ($value == 'YES' or $value == 'NO')) {
-            $osinstall = $value;
-         } else {
-            $osinstall = ''; }
+         $settings[$row['key']] = $row['value'];
       }
-      if ($key == 'TaskSequenceID') {
-         $tasksequence = $value;
+
+      if (isset($settings['OSInstall'])) {
+         $osinstall = $settings['OSInstall'];
       }
-      if ($key == 'roles') {
-         $roles = $value;
+      if (isset($settings['TaskSequenceID'])) {
+         $tasksequence = $settings['TaskSequenceID'];
       }
-      if ($key == 'applications') {
-         $applications = $value;
+      if (isset($settings['Roles'])) {
+         $roles = $settings['Roles'];
+      }
+      if (isset($settings['Applications'])) {
+         $applications = $settings['Applications'];
+      }
+      if (isset($settings['OSInstallExpire'])) {
+         $osinstallexpire = date('Y-m-d H:i', $settings['OSInstallExpire']);
       }
 
       ?>
@@ -262,8 +288,14 @@ class PluginGlpi2mdtComputer extends CommonGLPI
                           array(
                           'value' => "$osinstall")
                        );
-                       echo "</td>";
+                       echo "</td><td>";
+                       echo __('Reset after (empty for permanent):', 'glpi2mdt');
+                       Html::showDateTimeField("OSInstallExpire", array('value'      => $osinstallexpire,
+                                               'timestep'   => 5,
+                                               'mindate'    => date('Y-m-d H:i:s'),
+                                               'maybeempty' => true));
                         ?>
+                          </td>
                           </tr>
                        </tr>
                        <tr class="tab_bg_1">

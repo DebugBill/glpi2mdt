@@ -301,7 +301,7 @@ class PluginGlpi2mdtConfig extends CommonDBTM {
 
 
    // Initialise data, load local tables from MDT MSSQL server
-   function showInitialise() {
+   function showInitialise($cron=false) {
       global $DB;
 
       echo '<table class="tab_cadre_fixe">';
@@ -379,8 +379,14 @@ class PluginGlpi2mdtConfig extends CommonDBTM {
       // Applications
       // Mark lines in order to detect deleted ones in the source database
       $DB->query("UPDATE glpi_plugin_glpi2mdt_applications SET is_in_sync=false WHERE is_deleted=false");
-      $applications = simplexml_load_file($this->globalconfig['FileShare'].'/Applications.xml')
-              or die("Cannot load file ".$this->globalconfig['FileShare']."/Applications.xml");
+      $dst = $this->globalconfig['FileShare'].'/Applications.xml';
+      //Basic tests just in case...
+      if (file_exists($dst) and !(is_readable($dst))) {
+         echo "<tr class='tab_bg_1'><td><font color='red'>Looks like '$dst' exists but is not readable. ";
+         echo "Check access rights, and more specifically SELinux settings.</td></tr>";
+      }
+      $applications = simplexml_load_file($dst)
+              or die("Cannot load file ".$dst);
       $nb = 0;
       foreach ($applications->application as $application) {
          $name = $application->Name;

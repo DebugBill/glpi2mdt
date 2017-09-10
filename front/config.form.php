@@ -60,12 +60,13 @@ if (isset($_POST['TEST'])) {
 
 // Initialise data (will NOT save first but use curently stored credentials)
 if (isset($_POST['INIT'])) {
-   $g2mConfig->showInitialise();
+//   $g2mConfig->showInitialise();
+PluginGlpi2mdtCrontask::cronExpireOSInstallFlag();
 }
 
 // Check for new version of the plugin
 if (isset($_POST['UPDATE'])) {
-   PluginGlpi2mdtToolbox::cronCheckUpdate(false, true);
+   PluginGlpi2mdtCrontask::cronCheckGlpi2mdtUpdate(false, true);
 }
 Html::footer();
 

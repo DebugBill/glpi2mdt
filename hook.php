@@ -221,11 +221,25 @@ function plugin_glpi2mdt_install() {
       $DB->query($query) or die("error creating glpi_plugin_glpi2mdt_descriptions ". $DB->error());
    }
 
-   // Create or update crontasks for Master-Master mode and automatic updates checks
-   CronTask::Register('PluginGlpi2mdtToolbox', 'checkUpdate', (3600 * 24),
+   // Create or update crontask for checking new plugin updates and reporting usage
+   CronTask::Register('PluginGlpi2mdtCrontask', 'checkGlpi2mdtUpdate', (3600 * 24),
                          array('mode' => 2, 'allowmode' => 3, 'logs_lifetime' => 30,
                                'comment' => 'Daily task checking for updates'));
 
+   // Create or update crontask for updating base data from MDT files and database
+   CronTask::Register('PluginGlpi2mdtCrontask', 'updateBaseconfigFromMDT', 300,
+                         array('mode' => 2, 'allowmode' => 3, 'logs_lifetime' => 30,
+                               'comment' => 'Daily task checking for updates'));
+
+   // Create or update crontask for syncrhonizing data between MDT and GLPI (Master-Master mode)
+   CronTask::Register('PluginGlpi2mdtCrontask', 'syncMasterMaster', 3600,
+                         array('mode' => 2, 'allowmode' => 3, 'logs_lifetime' => 30,
+                               'comment' => 'Daily task checking for updates'));
+
+   // Create or update crontask for disabling "OS Install" flag when expired
+   CronTask::Register('PluginGlpi2mdtCrontask', 'expireOSInstallFlag', 600,
+                         array('mode' => 2, 'allowmode' => 3, 'logs_lifetime' => 30,
+                               'comment' => 'Daily task checking for updates'));
    return true;
 }
 
@@ -237,9 +251,14 @@ function plugin_glpi2mdt_install() {
 function plugin_glpi2mdt_uninstall() {
    global $DB;
 
+   // Delete tables (this will erase configuration data)
    $result = $DB->query("SHOW TABLES LIKE 'glpi_plugin_glpi2mdt_%';");
    while ($row = $DB->fetch_row($result)) {
       $DB->query("DROP TABLE $row[0]") or die("error deleting table $row[0] ".$DB->error());
    }
+
+   // Remove cron tasks
+   Crontask::Unregister('PluginGlpi2mdtCrontask');
+
    return true;
 }
