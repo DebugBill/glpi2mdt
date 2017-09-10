@@ -237,7 +237,7 @@ function plugin_glpi2mdt_install() {
                                'comment' => 'Daily task checking for updates'));
 
    // Create or update crontask for disabling "OS Install" flag when expired
-   CronTask::Register('PluginGlpi2mdtCrontask', 'expireOSInstallFlag', 600,
+   CronTask::Register('PluginGlpi2mdtCrontask', 'expireOSInstallFlag', 300,
                          array('mode' => 2, 'allowmode' => 3, 'logs_lifetime' => 30,
                                'comment' => 'Daily task checking for updates'));
    return true;

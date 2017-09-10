@@ -37,8 +37,10 @@ Html::header(__('Setup', 'glpi2mdt'), $_SERVER["PHP_SELF"],
              "plugins", "glpi2mdt", "config");
 
 //Session::checkRight('plugin_glpi2mdt_configuration', READ);
+Session::checkRight("config", UPDATE);
 
 $g2mConfig = new PluginGlpi2mdtConfig();
+$g2mConfig->show();
 
 // Save configuration data
 if (isset($_POST['SAVE'])) {
@@ -50,9 +52,6 @@ if (isset($_POST['SAVE'])) {
    Html::back();
 }
 
-$g2mConfig->loadConf();
-$g2mConfig->show();
-
 // Test connection (will save first ...)
 if (isset($_POST['TEST'])) {
    $g2mConfig->showTestConnection();
@@ -60,8 +59,7 @@ if (isset($_POST['TEST'])) {
 
 // Initialise data (will NOT save first but use curently stored credentials)
 if (isset($_POST['INIT'])) {
-//   $g2mConfig->showInitialise();
-PluginGlpi2mdtCrontask::cronExpireOSInstallFlag();
+   $g2mConfig->showInitialise();
 }
 
 // Check for new version of the plugin

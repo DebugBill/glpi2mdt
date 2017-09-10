@@ -35,54 +35,7 @@ if (!defined('GLPI_ROOT')) {
    die("Sorry. You can't access directly to this file");
 }
 
-class PluginGlpi2mdtConfig extends CommonDBTM {
-
-   // Post parameters valid for configuration form and their expected content
-   private $validkeys=array(
-                 'DBServer' => 'txt',
-                 'DBLogin' => 'txt',
-                 'DBPassword' => 'txt',
-                 'DBSchema' => 'txt',
-                 'DBPort' => 'num',
-                 'Mode' => 'txt',
-                 'FileShare' => 'txt',
-                 'LocalAdmin' => 'txt',
-                 'Complexity' => 'txt',
-                 'CheckNewVersion' => 'txt',
-                 'ReportUsage' => 'txt'
-                );
-   public $globalconfig;
-
-
-   /**
-    * Load plugin settings
-    *
-    * @param None
-    *
-    * @return                     Dies if database cannot be read
-   **/
-   function loadConf() {
-      global $DB;
-      $validkeys = $this->validkeys;
-
-      $dbport=1433;
-      $mode='Strict';
-
-      $query = "SELECT `parameter`, `value_char`, `value_num`
-                FROM `glpi_plugin_glpi2mdt_parameters`
-                WHERE `is_deleted` = false AND `scope`= 'global'";
-      $result=$DB->query($query) or die("Error loading parameters from GLPI database ". $DB->error());
-
-      while ($data = $DB->fetch_array($result)) {
-         if (isset($validkeys[$data['parameter']])) {
-            if ($validkeys[$data['parameter']] == 'txt') {
-               $this->globalconfig[$data['parameter']] = $data['value_char'];
-            } else {
-               $this->globalconfig[$data['parameter']] = $data['value_num'];
-            }
-         }
-      }
-   }
+class PluginGlpi2mdtConfig extends PluginGlpi2mdtMdt {
 
 
    /**
@@ -102,22 +55,29 @@ class PluginGlpi2mdtConfig extends CommonDBTM {
                           (`parameter`, `scope`, `value_char`, `is_deleted`)
                           VALUES ('$key', 'global', '$value', false)
                    ON DUPLICATE KEY UPDATE value_char='$value', value_num=NULL, is_deleted=false";
-         $DB->query($query) or die("Database error: ". $DB->error());
+         $DB->queryOrDie($query, "Database error");
       }
       if ($validkeys[$key] == 'num' and ($value > 0 or $value == '')) {
          $query = "INSERT INTO glpi_plugin_glpi2mdt_parameters
                           (`parameter`, `scope`, `value_num`, `is_deleted`)
                           VALUES ('$key', 'global', '$value', false)
                    ON DUPLICATE KEY UPDATE value_num='$value', value_char=NULL, is_deleted=false";
-         $DB->query($query) or die("Database error: ". $DB->error());
+         $DB->queryOrDie($query, "Database error");
       }
    }
 
-   function show() {
-      global $DB;
 
-                          $yesno['YES'] = __('YES', 'glpi2mdt');
-                          $yesno['NO'] = __('NO', 'glpi2mdt');
+   /**
+    * Shows form to set plugin configuration parameters
+    *
+    * @param none
+    *
+    * @return   outputs HTML form
+   **/
+   function show() {
+
+      $yesno['YES'] = __('YES', 'glpi2mdt');
+      $yesno['NO'] = __('NO', 'glpi2mdt');
          ?>
            <form action="../front/config.form.php" method="post">
             <?php echo Html::hidden('_glpi_csrf_token', array('value' => Session::getNewCSRFToken())); ?>
@@ -257,72 +217,31 @@ class PluginGlpi2mdtConfig extends CommonDBTM {
                return true;
    }
 
-   // Test connection
-   function showTestConnection() {
-      ?>
-      <table class="tab_cadre_fixe">
-      <tr class="tab_bg_1">
-         <td>
-            <?php
-            // Connection to MSSQL
-            $link = mssql_connect($this->globalconfig['DBServer'], $this->globalconfig['DBLogin'], $this->globalconfig['DBPassword']);
-            if ($link) {
-               echo "<h1><font color='green'>";
-               echo _e("Database login OK!", 'glpi2mdt');
-               echo "</font></h1><br>";
-               // Simple query to get database version
-               $version = mssql_query('SELECT @@VERSION');
-               $row = mssql_fetch_array($version);
-               echo "Server is: <br>".$row[0]."<br>";
-               if (mssql_select_db($this->globalconfig['DBSchema'], $link)) {
-                  echo "<h1><font color='green'>";
-                  echo _e("Schema selection OK!", 'glpi2mdt');
-                  echo "</font></h1><br>";
-               } else {
-                  echo "<h1><font color='red'>";
-                  echo _e("Schema selection KO!", 'glpi2mdt');
-                  echo "</font></h1><br>";
-               }
-            } else {
-               echo "<h1><font color='red'>";
-               echo _e("Database login KO!", 'glpi2mdt');
-               echo "</font></h1><br>";
-            }
 
-            // Cleaning
-            mssql_free_result($version);
-            mssql_close($link);
-            ?> 
-         </td>
-      </tr>
-      </table>
-      <?php
-   }
-
-
-   // Initialise data, load local tables from MDT MSSQL server
+   /**
+    * Initialise data, load local tables from MDT MSSQL server
+    *
+    * @param Flag for manual run or started by cron
+    *
+    * @return   standard cron outputs: 0 nothing to do, <0 failed >0 Ran OK
+    *           Will output if manual run, log data if cron
+   **/
    function showInitialise($cron=false) {
       global $DB;
 
       echo '<table class="tab_cadre_fixe">';
-      // Connexion à MSSQL
-       $link = mssql_connect($this->globalconfig['DBServer'], $this->globalconfig['DBLogin'], $this->globalconfig['DBPassword']);
-
-      if (!$link || !mssql_select_db($this->globalconfig['DBSchema'], $link)) {
-          die('Cannot connect to MDT MSSQL database!');
-      }
 
       //
       // Load available settings fields and descriptions from MDT
       //
-      $result = mssql_query('SELECT  ColumnName, CategoryOrder, Category, Description
-                              FROM dbo.Descriptions');
-      $nb = mssql_num_rows($result);
+      $result = $this->query('SELECT  ColumnName, CategoryOrder, Category, Description
+                      FROM dbo.Descriptions');
+      $nb = $this->numrows($result);
 
       // Mark lines in order to detect deleted ones in the source database
       $DB->query("UPDATE `glpi_plugin_glpi2mdt_descriptions` SET is_in_sync=false WHERE is_deleted=false");
       // There less than 300 lines, do an atomic insert/update
-      while ($row = mssql_fetch_array($result)) {
+      while ($row = $this->fetch_array($result)) {
          $column_name = $row['ColumnName'];
          $category_order = $row['CategoryOrder'];
          $category = $row['Category'];
@@ -345,11 +264,11 @@ class PluginGlpi2mdtConfig extends CommonDBTM {
       //
       // Load available roles from MDT
       //
-      $result = mssql_query('SELECT  ID, Role FROM dbo.RoleIdentity');
+      $result = $this->query('SELECT  ID, Role FROM dbo.RoleIdentity');
 
       // Mark lines in order to detect deleted ones in the source database
       $DB->query("UPDATE `glpi_plugin_glpi2mdt_roles` SET is_in_sync=false WHERE is_deleted=false");
-      while ($row = mssql_fetch_array($result)) {
+      while ($row = $this->fetch_array($result)) {
          $id = $row['ID'];
          $role = $row['Role'];
 
@@ -357,21 +276,19 @@ class PluginGlpi2mdtConfig extends CommonDBTM {
                     (`id`, `role`, `is_deleted`, `is_in_sync`)
                     VALUES ('$id', '$role', false, true)
                   ON DUPLICATE KEY UPDATE role='$role', is_deleted=false, is_in_sync=true";
-         $DB->query($query) or die("Error loading MDT roles to GLPI database. ". $DB->error());
+         $DB->queryOrDie($query, "Error loading MDT roles to GLPI database.");
       }
 
       // Mark lines which are not in MDT anymore as deleted
       $DB->query("UPDATE glpi_plugin_glpi2mdt_roles SET is_in_sync=true, is_deleted=true 
                     WHERE is_in_sync=false AND is_deleted=false");
 
-      $result = mssql_query('SELECT  count(*) as nb FROM dbo.RoleIdentity');
-      $row = mssql_fetch_array($result);
+      $result = $this->query('SELECT  count(*) as nb FROM dbo.RoleIdentity');
+      $row =$this->fetch_array($result);
       $nb = $row['nb'];
       echo "<tr class='tab_bg_1'><td>$nb ".__("lines loaded into table", 'glpi2mdt')." 'roles'.".'</td></tr>';
 
-      // Cleaning
-      mssql_free_result($result);
-      mssql_close($link);
+      $this->free_result($result);
 
       //
       // Load data from XML files in the deployment share

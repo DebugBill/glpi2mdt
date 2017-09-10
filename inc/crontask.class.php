@@ -40,7 +40,7 @@ if (!defined('GLPI_ROOT')) {
 /**
  * Glpi2mdtcrontasks class
 **/
-class PluginGlpi2mdtCronTask extends Crontask {
+class PluginGlpi2mdtCronTask extends PluginGlpi2mdtMdt {
 
    /**
     * Check if new version is available
@@ -86,7 +86,6 @@ class PluginGlpi2mdtCronTask extends Crontask {
       } else {
          // Build a unique ID which will differentiate platforms (dev, prod..) behind the same public IP
          $glpi2mdtconfig = new PluginGlpi2mdtConfig;
-         $glpi2mdtconfig->loadConf();
          $globalconfig = $glpi2mdtconfig->globalconfig;
          $rawid  = $globalconfig['DBServer'].$globalconfig['DBPort'].$globalconfig['DBSchema'].$globalconfig['DBLogin'];
          $PL = hash('md5', $rawid, false);
@@ -155,34 +154,50 @@ class PluginGlpi2mdtCronTask extends Crontask {
 
 
    /**
-   * Crontask to update configuration data from MDT
+   * Task to update configuration data from MDT
    *
-   * @param integer $param, no idea what it is
-   * @return error if any
+   * @param $task Object of CronTask class for log / stat
+   *
+   * @return integer
+   *    >0 : done
+   *    <0 : to be run again (not finished)
+   *     0 : nothing to be done
    */
-   static function cronUpdateBaseconfigFromMDT($param) {
+   static function cronUpdateBaseconfigFromMDT($task) {
       $config = new PluginGlpi2mdtConfig;
-      return $config->showInitialise(true);
+      $config->loadConf();
+      $config->showInitialise(true);
+      return 1;
    }
 
 
    /**
-   * Crontask to synchronize data between MDT and GLPI in Master-Master mode
+   * Task to synchronize data between MDT and GLPI in Master-Master mode
    *
-   * @param none
-   * @return error if any
+   * @param $task Object of CronTask class for log / stat
+   *
+   * @return integer
+   *    >0 : done
+   *    <0 : to be run again (not finished)
+   *     0 : nothing to be done
    */
-   static function cronSyncMasterMaster() {
+   static function cronSyncMasterMaster($task) {
       return 0;
    }
 
+
+
    /**
-   * Crontask to reset the OSinstall flag at specified time
+   * Task to reset the OSinstall flag at specified time
    *
-   * @param none
-   * @return error if any
+   * @param $task Object of CronTask class for log / stat
+   *
+   * @return integer
+   *    >0 : done
+   *    <0 : to be run again (not finished)
+   *     0 : nothing to be done
    */
-   function cronExpireOSInstallFlag() {
+   function cronExpireOSInstallFlag($task) {
       global $DB;
 
       // Get login parameters from database and connect to MSQSL server
@@ -197,10 +212,10 @@ class PluginGlpi2mdtCronTask extends Crontask {
          or die("<h1><font color='red'>Cannot switch to schema $dbschema on MSSQL server</font></h1><br>");
       $query = "SELECT id FROM glpi_plugin_glpi2mdt_settings 
                    WHERE `type`='C' AND `category`='C' AND `key`='OSInstallExpire' AND `value`<=".time();
-      $result = $DB->query($query) or die("Database error: ". $DB->error()."<br><br>".$query);
+      $result = $DB->query($query) or $task->log("Database error: ". $DB->error()."<br><br>".$query);
       if ($DB->numrows($result)==0) {
-        log("No records to expire, exiting");
-        return 1;
+         $task->log("No records to expire, exiting");
+         return 0;
       }
       $nb = 0;
       while ($row=$DB->fetch_array($result)) {
@@ -209,9 +224,9 @@ class PluginGlpi2mdtCronTask extends Crontask {
 
          // Get data for current computer
          $query = "SELECT name, uuid, serial, otherserial FROM glpi_computers WHERE id=$id AND is_deleted=false";
-         $result = $DB->query($query) or die("Database error: ". $DB->error()."<br><br>".$query);
+         $result = $DB->query($query) or $task->log("Database error: ". $DB->error()."<br><br>".$query);
          $common = $DB->fetch_array($result);
-         
+
          // Build list of IDs of existing records in MDT bearing same name, uuid, serial or mac adresses
          //  as the computer being updated (this might clean up other bogus entries and remove duplicate names
          $uuid = $common['uuid'];
@@ -225,7 +240,7 @@ class PluginGlpi2mdtCronTask extends Crontask {
                                  WHERE c.id=$id AND c.id=n.items_id AND itemtype='Computer'
                                    AND n.instantiation_type='NetworkPortEthernet' AND n.mac<>'' 
                                    AND c.is_deleted=FALSE AND n.is_deleted=false")
-                     or die("Database error: ". $DB->error()."<br><br>".$query);
+                     or $task->log("Database error: ". $DB->error()."<br><br>".$query);
          $macs="MacAddress IN (";
          unset($values);
          while ($line = $DB->fetch_array($result)) {
@@ -245,15 +260,16 @@ class PluginGlpi2mdtCronTask extends Crontask {
                           OR (Description<>'' AND Description='$name')
                           OR (SerialNumber<>'' AND SerialNumber='$serial') 
                           OR $macs)";
-         mssql_query($query, $link) or die("Can't reset OSInstall flag<br><br>".$query."<br><br>".mssql_get_last_message());
+         mssql_query($query, $link) or $task->log("Can't reset OSInstall flag<br><br>".$query."<br><br>".mssql_get_last_message());
 
          // Do the same now on GLPI database
          $query = "DELETE FROM glpi_plugin_glpi2mdt_settings WHERE type='C' AND category='C' 
                         AND id=$id AND (`key`='OSInstall' OR `key`='OSInstallExpire');";
-         $DB->query($query) or die("Database error: ". $DB->error()."<br><br>".$query);
+         $DB->query($query) or $task->log("Database error: ". $DB->error()."<br><br>".$query);
       }
-      log( "$nb ". __('record(s) expired', 'glpi2mdt'));
-      return 0;
+      $task->log('record(s) expired');
+      $task->setVolume($nb);
+      return 1;
    }
 
 
