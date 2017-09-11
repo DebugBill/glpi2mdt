@@ -36,6 +36,14 @@ if (!defined('GLPI_ROOT')) {
 }
 
 class PluginGlpi2mdtComputer extends PluginGlpi2mdtMdt {
+
+   /**
+    * The right name for this class
+    *
+    * @var string
+    */
+   static $rightname = 'computer';
+
    /**
    * This function is called from GLPI to allow the plugin to insert one or more items
    *  inside the left menu of a Itemtype.
@@ -49,6 +57,11 @@ class PluginGlpi2mdtComputer extends PluginGlpi2mdtMdt {
    */
    function updateValue($post) {
       global $DB;
+
+      // Only update if user has rights to do so.
+      if (!PluginGlpi2mdtComputer::canUpdate()) {
+         return false;
+      }
 
       // Build array of valid parameters
       $result = $DB->query("SELECT column_name FROM glpi_plugin_glpi2mdt_descriptions WHERE is_deleted=false");
@@ -72,6 +85,13 @@ class PluginGlpi2mdtComputer extends PluginGlpi2mdtMdt {
                $query = "INSERT INTO glpi_dev.glpi_plugin_glpi2mdt_settings 
                              (`id`, `category`, `type`, `key`, `value`)
                              VALUES ($id, 'A','C', '$key', '$value')
+                             ON DUPLICATE KEY UPDATE value='$value'";
+               $DB->queryOrDie($query, "Cannot update settings database");
+            }
+            if (($key == 'Roles') and ($value <> 'none')) {
+               $query = "INSERT INTO glpi_dev.glpi_plugin_glpi2mdt_settings 
+                             (`id`, `category`, `type`, `key`, `value`)
+                             VALUES ($id, 'R','C', '$key', '$value')
                              ON DUPLICATE KEY UPDATE value='$value'";
                $DB->queryOrDie($query, "Cannot update settings database");
             }
@@ -100,6 +120,11 @@ class PluginGlpi2mdtComputer extends PluginGlpi2mdtMdt {
    */
    function updateMDT($id) {
       global $DB;
+
+      // Only update if user has rights to do so.
+      if (!PluginGlpi2mdtComputer::canUpdate()) {
+         return false;
+      }
 
       // Build array of valid parameters
       $result = $DB->query("SELECT column_name FROM glpi_plugin_glpi2mdt_descriptions WHERE is_deleted=false");
@@ -236,7 +261,7 @@ class PluginGlpi2mdtComputer extends PluginGlpi2mdtMdt {
    */
    static function displayTabContentForItem(CommonGLPI $item, $tabnum=1, $withtemplate=0) {
       global $DB;
-      // Load current settings from database
+
       $id = $item->getID();
       $osinstall = 'NO';
       $osinstallexpire = date('Y-m-d H:i', 300*ceil(time()/300) + (3600*24));
@@ -263,84 +288,98 @@ class PluginGlpi2mdtComputer extends PluginGlpi2mdtMdt {
          $osinstallexpire = date('Y-m-d H:i', $settings['OSInstallExpire']);
       }
 
-      ?>
-        <form action="../plugins/glpi2mdt/front/computer.form.php" method="post">
-         <?php echo Html::hidden('id', array('value' => $id)); ?>
-         <?php echo Html::hidden('_glpi_csrf_token', array('value' => Session::getNewCSRFToken())); ?>
-         <div class="spaced" id="tabsbody">
-             <table class="tab_cadre_fixe">
-                 <tr class="tab_bg_1">
-                     <?php
-                       echo "<td>";
-                       echo _e('Enable automatic installation', 'glpi2mdt');
-                       echo "</td><td>";
-                       $yesno['YES'] = __('YES', 'glpi2mdt');
-                       $yesno['NO'] = __('NO', 'glpi2mdt');
-                       Dropdown::showFromArray("OSInstall", $yesno,
-                          array(
-                          'value' => "$osinstall")
-                       );
-                       echo "</td><td>";
-                       echo __('Reset after (empty for permanent):', 'glpi2mdt');
-                       Html::showDateTimeField("OSInstallExpire", array('value'      => $osinstallexpire,
-                                               'timestep'   => 5,
-                                               'mindate'    => date('Y-m-d H:i:s'),
-                                               'maybeempty' => true));
-                        ?>
-                          </td>
-                          </tr>
-                       </tr>
-                       <tr class="tab_bg_1">
-                        <?php
-                        echo '<td>';
-                        echo _e("Task sequence", 'glpi2mdt');
-                        echo ': &nbsp;&nbsp;&nbsp;</td>';
-                        echo "<td>";
-                        $result = $DB->query("SELECT id, name FROM glpi_plugin_glpi2mdt_task_sequences 
-                                                  WHERE is_deleted=false AND hide=false AND enable=true");
-                        while ($row = $DB->fetch_array($result)) {
-                           $tasksequenceids[$row['id']]=$row['name'];
-                        }
-                        Dropdown::showFromArray("TaskSequenceID", $tasksequenceids,
-                          array('value' => "$tasksequence"));
-                        echo "</td>";
-                        ?>
-                       </tr>
-                       <tr class="tab_bg_1">
-                        <?php
-                        echo '<td>';
-                        echo _e('Application', 'glpi2mdt');
-                        echo ': &nbsp;&nbsp;&nbsp;</td>';
-                        echo "<td>";
-                        $allapplications['none'] = __('None', 'glpi2mdt');
-                        $result = $DB->query("SELECT guid, shortname FROM glpi_plugin_glpi2mdt_applications 
-                                                  WHERE is_deleted=false AND hide=false AND enable=true");
-                        while ($row = $DB->fetch_array($result)) {
-                           $allapplications[$row['guid']]=$row['shortname'];
-                        }
-                        Dropdown::showFromArray("Applications", $allapplications,
-                          array('value' => "$applications"));
-                        echo "</td>";
-                        ?>                        
-                       </tr>
-                       <tr class="tab_bg_1">
-                        <td>
-                         Roles: &nbsp;&nbsp;&nbsp;
-                        </td><td>
-                         <input type="text" name="<?php _e('roles', 'glpi2mdt') ?>"  <?php echo 'value="'.$roles.'"' ?> size="40" class="ui-autocomplete-input" autocomplete="off"> &nbsp;&nbsp;&nbsp;
-                        </td>
-                       </tr>
-                       <tr class="tab_bg_1">
-                        <td></td><td>
-                         <input type="submit" class="submit" value="Save" name="SAVE"/>
-                        </td>
-                          </tr>
-                       </tr>
-                   </table>
-               </div>
-              </form>
-               <?php
-               return true;
+      echo '<form action="../plugins/glpi2mdt/front/computer.form.php" method="post">';
+      echo Html::hidden('id', array('value' => $id));
+      echo Html::hidden('_glpi_csrf_token', array('value' => Session::getNewCSRFToken()));
+      echo '<div class="spaced" id="tabsbody">';
+      echo '       <table class="tab_cadre_fixe">';
+
+      // Enable OS install
+      echo '          <tr class="tab_bg_1">';
+      echo "<td>";
+      echo __('Enable automatic installation', 'glpi2mdt');
+      echo "</td><td>";
+      $yesno['YES'] = __('YES', 'glpi2mdt');
+      $yesno['NO'] = __('NO', 'glpi2mdt');
+      Dropdown::showFromArray("OSInstall", $yesno,
+        array(
+       'value' => "$osinstall")
+       );
+      echo '</td>';
+
+      // Reset after...
+      echo '<td>';
+      echo __('Reset after (empty for permanent):', 'glpi2mdt');
+      Html::showDateTimeField("OSInstallExpire", array('value'      => $osinstallexpire,
+       'timestep'   => 5,
+       'mindate'    => date('Y-m-d H:i:s'),
+       'maybeempty' => true));
+      echo '</td></tr>';
+
+      // Task sequences
+      echo '<tr class="tab_bg_1">';
+      echo '<td>';
+      echo __("Task sequence", 'glpi2mdt');
+      echo ': &nbsp;&nbsp;&nbsp;</td>';
+      echo "<td>";
+       $result = $DB->query("SELECT id, name FROM glpi_plugin_glpi2mdt_task_sequences 
+                                WHERE is_deleted=false AND hide=false AND enable=true");
+      while ($row = $DB->fetch_array($result)) {
+         $tasksequenceids[$row['id']]=$row['name'];
+      }
+      Dropdown::showFromArray("TaskSequenceID", $tasksequenceids,
+        array('value' => "$tasksequence"));
+      echo "</td>";
+      echo '</tr>';
+
+      // Applications
+      echo '<tr class="tab_bg_1">';
+      echo '<td>';
+      echo __('Application', 'glpi2mdt');
+      echo ': &nbsp;&nbsp;&nbsp;</td>';
+      echo "<td>";
+      $allapplications['none'] = __('None', 'glpi2mdt');
+      $result = $DB->query("SELECT guid, shortname FROM glpi_plugin_glpi2mdt_applications 
+                          WHERE is_deleted=false AND hide=false AND enable=true");
+      while ($row = $DB->fetch_array($result)) {
+         $allapplications[$row['guid']]=$row['shortname'];
+      }
+      Dropdown::showFromArray("Applications", $allapplications,
+      array('value' => "$applications"));
+      echo "</td>";
+      echo '</tr>';
+
+
+      // Roles
+      echo '<tr class="tab_bg_1">';
+      echo '<td>';
+      echo __('Roles', 'glpi2mdt');
+      echo ': &nbsp;&nbsp;&nbsp;</td>';
+      echo "<td>";
+      $allroles['none'] = __('None', 'glpi2mdt');
+      $result = $DB->query("SELECT id, role FROM glpi_plugin_glpi2mdt_roles 
+                          WHERE is_deleted=false");
+      while ($row = $DB->fetch_array($result)) {
+         $allroles[$row['id']]=$row['role'];
+      }
+      Dropdown::showFromArray("Roles", $allroles,
+      array('value' => "$roles"));
+      echo "</td>";
+      echo '</tr>';
+
+      // Show the save button only if user has rights to do so.
+      if (PluginGlpi2mdtComputer::canUpdate()) {
+         echo '<tr class="tab_bg_1">';
+         echo '<td></td><td>';
+         echo '<input type="submit" class="submit" value="Save" name="SAVE"/>';
+         echo '</td>';
+         echo '</tr>';
+         echo '</tr>';
+         echo '</table>';
+         echo '</div>';
+         echo '</form>';
+      }
+      return true;
    }
 }
 

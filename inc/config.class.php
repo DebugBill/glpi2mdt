@@ -37,6 +37,13 @@ if (!defined('GLPI_ROOT')) {
 
 class PluginGlpi2mdtConfig extends PluginGlpi2mdtMdt {
 
+   /**
+    * The right name for this class
+    *
+    * @var string
+    */
+   static $rightname = 'config';
+
 
    /**
     * Store configuration parameters
@@ -185,36 +192,35 @@ class PluginGlpi2mdtConfig extends PluginGlpi2mdtMdt {
                           Dropdown::showFromArray("ReportUsage", $yesno,
                              array('value' => $this->globalconfig['ReportUsage'])
                           );
-                          echo "</td>";
-                        ?>
-                          </tr>
- 
-                          <tr class="tab_bg_1">
-                           <td>
-                            <input type="submit" class="submit" value="<?php _e("Save", 'glpi2mdt') ?>" name="SAVE"/>
-                           </td>
-                           </td><td>
-                            <input type="submit" class="submit" value=" <?php _e("Check new version", 'glpi2mdt') ?>" name="UPDATE"/>
-                           </td>
-                          </tr>
-                          <tr class="tab_bg_1">
-                           <td>
-                            <input type="submit" class="submit" value=" <?php _e("Test connection", 'glpi2mdt') ?>" name="TEST"/>
-                           </td><td>
-                            <input type="submit" class="submit" value=" <?php _e("Initialise data", 'glpi2mdt') ?>" name="INIT"/>
-                           </td>
-                          </tr>
-                      </table>
-                  </div>
-              </form>
-               <?php
-               // Show alert if a new version is available
-               $currentversion = PLUGIN_GLPI2MDT_VERSION;
-               $latestversion = $this->globalconfig['LatestVersion'];
-               if (version_compare($currentversion, $latest_version, '<')) {
-                  sprintf(__('A new version of plugin glpi2mdt is available: v%s'), $latestversion);
-               }
-               return true;
+                          echo '</td>';
+                          echo '</tr>';
+                        if (PluginGlpi2mdtConfig::canUpdate()) {
+                           echo '<tr class="tab_bg_1">';
+                           echo '<td>';
+                           echo '<input type="submit" class="submit" value="'. __('Save', 'glpi2mdt').'" name="SAVE"/>';
+                           echo '</td>';
+                           echo '</td><td>';
+                           echo '<input type="submit" class="submit" value="'. __('Check new version', 'glpi2mdt').'" name="UPDATE"/>';
+                           echo '</td>';
+                           echo '</tr>';
+                           echo '<tr class="tab_bg_1">';
+                           echo '<td>';
+                           echo '<input type="submit" class="submit" value="'. __('Test connection', 'glpi2mdt').'" name="TEST"/>';
+                           echo '</td><td>';
+                           echo '<input type="submit" class="submit" value="'. __('Initialise data', 'glpi2mdt').'" name="INIT"/>';
+                           echo '</td>';
+                           echo '</tr>';
+                        }
+                        echo '</table>';
+                        echo '</div>';
+                        echo '</form>';
+                        // Show alert if a new version is available
+                        $currentversion = PLUGIN_GLPI2MDT_VERSION;
+                        $latestversion = $this->globalconfig['LatestVersion'];
+                        if (version_compare($currentversion, $latest_version, '<')) {
+                           sprintf(__('A new version of plugin glpi2mdt is available: v%s'), $latestversion);
+                        }
+                        return true;
    }
 
 

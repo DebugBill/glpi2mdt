@@ -35,7 +35,7 @@ include ("../../../inc/includes.php");
 
 Html::header(_('Features'), $_SERVER["PHP_SELF"]);
 
-//Session::checkRight('plugin_glpi2mdt_configuration', READ);
+Session::checkRight('computer', READ);
 
 $g2mComputer = new PluginGlpi2mdtComputer();
 

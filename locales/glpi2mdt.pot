@@ -1,159 +1,174 @@
-# Srings to be translated for glpi2mdt.
-# Copyright (C) 2017 Blaise Thauvin
-# This file is distributed under the same license as the glpi2mdt package.
-# Blaise Thauvin <glpi2mdt at thauvin.org>, 2017.
-# 
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: 0.0.1\n"
+"Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-09-02 16:20+0200\n"
+"POT-Creation-Date: 2017-09-11 23:12+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Blaise Thauvin <glpi2mdt at thauvin.org>, 2017\n"
-"Language-Team: French (https://www.transifex.com/glpi2mdt/teams/78175/fr/)\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: en\n"
-"Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: inc/toolbox.class.php:158
-msgid "Check for glpi2mdt plugin updates"
+#: setup.php:99 setup.php:104
+msgid "Incompatible PHP Installation. Requires module"
 msgstr ""
 
-#: inc/config.class.php:119 inc/computer.class.php:202
+#: setup.php:123
+msgid "Installed / not configured"
+msgstr ""
+
+#: inc/config.class.php:86 inc/computer.class.php:292
 msgid "YES"
 msgstr ""
 
-#: inc/config.class.php:120 inc/computer.class.php:203
+#: inc/config.class.php:87 inc/computer.class.php:293
 msgid "NO"
 msgstr ""
 
-#: inc/config.class.php:128
+#: inc/config.class.php:95
 msgid "Database server name"
 msgstr ""
 
-#: inc/config.class.php:136
+#: inc/config.class.php:103
 msgid "Database server port"
 msgstr ""
 
-#: inc/config.class.php:144
+#: inc/config.class.php:111
 msgid "Login"
 msgstr ""
 
-#: inc/config.class.php:152
+#: inc/config.class.php:119
 msgid "Password"
 msgstr ""
 
-#: inc/config.class.php:160
+#: inc/config.class.php:127
 msgid "Schema"
 msgstr ""
 
-#: inc/config.class.php:168
+#: inc/config.class.php:135
 msgid "Local path to deployment share control directory"
 msgstr ""
 
-#: inc/config.class.php:176
+#: inc/config.class.php:143
 msgid "Local admin password"
 msgstr ""
 
-#: inc/config.class.php:185
+#: inc/config.class.php:152
 msgid "Local admin password complexity"
 msgstr ""
 
-#: inc/config.class.php:188
+#: inc/config.class.php:155
 msgid "Same password on all machines"
 msgstr ""
 
-#: inc/config.class.php:189
+#: inc/config.class.php:156
 msgid "Password is hostname"
 msgstr ""
 
-#: inc/config.class.php:190
+#: inc/config.class.php:157
 msgid "append '-%hostname%' to password"
 msgstr ""
 
-#: inc/config.class.php:199
+#: inc/config.class.php:166
 msgid "Link mode"
 msgstr ""
 
-#: inc/config.class.php:202
+#: inc/config.class.php:169
 msgid "Strict Master-Slave"
 msgstr ""
 
-#: inc/config.class.php:203
+#: inc/config.class.php:170
 msgid "Loose Master-Slave"
 msgstr ""
 
-#: inc/config.class.php:204
+#: inc/config.class.php:171
 msgid "Master-Master"
 msgstr ""
 
-#: inc/config.class.php:212
+#: inc/config.class.php:179
 msgid "Automatically check for new versions"
 msgstr ""
 
-#: inc/config.class.php:223
+#: inc/config.class.php:190
 msgid "Report usage data (anonymous data to help in designing the plugin)"
 msgstr ""
 
-#: inc/config.class.php:234
+#: inc/config.class.php:200
 msgid "Save"
 msgstr ""
 
-#: inc/config.class.php:237
+#: inc/config.class.php:203
 msgid "Check new version"
 msgstr ""
 
-#: inc/config.class.php:242
+#: inc/config.class.php:208
 msgid "Test connection"
 msgstr ""
 
-#: inc/config.class.php:244
+#: inc/config.class.php:210
 msgid "Initialise data"
 msgstr ""
 
-#: inc/config.class.php:265
-msgid "Database login OK!"
-msgstr ""
-
-#: inc/config.class.php:273
-msgid "Schema selection OK!"
-msgstr ""
-
-#: inc/config.class.php:277
-msgid "Schema selection KO!"
-msgstr ""
-
-#: inc/config.class.php:282
-msgid "Database login KO!"
-msgstr ""
-
-#: inc/config.class.php:331 inc/config.class.php:364 inc/config.class.php:401
-#: inc/config.class.php:443 inc/config.class.php:480 inc/config.class.php:522
+#: inc/config.class.php:262 inc/config.class.php:295 inc/config.class.php:336
+#: inc/config.class.php:378 inc/config.class.php:415 inc/config.class.php:457
 msgid "lines loaded into table"
 msgstr ""
 
-#: inc/config.class.php:337 inc/config.class.php:408 inc/config.class.php:452
-#: inc/config.class.php:487 inc/config.class.php:531
+#: inc/config.class.php:268 inc/config.class.php:343 inc/config.class.php:387
+#: inc/config.class.php:422 inc/config.class.php:466
 msgid "lines deleted from table"
 msgstr ""
 
-#: inc/computer.class.php:200
+#: inc/computer.class.php:290
 msgid "Enable automatic installation"
 msgstr ""
 
-#: inc/computer.class.php:215
+#: inc/computer.class.php:299
+msgid "Reset after (empty for permanent):"
+msgstr ""
+
+#: inc/computer.class.php:311
 msgid "Task sequence"
 msgstr ""
 
-#: inc/computer.class.php:231
+#: inc/computer.class.php:327
 msgid "Application"
 msgstr ""
 
-#: inc/computer.class.php:248
+#: inc/computer.class.php:330
+msgid "None"
+msgstr ""
+
+#: inc/computer.class.php:345
 msgid "roles"
+msgstr ""
+
+#: inc/mdt.class.php:124
+msgid "Database login OK!"
+msgstr ""
+
+#: inc/mdt.class.php:132
+msgid "Schema selection OK!"
+msgstr ""
+
+#: inc/mdt.class.php:136
+msgid "Schema selection KO!"
+msgstr ""
+
+#: inc/mdt.class.php:141
+msgid "Database login KO!"
+msgstr ""
+
+#: inc/crontask.class.php:283
+msgid "Glpi2mdt Plugin"
 msgstr ""
 
 #: front/computer.form.php:36
@@ -162,12 +177,4 @@ msgstr ""
 
 #: front/config.form.php:36
 msgid "Setup"
-msgstr ""
-
-#: setup.php:99 setup.php:104
-msgid "Incompatible PHP Installation. Requires module"
-msgstr ""
-
-#: setup.php:123
-msgid "Installed / not configured"
 msgstr ""
