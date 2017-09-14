@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-09-11 23:12+0200\n"
+"POT-Creation-Date: 2017-09-14 23:45+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,19 +17,19 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: setup.php:99 setup.php:104
+#: setup.php:102 setup.php:107
 msgid "Incompatible PHP Installation. Requires module"
 msgstr ""
 
-#: setup.php:123
+#: setup.php:126
 msgid "Installed / not configured"
 msgstr ""
 
-#: inc/config.class.php:86 inc/computer.class.php:292
+#: inc/config.class.php:86 inc/computer.class.php:313
 msgid "YES"
 msgstr ""
 
-#: inc/config.class.php:87 inc/computer.class.php:293
+#: inc/config.class.php:87 inc/computer.class.php:314
 msgid "NO"
 msgstr ""
 
@@ -119,36 +119,18 @@ msgstr ""
 
 #: inc/config.class.php:262 inc/config.class.php:295 inc/config.class.php:336
 #: inc/config.class.php:378 inc/config.class.php:415 inc/config.class.php:457
+#: inc/crontask.class.php:199 inc/crontask.class.php:236
+#: inc/crontask.class.php:282 inc/crontask.class.php:328
+#: inc/crontask.class.php:369 inc/crontask.class.php:415
 msgid "lines loaded into table"
 msgstr ""
 
 #: inc/config.class.php:268 inc/config.class.php:343 inc/config.class.php:387
 #: inc/config.class.php:422 inc/config.class.php:466
+#: inc/crontask.class.php:207 inc/crontask.class.php:291
+#: inc/crontask.class.php:339 inc/crontask.class.php:378
+#: inc/crontask.class.php:426
 msgid "lines deleted from table"
-msgstr ""
-
-#: inc/computer.class.php:290
-msgid "Enable automatic installation"
-msgstr ""
-
-#: inc/computer.class.php:299
-msgid "Reset after (empty for permanent):"
-msgstr ""
-
-#: inc/computer.class.php:311
-msgid "Task sequence"
-msgstr ""
-
-#: inc/computer.class.php:327
-msgid "Application"
-msgstr ""
-
-#: inc/computer.class.php:330
-msgid "None"
-msgstr ""
-
-#: inc/computer.class.php:345
-msgid "roles"
 msgstr ""
 
 #: inc/mdt.class.php:124
@@ -167,8 +149,36 @@ msgstr ""
 msgid "Database login KO!"
 msgstr ""
 
-#: inc/crontask.class.php:283
+#: inc/crontask.class.php:532
 msgid "Glpi2mdt Plugin"
+msgstr ""
+
+#: inc/computer.class.php:52
+msgid "Auto Install"
+msgstr ""
+
+#: inc/computer.class.php:307
+msgid "Automatic installation"
+msgstr ""
+
+#: inc/computer.class.php:311
+msgid "Enable automatic installation"
+msgstr ""
+
+#: inc/computer.class.php:323
+msgid "Reset after (empty for permanent):"
+msgstr ""
+
+#: inc/computer.class.php:333
+msgid "Task sequence"
+msgstr ""
+
+#: inc/computer.class.php:362
+msgid "Applications"
+msgstr ""
+
+#: inc/computer.class.php:374
+msgid "Roles"
 msgstr ""
 
 #: front/computer.form.php:36

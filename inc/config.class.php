@@ -246,7 +246,7 @@ class PluginGlpi2mdtConfig extends PluginGlpi2mdtMdt {
 
       // Mark lines in order to detect deleted ones in the source database
       $DB->query("UPDATE `glpi_plugin_glpi2mdt_descriptions` SET is_in_sync=false WHERE is_deleted=false");
-      // There less than 300 lines, do an atomic insert/update
+      // Hopefully there are less than 300 lines, do an atomic insert/update
       while ($row = $this->fetch_array($result)) {
          $column_name = $row['ColumnName'];
          $category_order = $row['CategoryOrder'];
@@ -344,8 +344,8 @@ class PluginGlpi2mdtConfig extends PluginGlpi2mdtMdt {
 
       // Application groups
       // Mark lines in order to detect deleted ones in the source database
-      $DB->query("UPDATE glpi_plugin_glpi2mdt_application_groups SET is_in_sync=false WHERE is_deleted=false");
-      $DB->query("UPDATE glpi_plugin_glpi2mdt_application_group_link SET is_in_sync=false WHERE is_deleted=false");
+      $DB->queryOrDie("UPDATE glpi_plugin_glpi2mdt_application_groups SET is_in_sync=false WHERE is_deleted=false");
+      $DB->queryOrDie("UPDATE glpi_plugin_glpi2mdt_application_group_links SET is_in_sync=false WHERE is_deleted=false");
       $groups = simplexml_load_file($this->globalconfig['FileShare'].'/ApplicationGroups.xml')
               or die("Cannot load file $this->globalconfig['FileShare']/ApplicationGroups.xml");
       $nb = 0;
@@ -365,24 +365,24 @@ class PluginGlpi2mdtConfig extends PluginGlpi2mdtMdt {
                     (`guid`, `name`, `hide`, `enable`, `is_deleted`, `is_in_sync`)
                     VALUES ('$guid', '$name', $hide, $enable, false, true)
                   ON DUPLICATE KEY UPDATE name='$name', hide=$hide, enable=$enable, is_deleted=false, is_in_sync=true";
-               $DB->query($query) or die("Error loading MDT application groups to GLPI database. ". $DB->error());
+               $DB->queryOrDie($query, "Error loading MDT application groups to GLPI database.");
                $nb += 1;
-               foreach ($group->member as $application_guid) {
+               foreach ($group->Member as $application_guid) {
                   $query = "INSERT INTO glpi_plugin_glpi2mdt_application_group_links
                     (`group_guid`, `application_guid`, `is_deleted`, `is_in_sync`)
                     VALUES ('$guid', '$application_guid', false, true)
                   ON DUPLICATE KEY UPDATE is_deleted=false, is_in_sync=true";
-                  $DB->query($query) or die("Error loading MDT application-group links to GLPI database. ". $DB->error());
+                  $DB->queryOrDie($query, "Error loading MDT application-group links to GLPI database.");
                }
       }
       echo "<tr class='tab_bg_1'><td>$nb ".__("lines loaded into table", 'glpi2mdt')." 'application groups'.</td>";
       // Mark lines which are not in MDT anymore as deleted
-      $result = $DB->query("SELECT count(*) as nb FROM glpi_plugin_glpi2mdt_application_groups WHERE `is_in_sync`=false");
+      $result = $DB->queryOrDie("SELECT count(*) as nb FROM glpi_plugin_glpi2mdt_application_groups WHERE `is_in_sync`=false");
       $row = $DB->fetch_array($result);
       $nb = $row['nb'];
-      $DB->query("UPDATE glpi_plugin_glpi2mdt_application_groups SET is_in_sync=true, is_deleted=true 
+      $DB->queryOrDie("UPDATE glpi_plugin_glpi2mdt_application_groups SET is_in_sync=true, is_deleted=true 
                       WHERE is_in_sync=false AND is_deleted=false");
-      $DB->query("DELETE FROM glpi_plugin_glpi2mdt_application_group_links 
+      $DB->queryOrDie("DELETE FROM glpi_plugin_glpi2mdt_application_group_links 
                       WHERE is_in_sync=false AND is_deleted=false");
       echo "<td>$nb ".__("lines deleted from table", 'glpi2mdt')." 'application_group_links'.</td></tr>";
 
@@ -409,7 +409,7 @@ class PluginGlpi2mdtConfig extends PluginGlpi2mdtMdt {
                     (`id`, `guid`, `name`, `hide`, `enable`, `is_deleted`, `is_in_sync`)
                     VALUES ('$id', '$guid', '$name', $hide, $enable, false, true)
                   ON DUPLICATE KEY UPDATE guid='$guid', name='$name', hide=$hide, enable=$enable, is_deleted=false, is_in_sync=true";
-               $DB->query($query) or die("Error loading MDT task sequences into GLPI database. ". $DB->error());
+               $DB->queryOrDie($query, "Error loading MDT task sequences into GLPI database.");
                $nb += 1;
       }
       echo "<tr class='tab_bg_1'><td>$nb ".__("lines loaded into table", 'glpi2mdt')." 'task_sequences'.</td>";

@@ -145,6 +145,9 @@ class PluginGlpi2mdtMdt extends CommonDBTM {
       echo '</tr></table>';
    }
 
+   function dberror() {
+      mssql_get_last_message();
+   }
 
    function query($query ) {
       return mssql_query($query, $this->MDT);

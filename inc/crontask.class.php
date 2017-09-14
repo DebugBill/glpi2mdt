@@ -52,7 +52,7 @@ class PluginGlpi2mdtCronTask extends PluginGlpi2mdtMdt {
     *
     * @return string explaining the result
    **/
-   static function cronCheckGlpi2mdtUpdate($cron=true, $messageafterredirect=false) {
+   static function cronCheckGlpi2mdtUpdate($task, $cron=true, $messageafterredirect=false) {
       $currentversion = PLUGIN_GLPI2MDT_VERSION;
       global $DB;
       //      if (!$auto
@@ -112,7 +112,7 @@ class PluginGlpi2mdtCronTask extends PluginGlpi2mdtMdt {
                           (`parameter`, `scope`, `value_char`, `is_deleted`)
                           VALUES ('LatestVersion', 'global', '$latest_version', false)
                    ON DUPLICATE KEY UPDATE value_char='$latest_version', value_num=NULL, is_deleted=false";
-         $DB->query($query) or die("Database error: ". $DB->error());
+         $DB->queryOrDie($query, "Database error");
          if (version_compare($currentversion, $latest_version, '<')) {
 
             if (!$auto) {
@@ -154,22 +154,279 @@ class PluginGlpi2mdtCronTask extends PluginGlpi2mdtMdt {
 
 
    /**
-   * Task to update configuration data from MDT
+   * Task to initialise data, load local tables from MDT MSSQL server
    *
-   * @param $task Object of CronTask class for log / stat
+   * @param Flag for manual run or started by cron
    *
-   * @return integer
+   * @return integer if started in cron mode. Outputs HTML data otherwise
    *    >0 : done
    *    <0 : to be run again (not finished)
    *     0 : nothing to be done
-   */
-   static function cronUpdateBaseconfigFromMDT($task) {
-      $config = new PluginGlpi2mdtConfig;
-      $config->loadConf();
-      $config->showInitialise(true);
+   **/
+   function cronUpdateBaseconfigFromMDT($task, $cron=true) {
+      global $DB;
+      $MDT = new PluginGlpi2mdtMdt;
+      $globalconfig = $MDT->globalconfig;
+
+      if (!$cron) {
+         echo '<table class="tab_cadre_fixe">';
+      }
+
+      //
+      // Load available settings fields and descriptions from MDT
+      //
+      $result = $MDT->query('SELECT  ColumnName, CategoryOrder, Category, Description
+                      FROM dbo.Descriptions');
+      $nb = $MDT->numrows($result);
+
+      // Mark lines in order to detect deleted ones in the source database
+      $DB->query("UPDATE `glpi_plugin_glpi2mdt_descriptions` SET is_in_sync=false WHERE is_deleted=false");
+      // Hopefully there are less than 300 lines, do an atomic insert/update
+      while ($row = $MDT->fetch_array($result)) {
+         $column_name = $row['ColumnName'];
+         $category_order = $row['CategoryOrder'];
+         $category = $row['Category'];
+         $description = $row['Description'];
+
+         $query = "INSERT INTO glpi_plugin_glpi2mdt_descriptions
+                    (`column_name`, `category_order`, `category`, `description`, `is_in_sync`, `is_deleted`)
+                    VALUES ('$column_name', $category_order, '$category', '$description', true, false)
+                    ON DUPLICATE KEY UPDATE category_order=$category_order, category='$category',
+                                  description='$description', is_in_sync=true, is_deleted=false;";
+         $DB->queryOrDie($query, "Error loading MDT descriptions to GLPI database.");
+      }
+      if (!$cron) {
+         echo "<tr class='tab_bg_1'><td>$nb ".__("lines loaded into table", 'glpi2mdt')."'descriptions'.".'</td>';
+      }
+      $result = $DB->query("SELECT count(*) as nb FROM `glpi_plugin_glpi2mdt_descriptions` WHERE `is_in_sync`=false");
+      $row = $DB->fetch_array($result);
+      $nb = $row['nb'];
+      $DB->query("UPDATE glpi_plugin_glpi2mdt_descriptions SET is_in_sync=true, is_deleted=true 
+                      WHERE is_in_sync=false AND is_deleted=false");
+      if (!$cron) {
+         echo "<td>$nb ".__("lines deleted from table", 'glpi2mdt')." 'descriptions'.".'</td></tr>';
+      }
+
+      //
+      // Load available roles from MDT
+      //
+      $result = $MDT->query('SELECT  ID, Role FROM dbo.RoleIdentity');
+
+      // Mark lines in order to detect deleted ones in the source database
+      $DB->query("UPDATE `glpi_plugin_glpi2mdt_roles` SET is_in_sync=false WHERE is_deleted=false");
+      while ($row = $MDT->fetch_array($result)) {
+         $id = $row['ID'];
+         $role = $row['Role'];
+
+         $query = "INSERT INTO glpi_plugin_glpi2mdt_roles
+                    (`id`, `role`, `is_deleted`, `is_in_sync`)
+                    VALUES ('$id', '$role', false, true)
+                  ON DUPLICATE KEY UPDATE role='$role', is_deleted=false, is_in_sync=true";
+         $DB->queryOrDie($query, "Error loading MDT roles to GLPI database.");
+      }
+
+      // Mark lines which are not in MDT anymore as deleted
+      $DB->query("UPDATE glpi_plugin_glpi2mdt_roles SET is_in_sync=true, is_deleted=true 
+                    WHERE is_in_sync=false AND is_deleted=false");
+
+      $result = $MDT->query('SELECT  count(*) as nb FROM dbo.RoleIdentity');
+      $row =$MDT->fetch_array($result);
+      $nb = $row['nb'];
+      if (!$cron) {
+         echo "<tr class='tab_bg_1'><td>$nb ".__("lines loaded into table", 'glpi2mdt')." 'roles'.".'</td></tr>';
+      }
+
+      $MDT->free_result($result);
+
+      //
+      // Load data from XML files in the deployment share
+      //
+      // Applications
+      // Mark lines in order to detect deleted ones in the source database
+      $DB->query("UPDATE glpi_plugin_glpi2mdt_applications SET is_in_sync=false WHERE is_deleted=false");
+      $dst = $MDT->globalconfig['FileShare'].'/Applications.xml';
+      //Basic tests just in case...
+      if (file_exists($dst) and !(is_readable($dst))) {
+         if (!$cron) {
+            echo "<tr class='tab_bg_1'><td><font color='red'>Looks like '$dst' exists but is not readable. ";
+            echo "Check access rights, and more specifically SELinux settings.</td></tr>";
+         } else {
+            return -1;
+         }
+      }
+      $applications = simplexml_load_file($dst) or die("Cannot load file ".$dst);
+      $nb = 0;
+      foreach ($applications->application as $application) {
+         $name = $application->Name;
+         $guid = $application['guid'];
+         if (isset($application['enable']) and ($application['enable'] == 'True')) {
+            $enable = 'true'; } else {
+            $enable = 'false';
+            }
+            if (isset($application['hide']) and ($application['hide'] == 'True')) {
+               $hide = 'true'; } else {
+               $hide = 'false';
+               }
+               $shortname = $application->ShortName;
+               $version = $application->Version;
+
+               $query = "INSERT INTO glpi_plugin_glpi2mdt_applications
+                    (`guid`, `name`, `shortname`, `version`, `hide`, `enable`, `is_deleted`, `is_in_sync`)
+                    VALUES ('$guid', '$name', '$shortname', '$version', $hide, $enable, false, true)
+                  ON DUPLICATE KEY UPDATE name='$name', shortname='$shortname', version='$version', hide=$hide, 
+                                          enable=$enable, is_deleted=false, is_in_sync=true";
+               $DB->queryOrDie($query, "Error loading MDT applications to GLPI database.");
+               $nb += 1;
+      }
+      if (!$cron) {
+         echo "<tr class='tab_bg_1'><td>$nb ".__("lines loaded into table", 'glpi2mdt')." 'applications'.</td>";
+      }
+      // Mark lines which are not in MDT anymore as deleted
+      $result = $DB->query("SELECT count(*) as nb FROM glpi_plugin_glpi2mdt_applications WHERE `is_in_sync`=false");
+      $row = $DB->fetch_array($result);
+      $nb = $row['nb'];
+      $DB->query("UPDATE glpi_plugin_glpi2mdt_applications SET is_in_sync=true, is_deleted=true 
+                      WHERE is_in_sync=false AND is_deleted=false");
+      if (!$cron) {
+         echo "<td>$nb ".__("lines deleted from table", 'glpi2mdt')."'applications' </td><tr>";
+      }
+
+      // Application groups
+      // Mark lines in order to detect deleted ones in the source database
+      $DB->queryOrDie("UPDATE glpi_plugin_glpi2mdt_application_groups SET is_in_sync=false WHERE is_deleted=false");
+      $DB->queryOrDie("UPDATE glpi_plugin_glpi2mdt_application_group_links SET is_in_sync=false WHERE is_deleted=false");
+      $groups = simplexml_load_file($MDT->globalconfig['FileShare'].'/ApplicationGroups.xml')
+              or die("Cannot load file $MDT->globalconfig['FileShare']/ApplicationGroups.xml");
+      $nb = 0;
+      foreach ($groups->group as $group) {
+         $name = $group->Name;
+         $guid = $group['guid'];
+         if (isset($group['enable']) and ($group['enable'] == 'True')) {
+            $enable = 'true'; } else {
+            $enable = 'false';
+            }
+            if (isset($group['hide']) and ($group['hide'] == 'True') and ($name <> 'hidden')) {
+               $hide = 'true'; } else {
+               $hide = 'false';
+               }
+
+               $query = "INSERT INTO glpi_plugin_glpi2mdt_application_groups
+                    (`guid`, `name`, `hide`, `enable`, `is_deleted`, `is_in_sync`)
+                    VALUES ('$guid', '$name', $hide, $enable, false, true)
+                  ON DUPLICATE KEY UPDATE name='$name', hide=$hide, enable=$enable, is_deleted=false, is_in_sync=true";
+               $DB->queryOrDie($query, "Error loading MDT application groups to GLPI database.");
+               $nb += 1;
+               foreach ($group->Member as $application_guid) {
+                  $query = "INSERT INTO glpi_plugin_glpi2mdt_application_group_links
+                    (`group_guid`, `application_guid`, `is_deleted`, `is_in_sync`)
+                    VALUES ('$guid', '$application_guid', false, true)
+                  ON DUPLICATE KEY UPDATE is_deleted=false, is_in_sync=true";
+                  $DB->queryOrDie($query, "Error loading MDT application-group links to GLPI database.");
+               }
+      }
+      if (!$cron) {
+         echo "<tr class='tab_bg_1'><td>$nb ".__("lines loaded into table", 'glpi2mdt')." 'application groups'.</td>";
+      }
+      // Mark lines which are not in MDT anymore as deleted
+      $result = $DB->queryOrDie("SELECT count(*) as nb FROM glpi_plugin_glpi2mdt_application_groups WHERE `is_in_sync`=false");
+      $row = $DB->fetch_array($result);
+      $nb = $row['nb'];
+      $DB->queryOrDie("UPDATE glpi_plugin_glpi2mdt_application_groups SET is_in_sync=true, is_deleted=true 
+                      WHERE is_in_sync=false AND is_deleted=false");
+      $DB->queryOrDie("DELETE FROM glpi_plugin_glpi2mdt_application_group_links 
+                      WHERE is_in_sync=false AND is_deleted=false");
+      if (!$cron) {
+         echo "<td>$nb ".__("lines deleted from table", 'glpi2mdt')." 'application_group_links'.</td></tr>";
+      }
+
+      // Task sequences
+      // Mark lines in order to detect deleted ones in the source database
+      $DB->query("UPDATE glpi_plugin_glpi2mdt_task_sequences SET is_in_sync=false WHERE is_deleted=false");
+      $tss = simplexml_load_file($MDT->globalconfig['FileShare'].'/TaskSequences.xml')
+              or die("Cannot load file $MDT->globalconfig['FileShare']/TaskSequences.xml");
+      $nb = 0;
+      foreach ($tss->ts as $ts) {
+         $name = $ts->Name;
+         $guid = $ts['guid'];
+         $id = $ts->ID;
+         if (isset($ts['enable']) and ($ts['enable'] == 'True')) {
+            $enable = 'true'; } else {
+            $enable = 'false';
+            }
+            if (isset($ts['hide']) and ($ts['hide'] == 'True')) {
+               $hide = 'true'; } else {
+               $hide = 'false';
+               }
+
+               $query = "INSERT INTO glpi_plugin_glpi2mdt_task_sequences
+                    (`id`, `guid`, `name`, `hide`, `enable`, `is_deleted`, `is_in_sync`)
+                    VALUES ('$id', '$guid', '$name', $hide, $enable, false, true)
+                  ON DUPLICATE KEY UPDATE guid='$guid', name='$name', hide=$hide, enable=$enable, is_deleted=false, is_in_sync=true";
+               $DB->queryOrDie($query, "Error loading MDT task sequences into GLPI database.");
+               $nb += 1;
+      }
+      if (!$cron) {
+         echo "<tr class='tab_bg_1'><td>$nb ".__("lines loaded into table", 'glpi2mdt')." 'task_sequences'.</td>";
+      }
+      // Mark lines which are not in MDT anymore as deleted
+      $result = $DB->query("SELECT count(*) as nb FROM glpi_plugin_glpi2mdt_task_sequences WHERE `is_in_sync`=false");
+      $row = $DB->fetch_array($result);
+      $nb = $row['nb'];
+      $DB->query("UPDATE glpi_plugin_glpi2mdt_task_sequences SET is_in_sync=true, is_deleted=true 
+                      WHERE is_in_sync=false AND is_deleted=false");
+      if (!$cron) {
+         echo "<td>$nb ".__("lines deleted from table", 'glpi2mdt')." 'task_sequence'.</td></tr>";
+      }
+
+      // Task sequence groups
+      // Mark lines in order to detect deleted ones in the source database
+      $DB->query("UPDATE glpi_plugin_glpi2mdt_task_sequence_groups SET is_in_sync=false WHERE is_deleted=false");
+      $DB->query("UPDATE glpi_plugin_glpi2mdt_task_sequence_group_link SET is_in_sync=false WHERE is_deleted=false");
+      $groups = simplexml_load_file($MDT->globalconfig['FileShare'].'/TaskSequenceGroups.xml')
+              or die("Cannot load file $MDT->globalconfig['FileShare']/TaskSequenceGroups.xml");
+      $nb = 0;
+      foreach ($groups->group as $group) {
+         $name = $group->Name;
+         $guid = $group['guid'];
+         if (isset($group['enable']) and ($group['enable'] == 'True')) {
+            $enable = 'true'; } else {
+            $enable = 'false';
+            }
+            if (isset($group['hide']) and ($group['hide'] == 'True') and ($name <> 'hidden')) {
+               $hide = 'true'; } else {
+               $hide = 'false';
+               }
+
+               $query = "INSERT INTO glpi_plugin_glpi2mdt_task_sequence_groups
+                    (`guid`, `name`, `hide`, `enable`, `is_deleted`, `is_in_sync`)
+                    VALUES ('$guid', '$name', $hide, $enable, false, true)
+                  ON DUPLICATE KEY UPDATE name='$name', hide=$hide, enable=$enable, is_deleted=false, is_in_sync=true";
+               $DB->queryOrDie($query, "Error loading MDT task sequence groups to GLPI database.");
+               $nb += 1;
+               foreach ($group->member as $sequence_guid) {
+                  $query = "INSERT INTO glpi_plugin_glpi2mdt_application_group_links
+                    (`group_guid`, ``sequence_guid`, `is_deleted`, `is_in_sync`)
+                    VALUES ('$guid', '$sequence_guid', false, true)
+                  ON DUPLICATE KEY UPDATE is_deleted=false, is_in_sync=true";
+                  $DB->queryOrDie($query, "Error loading MDT sequence-group links to GLPI database.");
+               }
+      }
+      if (!$cron) {
+         echo "<tr class='tab_bg_1'><td>$nb ".__("lines loaded into table", 'glpi2mdt')." 'task sequence groups'.</td>";
+      }
+      // Mark lines which are not in MDT anymore as deleted
+      $result = $DB->query("SELECT count(*) as nb FROM glpi_plugin_glpi2mdt_task_sequence_groups WHERE `is_in_sync`=false");
+      $row = $DB->fetch_array($result);
+      $nb = $row['nb'];
+      $DB->query("UPDATE glpi_plugin_glpi2mdt_task_sequence_groups SET is_in_sync=true, is_deleted=true 
+                      WHERE is_in_sync=false AND is_deleted=false");
+      $DB->query("DELETE FROM glpi_plugin_glpi2mdt_task_sequence_group_links
+                      WHERE is_in_sync=false AND is_deleted=false");
+      if (!$cron) {
+         echo "<td>$nb ".__("lines deleted from table", 'glpi2mdt')." 'task_sequence_group_links'.</td></tr></table>";
+      }
       return 1;
    }
-
 
    /**
    * Task to synchronize data between MDT and GLPI in Master-Master mode
@@ -199,17 +456,9 @@ class PluginGlpi2mdtCronTask extends PluginGlpi2mdtMdt {
    */
    function cronExpireOSInstallFlag($task) {
       global $DB;
+      $MDT = new PluginGlpi2mdtMdt;
+      $globalconfig = $MDT->globalconfig;
 
-      // Get login parameters from database and connect to MSQSL server
-      $glpi2mdtconfig = new PluginGlpi2mdtConfig;
-      $glpi2mdtconfig->loadConf();
-      $globalconfig = $glpi2mdtconfig->globalconfig;
-      $dbschema =  $globalconfig['DBSchema'];
-
-      $link = mssql_connect($globalconfig['DBServer'], $globalconfig['DBLogin'], $globalconfig['DBPassword'])
-         or die("<h1><font color='red'>Database login KO!</font></h1><br>");
-      mssql_select_db($globalconfig['DBSchema'], $link)
-         or die("<h1><font color='red'>Cannot switch to schema $dbschema on MSSQL server</font></h1><br>");
       $query = "SELECT id FROM glpi_plugin_glpi2mdt_settings 
                    WHERE `type`='C' AND `category`='C' AND `key`='OSInstallExpire' AND `value`<=".time();
       $result = $DB->query($query) or $task->log("Database error: ". $DB->error()."<br><br>".$query);
@@ -252,15 +501,15 @@ class PluginGlpi2mdtCronTask extends PluginGlpi2mdtMdt {
             $macs='false';
          }
          // Cancel installation flag directly into MDT and MSSQL
-         $query = "UPDATE $dbschema.dbo.Settings
+         $query = "UPDATE dbo.Settings
                      SET OSInstall='NO' 
-                     FROM $dbschema.dbo.ComputerIdentity i, $dbschema.dbo.Settings s
+                     FROM dbo.ComputerIdentity i, dbo.Settings s
                      WHERE i.id=s.id AND s.type='C' 
                         AND ((UUID<>'' AND UUID='$uuid')
                           OR (Description<>'' AND Description='$name')
                           OR (SerialNumber<>'' AND SerialNumber='$serial') 
                           OR $macs)";
-         mssql_query($query, $link) or $task->log("Can't reset OSInstall flag<br><br>".$query."<br><br>".mssql_get_last_message());
+         $MDT->query($query) or $task->log("Can't reset OSInstall flag<br><br>".$query."<br><br>".$MDT->dberror());
 
          // Do the same now on GLPI database
          $query = "DELETE FROM glpi_plugin_glpi2mdt_settings WHERE type='C' AND category='C' 

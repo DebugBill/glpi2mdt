@@ -37,7 +37,10 @@ function plugin_init_glpi2mdt() {
    global $PLUGIN_HOOKS;
 
    $PLUGIN_HOOKS['csrf_compliant']['glpi2mdt'] = true;
-
+   // Any update to a computer should trigger an update in MDT, just in case....
+//   $PLUGIN_HOOKS['item_update']['glpi2mdt']    = array('Computer' => array('PluginGlpi2mdtComputer', 'item_update'));
+   $PLUGIN_HOOKS['pre_item_update']['glpi2mdt']    = array('Computer' => 'item_update');
+   
    $Plugin = new Plugin();
 
    if ($Plugin->isActivated('glpi2mdt')) {

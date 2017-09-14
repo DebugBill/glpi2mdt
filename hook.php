@@ -262,3 +262,16 @@ function plugin_glpi2mdt_uninstall() {
 
    return true;
 }
+
+/**
+* This function is called by GLPI when an update is made to a computer
+*
+* @param  GLPI object ID, here a computer
+* @param  Expire: will only reset "OSInstall flag set to true and coupling mode is not "strict master slave"
+* @return string type for the cron list page
+*/
+function update_item(computer $item) {
+   Session::addMessageAfterRedirect("Glpi2mdt after update hook", true);
+   print_f($item);
+   die("Here we are");
+}
