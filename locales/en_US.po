@@ -18,143 +18,173 @@ msgstr ""
 "Language: en_US\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: inc/toolbox.class.php:158
-msgid "Check for glpi2mdt plugin updates"
-msgstr ""
-
-#: inc/config.class.php:119 inc/computer.class.php:202
-msgid "YES"
-msgstr "Yes"
-
-#: inc/config.class.php:120 inc/computer.class.php:203
-msgid "NO"
-msgstr "No"
-
-#: inc/config.class.php:128
-msgid "Database server name"
-msgstr "Database server name"
-
-#: inc/config.class.php:136
-msgid "Database server port"
-msgstr ""
-
-#: inc/config.class.php:144
-msgid "Login"
-msgstr "Login"
-
-#: inc/config.class.php:152
-msgid "Password"
-msgstr "Password"
-
-#: inc/config.class.php:160
-msgid "Schema"
-msgstr "Schema"
-
-#: inc/config.class.php:168
-msgid "Local path to deployment share control directory"
-msgstr "Local path to deployment share control directory"
-
-#: inc/config.class.php:176
-msgid "Local admin password"
-msgstr "Local admin password"
-
-#: inc/config.class.php:185
-msgid "Local admin password complexity"
-msgstr "Local admin password complexity"
-
-#: inc/config.class.php:188
-msgid "Same password on all machines"
-msgstr "Same password on all machines"
-
-#: inc/config.class.php:189
-msgid "Password is hostname"
-msgstr "Password is hostname"
-
-#: inc/config.class.php:190
-msgid "append '-%hostname%' to password"
-msgstr "append '-%hostname%' to password"
-
-#: inc/config.class.php:199
-msgid "Link mode"
-msgstr "Link mode"
-
-#: inc/config.class.php:202
-msgid "Strict Master-Slave"
-msgstr "Strict Master-Slave"
-
-#: inc/config.class.php:203
-msgid "Loose Master-Slave"
-msgstr "Loose Master-Slave"
-
-#: inc/config.class.php:204
-msgid "Master-Master"
-msgstr "Master-Master"
-
-#: inc/config.class.php:212
-msgid "Automatically check for new versions"
-msgstr ""
-
-#: inc/config.class.php:223
-msgid "Report usage data (anonymous data to help in designing the plugin)"
-msgstr ""
-
-#: inc/config.class.php:234
-msgid "Save"
-msgstr "Save"
-
-#: inc/config.class.php:237
-msgid "Check new version"
-msgstr ""
-
-#: inc/config.class.php:242
-msgid "Test connection"
-msgstr "Test connection"
-
-#: inc/config.class.php:244
-msgid "Initialise data"
-msgstr "Initialise data"
-
-#: inc/config.class.php:265
+#: inc/mdt.class.php:141 inc/mdt.class.php:177
 msgid "Database login OK!"
 msgstr "Database login OK!"
 
-#: inc/config.class.php:273
-msgid "Schema selection OK!"
-msgstr "Schema selection OK!"
+#: inc/mdt.class.php:151
+msgid " Schema "
+msgstr ""
 
-#: inc/config.class.php:277
-msgid "Schema selection KO!"
-msgstr "Schema selection KO!"
+#: inc/mdt.class.php:151
+msgid " contains "
+msgstr ""
 
-#: inc/config.class.php:282
+#: inc/mdt.class.php:151
+msgid " tables "
+msgstr ""
+
+#: inc/mdt.class.php:155
+msgid "Could not count tables in schema "
+msgstr ""
+
+#: inc/mdt.class.php:161 inc/mdt.class.php:186
 msgid "Database login KO!"
 msgstr "Database login KO!"
 
-#: inc/config.class.php:331 inc/config.class.php:364 inc/config.class.php:401
-#: inc/config.class.php:443 inc/config.class.php:480 inc/config.class.php:522
-msgid "lines loaded into table"
-msgstr "line(s) loaded into table"
+#: inc/mdt.class.php:172
+msgid "Connection tested using PHP module"
+msgstr ""
 
-#: inc/config.class.php:337 inc/config.class.php:408 inc/config.class.php:452
-#: inc/config.class.php:487 inc/config.class.php:531
-msgid "lines deleted from table"
-msgstr "line's) deleted from table"
+#: inc/computer.class.php:52
+msgid "Auto Install"
+msgstr ""
 
-#: inc/computer.class.php:200
+#: inc/computer.class.php:307
+msgid "Automatic installation"
+msgstr ""
+
+#: inc/computer.class.php:311
 msgid "Enable automatic installation"
 msgstr "Enable automatic installation"
 
-#: inc/computer.class.php:215
+#: inc/computer.class.php:313 inc/config.class.php:86
+msgid "YES"
+msgstr "Yes"
+
+#: inc/computer.class.php:314 inc/config.class.php:87
+msgid "NO"
+msgstr "No"
+
+#: inc/computer.class.php:323
+msgid "Reset after (empty for permanent):"
+msgstr ""
+
+#: inc/computer.class.php:333
 msgid "Task sequence"
 msgstr "Task sequence"
 
-#: inc/computer.class.php:231
-msgid "Application"
-msgstr "Application"
+#: inc/computer.class.php:362
+msgid "Applications"
+msgstr ""
 
-#: inc/computer.class.php:248
-msgid "roles"
-msgstr "roles"
+#: inc/computer.class.php:374
+msgid "Roles"
+msgstr ""
+
+#: inc/crontask.class.php:198 inc/crontask.class.php:235
+#: inc/crontask.class.php:281 inc/crontask.class.php:327
+#: inc/crontask.class.php:368 inc/crontask.class.php:414
+msgid "lines loaded into table"
+msgstr "line(s) loaded into table"
+
+#: inc/crontask.class.php:206 inc/crontask.class.php:290
+#: inc/crontask.class.php:338 inc/crontask.class.php:377
+#: inc/crontask.class.php:425
+msgid "lines deleted from table"
+msgstr "line's) deleted from table"
+
+#: inc/crontask.class.php:531
+msgid "Glpi2mdt Plugin"
+msgstr ""
+
+#: inc/config.class.php:95
+msgid "Database server name"
+msgstr "Database server name"
+
+#: inc/config.class.php:103
+msgid "Database server port"
+msgstr ""
+
+#: inc/config.class.php:113
+msgid "ODBC Driver name"
+msgstr ""
+
+#: inc/config.class.php:124
+msgid "Login"
+msgstr "Login"
+
+#: inc/config.class.php:132
+msgid "Password"
+msgstr "Password"
+
+#: inc/config.class.php:140
+msgid "Schema"
+msgstr "Schema"
+
+#: inc/config.class.php:148
+msgid "Local path to deployment share control directory"
+msgstr "Local path to deployment share control directory"
+
+#: inc/config.class.php:156
+msgid "Local admin password"
+msgstr "Local admin password"
+
+#: inc/config.class.php:165
+msgid "Local admin password complexity"
+msgstr "Local admin password complexity"
+
+#: inc/config.class.php:168
+msgid "Same password on all machines"
+msgstr "Same password on all machines"
+
+#: inc/config.class.php:169
+msgid "Password is hostname"
+msgstr "Password is hostname"
+
+#: inc/config.class.php:170
+msgid "append '-%hostname%' to password"
+msgstr "append '-%hostname%' to password"
+
+#: inc/config.class.php:179
+msgid "Link mode"
+msgstr "Link mode"
+
+#: inc/config.class.php:182
+msgid "Strict Master-Slave"
+msgstr "Strict Master-Slave"
+
+#: inc/config.class.php:183
+msgid "Loose Master-Slave"
+msgstr "Loose Master-Slave"
+
+#: inc/config.class.php:184
+msgid "Master-Master"
+msgstr "Master-Master"
+
+#: inc/config.class.php:192
+msgid "Automatically check for new versions"
+msgstr ""
+
+#: inc/config.class.php:203
+msgid "Report usage data (anonymous data to help in designing the plugin)"
+msgstr ""
+
+#: inc/config.class.php:213
+msgid "Save"
+msgstr "Save"
+
+#: inc/config.class.php:216
+msgid "Check new version"
+msgstr ""
+
+#: inc/config.class.php:221
+msgid "Test connection"
+msgstr "Test connection"
+
+#: inc/config.class.php:223
+msgid "Initialise data"
+msgstr "Initialise data"
 
 #: front/computer.form.php:36
 msgid "Features"
@@ -164,10 +194,14 @@ msgstr "Features"
 msgid "Setup"
 msgstr ""
 
-#: setup.php:99 setup.php:104
+#: setup.php:102
+msgid "Incompatible PHP Installation. Requires module mssql or module odbc"
+msgstr ""
+
+#: setup.php:107
 msgid "Incompatible PHP Installation. Requires module"
 msgstr "Incompatible PHP Installation. Requires module"
 
-#: setup.php:123
+#: setup.php:126
 msgid "Installed / not configured"
 msgstr "Installed / not configured"

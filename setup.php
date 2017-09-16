@@ -38,9 +38,9 @@ function plugin_init_glpi2mdt() {
 
    $PLUGIN_HOOKS['csrf_compliant']['glpi2mdt'] = true;
    // Any update to a computer should trigger an update in MDT, just in case....
-//   $PLUGIN_HOOKS['item_update']['glpi2mdt']    = array('Computer' => array('PluginGlpi2mdtComputer', 'item_update'));
+   //   $PLUGIN_HOOKS['item_update']['glpi2mdt']    = array('Computer' => array('PluginGlpi2mdtComputer', 'item_update'));
    $PLUGIN_HOOKS['pre_item_update']['glpi2mdt']    = array('Computer' => 'item_update');
-   
+
    $Plugin = new Plugin();
 
    if ($Plugin->isActivated('glpi2mdt')) {
@@ -97,9 +97,9 @@ function plugin_glpi2mdt_check_prerequisites() {
       return false;
    }
 
-   // The plugin needs to access the MSSQL MDT database, PHP module needed
-   if (!extension_loaded("mssql")) {
-      echo _('Incompatible PHP Installation. Requires module'). " mssql";
+   // The plugin needs to access the MSSQL MDT database, PHP modules needed
+   if (!extension_loaded("mssql") and !extension_loaded("odbc")) {
+      echo _('Incompatible PHP Installation. Requires module mssql or module odbc');
       return false;
    }
    // The plugin needs to process some XML files from the MDT deployment share, PHP module needed

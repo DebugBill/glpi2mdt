@@ -1,1 +1,209 @@
-fr.po
+# Srings to be translated for glpi2mdt.
+# Copyright (C) 2017 Blaise Thauvin
+# This file is distributed under the same license as the glpi2mdt package.
+# Blaise Thauvin <glpi2mdt at thauvin.org>, 2017.
+# 
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: 0.0.1\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-09-02 16:20+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: Blaise Thauvin <glpi2mdt@thauvin.org>, 2017\n"
+"Language-Team: French (https://www.transifex.com/glpi2mdt/teams/78175/fr/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: fr\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: inc/mdt.class.php:141 inc/mdt.class.php:177
+msgid "Database login OK!"
+msgstr "Connexion à la base réussie!"
+
+#: inc/mdt.class.php:151
+msgid " Schema "
+msgstr ""
+
+#: inc/mdt.class.php:151
+msgid " contains "
+msgstr ""
+
+#: inc/mdt.class.php:151
+msgid " tables "
+msgstr ""
+
+#: inc/mdt.class.php:155
+msgid "Could not count tables in schema "
+msgstr ""
+
+#: inc/mdt.class.php:161 inc/mdt.class.php:186
+msgid "Database login KO!"
+msgstr "Echec de connexion à la base!"
+
+#: inc/mdt.class.php:172
+msgid "Connection tested using PHP module"
+msgstr ""
+
+#: inc/computer.class.php:52
+msgid "Auto Install"
+msgstr ""
+
+#: inc/computer.class.php:307
+msgid "Automatic installation"
+msgstr ""
+
+#: inc/computer.class.php:311
+msgid "Enable automatic installation"
+msgstr "Activer l'installation automatique"
+
+#: inc/computer.class.php:313 inc/config.class.php:86
+msgid "YES"
+msgstr "Oui"
+
+#: inc/computer.class.php:314 inc/config.class.php:87
+msgid "NO"
+msgstr "Non"
+
+#: inc/computer.class.php:323
+msgid "Reset after (empty for permanent):"
+msgstr ""
+
+#: inc/computer.class.php:333
+msgid "Task sequence"
+msgstr "Séquence de tâches"
+
+#: inc/computer.class.php:362
+msgid "Applications"
+msgstr ""
+
+#: inc/computer.class.php:374
+msgid "Roles"
+msgstr ""
+
+#: inc/crontask.class.php:198 inc/crontask.class.php:235
+#: inc/crontask.class.php:281 inc/crontask.class.php:327
+#: inc/crontask.class.php:368 inc/crontask.class.php:414
+msgid "lines loaded into table"
+msgstr "ligne(s) chargée(s) dans la table"
+
+#: inc/crontask.class.php:206 inc/crontask.class.php:290
+#: inc/crontask.class.php:338 inc/crontask.class.php:377
+#: inc/crontask.class.php:425
+msgid "lines deleted from table"
+msgstr "ligne(s) supprimée(s) de la table"
+
+#: inc/crontask.class.php:531
+msgid "Glpi2mdt Plugin"
+msgstr ""
+
+#: inc/config.class.php:95
+msgid "Database server name"
+msgstr "Nom DNS du serveur de base de données"
+
+#: inc/config.class.php:103
+msgid "Database server port"
+msgstr "Port de base de données"
+
+#: inc/config.class.php:113
+msgid "ODBC Driver name"
+msgstr ""
+
+#: inc/config.class.php:124
+msgid "Login"
+msgstr "Identifiant"
+
+#: inc/config.class.php:132
+msgid "Password"
+msgstr "Mot de passe"
+
+#: inc/config.class.php:140
+msgid "Schema"
+msgstr "Schéma"
+
+#: inc/config.class.php:148
+msgid "Local path to deployment share control directory"
+msgstr "Chemin local vers le répertoire \"control\" du partage de déploiement"
+
+#: inc/config.class.php:156
+msgid "Local admin password"
+msgstr "Mot de passe administrateur local"
+
+#: inc/config.class.php:165
+msgid "Local admin password complexity"
+msgstr "Complexité du mot de passe admin local"
+
+#: inc/config.class.php:168
+msgid "Same password on all machines"
+msgstr "Mot de passe identique sur toutes les machines"
+
+#: inc/config.class.php:169
+msgid "Password is hostname"
+msgstr "Le mot de passe est le nom de machine"
+
+#: inc/config.class.php:170
+msgid "append '-%hostname%' to password"
+msgstr "Ajouter \"-%hostname%\" au mot de passe"
+
+#: inc/config.class.php:179
+msgid "Link mode"
+msgstr "Mode de jumelage"
+
+#: inc/config.class.php:182
+msgid "Strict Master-Slave"
+msgstr "Maître-Esclave strict"
+
+#: inc/config.class.php:183
+msgid "Loose Master-Slave"
+msgstr "Maître-Esclave souple"
+
+#: inc/config.class.php:184
+msgid "Master-Master"
+msgstr "Maître-Maître"
+
+#: inc/config.class.php:192
+msgid "Automatically check for new versions"
+msgstr "Rechercher automatiquement de nouvelles versions"
+
+#: inc/config.class.php:203
+msgid "Report usage data (anonymous data to help in designing the plugin)"
+msgstr ""
+"Remonter des données quantitatives d'utilisation (données anonymes servant à"
+" faciliter le design du plugin)"
+
+#: inc/config.class.php:213
+msgid "Save"
+msgstr "Enregistrer"
+
+#: inc/config.class.php:216
+msgid "Check new version"
+msgstr "Verfier si une nouvelle version est disponible"
+
+#: inc/config.class.php:221
+msgid "Test connection"
+msgstr "Tester la connexion"
+
+#: inc/config.class.php:223
+msgid "Initialise data"
+msgstr "Initialiser les données"
+
+#: front/computer.form.php:36
+msgid "Features"
+msgstr "Fonctions"
+
+#: front/config.form.php:36
+msgid "Setup"
+msgstr "Configuration"
+
+#: setup.php:102
+msgid "Incompatible PHP Installation. Requires module mssql or module odbc"
+msgstr ""
+
+#: setup.php:107
+msgid "Incompatible PHP Installation. Requires module"
+msgstr "Installation de PHP incompatible. Nécessite le module"
+
+#: setup.php:126
+msgid "Installed / not configured"
+msgstr "Installé / Non configuré"

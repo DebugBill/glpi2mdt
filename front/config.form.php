@@ -52,7 +52,7 @@ if (isset($_POST['SAVE'])) {
    Html::back();
 }
 
-// Test connection (will save first ...)
+// Test connection
 if (isset($_POST['TEST'])) {
    $g2mConfig->showTestConnection();
 }
@@ -64,7 +64,7 @@ if (isset($_POST['INIT'])) {
 
 // Check for new version of the plugin
 if (isset($_POST['UPDATE'])) {
-   PluginGlpi2mdtCrontask::cronCheckGlpi2mdtUpdate(O, false, true);
+   PluginGlpi2mdtCrontask::cronCheckGlpi2mdtUpdate(0, false, true);
 }
 Html::footer();
 
