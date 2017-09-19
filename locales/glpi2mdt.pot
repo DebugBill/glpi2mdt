@@ -19,67 +19,67 @@ msgstr ""
 
 
 
-#: inc/mdt.class.php:141 inc/mdt.class.php:177
+#: inc/mdt.class.php:138
+msgid "Testing connection using PHP module"
+msgstr ""
+
+#: inc/mdt.class.php:142
 msgid "Database login OK!"
 msgstr ""
 
-#: inc/mdt.class.php:151
+#: inc/mdt.class.php:152
 msgid " Schema "
 msgstr ""
 
-#: inc/mdt.class.php:151
+#: inc/mdt.class.php:152
 msgid " contains "
 msgstr ""
 
-#: inc/mdt.class.php:151
+#: inc/mdt.class.php:152
 msgid " tables "
 msgstr ""
 
-#: inc/mdt.class.php:155
+#: inc/mdt.class.php:156
 msgid "Could not count tables in schema "
 msgstr ""
 
-#: inc/mdt.class.php:161 inc/mdt.class.php:186
+#: inc/mdt.class.php:162
 msgid "Database login KO!"
 msgstr ""
 
-#: inc/mdt.class.php:172
-msgid "Connection tested using PHP module"
-msgstr ""
-
-#: inc/computer.class.php:52
+#: inc/computer.class.php:58 inc/computer.class.php:61
 msgid "Auto Install"
 msgstr ""
 
-#: inc/computer.class.php:307
+#: inc/computer.class.php:317
 msgid "Automatic installation"
 msgstr ""
 
-#: inc/computer.class.php:311
+#: inc/computer.class.php:321
 msgid "Enable automatic installation"
 msgstr ""
 
-#: inc/computer.class.php:313 inc/config.class.php:86
+#: inc/computer.class.php:323 inc/config.class.php:86
 msgid "YES"
 msgstr ""
 
-#: inc/computer.class.php:314 inc/config.class.php:87
+#: inc/computer.class.php:324 inc/config.class.php:87
 msgid "NO"
 msgstr ""
 
-#: inc/computer.class.php:323
+#: inc/computer.class.php:333
 msgid "Reset after (empty for permanent):"
 msgstr ""
 
-#: inc/computer.class.php:333
+#: inc/computer.class.php:343
 msgid "Task sequence"
 msgstr ""
 
-#: inc/computer.class.php:362
+#: inc/computer.class.php:372
 msgid "Applications"
 msgstr ""
 
-#: inc/computer.class.php:374
+#: inc/computer.class.php:384
 msgid "Roles"
 msgstr ""
 

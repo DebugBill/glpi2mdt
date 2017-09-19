@@ -30,7 +30,7 @@ It is developed and tested in this environment only. If you experience problem w
 
 * MDT must be installed in a MS-SQL database accessible from the GLPI server
 * MDT must be fully operationnal by itself. The plugin will not fix a faulty MDT installation, it is only remote-controlling it.
-* MSSQL and SimpleXML PHP modules must be installed
+* (MSSQL or ODBC) and SimpleXML PHP modules must be installed
 * The "Control" directory in your MDT deployment share contains part of the MDT configuration (the other part is in the MS-SQL database). It needs to be mounted (read-only is OK) somewhere on your GLPI server and accessible to PHP scripts. 
 * Fusion inventory, though not mandatory is really very very nice to have.
 
@@ -42,14 +42,11 @@ The plugin is available in French and English, other translators welcome.
 
 
 ## TODOs
-* Add rights management. Currently anyone can do anything
-* Make it possible to choose more than one application. Manage groups (this is mainly UI interface stuff, the code can already handle it. My main question is how many applications are avalaible on average MDT servers? Our has only 5, but in a previous company we had hundreds. The gui would not be the same....)
+* Manage groups (this is mainly UI interface stuff, the code can already handle it. My main question is how many applications are avalaible on average MDT servers? Our has only 5, but in a previous company we had hundreds. The gui would not be the same....)
 * Handle roles, models, packages in the same way applications are handled (but are you using those features in MDT)?
 * Automate some actions based on information available in GLPI and not managed by MDT (location, entity....)
 * Be multi-MDT-server, multi-deployment-share, multi-domain aware. Currently the plugin is not domain aware and is connected to only one MDT database. This raises quite a few questions as to how it should work then.
 * Several coupling modes are proposed in the config page.... but only one is really implemented. There too I wonder what user want. For me the "Strict Master-Slave is fine" as I want everything to be done in GLPI.
-* Add "database port" support. This is easy but as I did not need it it was low on the list
-* Add a few crontasks to automate data import from MDT and data cleanup, especially in Master-Master mode if I ever implement it.
 * Fix Bugs!!!!! There most probably are many, this is the first release.
 
 

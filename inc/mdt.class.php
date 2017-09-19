@@ -92,13 +92,12 @@ class PluginGlpi2mdtMdt extends CommonDBTM {
          $this->DBModule = 'odbc';
          $DBLink = odbc_connect("Driver=$DBDriver;Server=$DBServer,$DBPort;Database=$DBSchema;", $DBLogin, $DBPassword);
 
-      // Conection to MSSQL using native MSSQL PHP module available until PHP 5.6
+         // Conection to MSSQL using native MSSQL PHP module available until PHP 5.6
       } else if (extension_loaded('mssql')) {
          $DBModule = 'mssql';
          $DBLink = mssql_connect($DBServer.":".$DBPort, $DBLogin, $DBPassword);
          if ($DBLink) {
-            if (mssql_select_db($DBSchema, $MDT)) {
-            }
+            mssql_select_db($DBSchema, $MDT);
          }
       }
       $this->DBLink = $DBLink;
@@ -132,58 +131,33 @@ class PluginGlpi2mdtMdt extends CommonDBTM {
    **/
    function showTestConnection() {
       $dbschema = $this->globalconfig['DBSchema'];
+
       echo '<table class="tab_cadre_fixe">';
       echo '<tr class="tab_bg_1">';
-      echo '<td>';
+      echo '<th>'.__("Testing connection using PHP module", 'glpi2mdt')." ".$this->DBModule.'</th></tr><tr><td>';
       // Connection to MSSQL
       if ($this->DBLink) {
-         echo "<h1><font color='green'>";
-         echo _e("Database login OK!", 'glpi2mdt');
-         echo "</font></h1><br>";
+         echo "<font color='green'>";
+         echo __("Database login OK!", 'glpi2mdt');
+         echo "</font><br>";
          // Simple query to get database version
          $version = $this->query('SELECT @@VERSION');
          $row = $this->fetch_array($version);
          echo "Server is: <br>".reset($row)."<br>";
-         $result = $this->query("SELECT COUNT(*) FROM $dbschema.information_schema.tables WHERE table_type='base table'"); 
+         $result = $this->query("SELECT COUNT(*) FROM $dbschema.information_schema.tables WHERE table_type='base table'");
          $nb = reset($this->fetch_array($result));
          if ($nb > 0) {
-            echo "<h1><font color='green'>";
-            echo __(" Schema ", 'glpi2mdt').$dbschema.__(" contains ",'glpi2mdt').$nb.__(" tables ",'glpi2mdt');
-            echo "</font></h1><br>";
+            echo "<font color='green'>";
+            echo __(" Schema ", 'glpi2mdt').$dbschema.__(" contains ", 'glpi2mdt').$nb.__(" tables ", 'glpi2mdt');
+            echo "</font><br>";
          } else {
             echo "<h1><font color='red'>";
-            echo __("Could not count tables in schema ",'glpi2mdt').$this->DBSchema;
+            echo __("Could not count tables in schema ", 'glpi2mdt').$this->DBSchema;
             echo "</font></h1><br>";
          }
-      }
-      else {
+      } else {
          echo "<h1><font color='red'>";
          echo __("Database login KO!", 'glpi2mdt');
-         echo "</font></h1><br>";
-      }
-      echo '</td>';
-      echo '</tr></table>';
-   }
-
-
-   function showTestConnection2() {
-      
-      echo '<table class="tab_cadre_fixe" width="100%"><tr class="headerRow">';
-      echo '<th colspan="2">'.__("Connection tested using PHP module",'glpi2mdt')." ".$this->DBModule.'</th>';
-      echo '</tr><tr class="tab_bg_1><td>';
-      // Connection to MSSQL
-      if ($this->DBLink) {
-         echo "<h1><font color='green'>";
-         echo _e("Database login OK!", 'glpi2mdt');
-         echo "</font></h1><br>";
-         // Simple query to get database version
-         $version = $this->queryOrDie('SELECT @@VERSION', "does not work");
-         $row = $this->fetch_array($version);
-         echo "Server is: <br>".print_r($row)."<br>";
-         }
-      else {
-         echo "<h1><font color='red'>";
-         echo _e("Database login KO!", 'glpi2mdt');
          echo "</font></h1><br>";
       }
       echo '</td>';
