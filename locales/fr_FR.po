@@ -32,15 +32,15 @@ msgstr "Schéma"
 
 #: inc/mdt.class.php:151
 msgid "contains"
-msgstr "contient"
+msgstr ""
 
 #: inc/mdt.class.php:151
 msgid "tables"
-msgstr "tables"
+msgstr ""
 
 #: inc/mdt.class.php:155
 msgid "Could not count tables in schema"
-msgstr "Impossible de compter les tables du schéma"
+msgstr ""
 
 #: inc/mdt.class.php:160
 msgid "Database login KO!"
@@ -50,35 +50,35 @@ msgstr "Echec de connexion à la base!"
 msgid "Auto Install"
 msgstr "Install auto"
 
-#: inc/computer.class.php:340
+#: inc/computer.class.php:347
 msgid "Automatic installation"
 msgstr "Installation automatique"
 
-#: inc/computer.class.php:344
+#: inc/computer.class.php:351
 msgid "Enable automatic installation"
 msgstr "Activer l'installation automatique"
 
-#: inc/computer.class.php:346 inc/config.class.php:86
+#: inc/computer.class.php:353 inc/config.class.php:86
 msgid "YES"
 msgstr "Oui"
 
-#: inc/computer.class.php:347 inc/config.class.php:87
+#: inc/computer.class.php:354 inc/config.class.php:87
 msgid "NO"
 msgstr "Non"
 
-#: inc/computer.class.php:356
+#: inc/computer.class.php:363
 msgid "Reset after (empty for permanent):"
 msgstr "Annuler après (vide pour jamais)"
 
-#: inc/computer.class.php:366
+#: inc/computer.class.php:373
 msgid "Task sequence"
 msgstr "Séquence de tâches"
 
-#: inc/computer.class.php:395
+#: inc/computer.class.php:402
 msgid "Applications"
 msgstr "Applications"
 
-#: inc/computer.class.php:407
+#: inc/computer.class.php:414
 msgid "Roles"
 msgstr "Rôles"
 

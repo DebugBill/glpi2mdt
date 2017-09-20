@@ -50,35 +50,35 @@ msgstr "Database login KO!"
 msgid "Auto Install"
 msgstr "Auto Install"
 
-#: inc/computer.class.php:340
+#: inc/computer.class.php:347
 msgid "Automatic installation"
 msgstr "Automatic installation"
 
-#: inc/computer.class.php:344
+#: inc/computer.class.php:351
 msgid "Enable automatic installation"
 msgstr "Enable automatic installation"
 
-#: inc/computer.class.php:346 inc/config.class.php:86
+#: inc/computer.class.php:353 inc/config.class.php:86
 msgid "YES"
 msgstr "Yes"
 
-#: inc/computer.class.php:347 inc/config.class.php:87
+#: inc/computer.class.php:354 inc/config.class.php:87
 msgid "NO"
 msgstr "No"
 
-#: inc/computer.class.php:356
+#: inc/computer.class.php:363
 msgid "Reset after (empty for permanent):"
 msgstr "Reset after (empty for permanent):"
 
-#: inc/computer.class.php:366
+#: inc/computer.class.php:373
 msgid "Task sequence"
 msgstr "Task sequence"
 
-#: inc/computer.class.php:395
+#: inc/computer.class.php:402
 msgid "Applications"
 msgstr "Applications"
 
-#: inc/computer.class.php:407
+#: inc/computer.class.php:414
 msgid "Roles"
 msgstr "Roles"
 
