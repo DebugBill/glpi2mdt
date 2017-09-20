@@ -10,7 +10,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-09-02 16:20+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Blaise Thauvin <glpi2mdt@thauvin.org>, 2017\n"
+"Last-Translator: Blaise Thauvin <blaise@thauvin.org>, 2017\n"
 "Language-Team: French (https://www.transifex.com/glpi2mdt/teams/78175/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -18,67 +18,67 @@ msgstr ""
 "Language: fr\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: inc/mdt.class.php:138
+#: inc/mdt.class.php:137
 msgid "Testing connection using PHP module"
-msgstr ""
+msgstr "Test de la connexion avec le module PHP"
 
-#: inc/mdt.class.php:142
+#: inc/mdt.class.php:141
 msgid "Database login OK!"
 msgstr "Connexion à la base réussie!"
 
-#: inc/mdt.class.php:152
-msgid " Schema "
+#: inc/mdt.class.php:151 inc/config.class.php:140
+msgid "Schema"
 msgstr "Schéma"
 
-#: inc/mdt.class.php:152
-msgid " contains "
-msgstr "Contient"
+#: inc/mdt.class.php:151
+msgid "contains"
+msgstr "contient"
 
-#: inc/mdt.class.php:152
-msgid " tables "
+#: inc/mdt.class.php:151
+msgid "tables"
 msgstr "tables"
 
-#: inc/mdt.class.php:156
-msgid "Could not count tables in schema "
-msgstr "Impossible de compter les tables dans le schéma"
+#: inc/mdt.class.php:155
+msgid "Could not count tables in schema"
+msgstr "Impossible de compter les tables du schéma"
 
-#: inc/mdt.class.php:162
+#: inc/mdt.class.php:160
 msgid "Database login KO!"
 msgstr "Echec de connexion à la base!"
 
-#: inc/computer.class.php:58 inc/computer.class.php:61
+#: inc/computer.class.php:58 inc/computer.class.php:60
 msgid "Auto Install"
 msgstr "Install auto"
 
-#: inc/computer.class.php:317
+#: inc/computer.class.php:340
 msgid "Automatic installation"
 msgstr "Installation automatique"
 
-#: inc/computer.class.php:321
+#: inc/computer.class.php:344
 msgid "Enable automatic installation"
 msgstr "Activer l'installation automatique"
 
-#: inc/computer.class.php:323 inc/config.class.php:86
+#: inc/computer.class.php:346 inc/config.class.php:86
 msgid "YES"
 msgstr "Oui"
 
-#: inc/computer.class.php:324 inc/config.class.php:87
+#: inc/computer.class.php:347 inc/config.class.php:87
 msgid "NO"
 msgstr "Non"
 
-#: inc/computer.class.php:333
+#: inc/computer.class.php:356
 msgid "Reset after (empty for permanent):"
 msgstr "Annuler après (vide pour jamais)"
 
-#: inc/computer.class.php:343
+#: inc/computer.class.php:366
 msgid "Task sequence"
 msgstr "Séquence de tâches"
 
-#: inc/computer.class.php:372
+#: inc/computer.class.php:395
 msgid "Applications"
 msgstr "Applications"
 
-#: inc/computer.class.php:384
+#: inc/computer.class.php:407
 msgid "Roles"
 msgstr "Rôles"
 
@@ -117,10 +117,6 @@ msgstr "Identifiant"
 #: inc/config.class.php:132
 msgid "Password"
 msgstr "Mot de passe"
-
-#: inc/config.class.php:140
-msgid "Schema"
-msgstr "Schéma"
 
 #: inc/config.class.php:148
 msgid "Local path to deployment share control directory"
@@ -178,7 +174,7 @@ msgstr "Enregistrer"
 
 #: inc/config.class.php:216
 msgid "Check new version"
-msgstr "Verfier si une nouvelle version est disponible"
+msgstr "Vérifier si une nouvelle version est disponible"
 
 #: inc/config.class.php:221
 msgid "Test connection"
@@ -196,15 +192,15 @@ msgstr "Fonctions"
 msgid "Setup"
 msgstr "Configuration"
 
-#: setup.php:102
+#: setup.php:101
 msgid "Incompatible PHP Installation. Requires module mssql or module odbc"
 msgstr ""
 "Configuration PHP incompatible. Un module PHP MSSQL ou ODBC est nécessaire"
 
-#: setup.php:107
+#: setup.php:106
 msgid "Incompatible PHP Installation. Requires module"
 msgstr "Installation de PHP incompatible. Nécessite le module"
 
-#: setup.php:126
+#: setup.php:125
 msgid "Installed / not configured"
 msgstr "Installé / Non configuré"

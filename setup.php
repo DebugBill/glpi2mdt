@@ -26,7 +26,7 @@
  --------------------------------------------------------------------------
  */
 
-define('PLUGIN_GLPI2MDT_VERSION', '0.0.1');
+define('PLUGIN_GLPI2MDT_VERSION', '0.1.0');
 
 /**
  * Init hooks of the plugin.
@@ -38,7 +38,6 @@ function plugin_init_glpi2mdt() {
 
    $PLUGIN_HOOKS['csrf_compliant']['glpi2mdt'] = true;
    // Any update to a computer should trigger an update in MDT, just in case....
-   //$PLUGIN_HOOKS['item_update']['glpi2mdt']    = array('Computer' => array('PluginGlpi2mdtComputer', 'updateMDT'));
    $PLUGIN_HOOKS['item_update']['glpi2mdt']    = array('Computer' => 'updateMDT');
 
    $Plugin = new Plugin();

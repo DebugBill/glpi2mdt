@@ -1,6 +1,21 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [0.1.0] - 2017-09-20
+### Added
+ - The plugin now uses bith mssql and odbc PHP modules making PHP7 compatible 
+ - Crontask is added in order to disable automatic install after a specific date
+ - Crontask is added to synchronise base data from MTD to GLPI on a regular basis (applications, roles,....)
+ - Several applications have been added.
+ - A major bug is removed wich was probably preventing most of you from using the plugin (some platform specific configuraiton was hard coded)
+ - TCP port configuration for DB access is now working
+
+## Changed
+ - The coupling mode now has an effect. Strict and Loose coupling are working. Master-Master still doesn't
+
+## Removed
+ - None
+
 
 ## [0.0.1] - 2017-08-25
 ### Added

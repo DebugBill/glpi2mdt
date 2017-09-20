@@ -18,67 +18,67 @@ msgstr ""
 "Language: en_US\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: inc/mdt.class.php:138
+#: inc/mdt.class.php:137
 msgid "Testing connection using PHP module"
 msgstr ""
 
-#: inc/mdt.class.php:142
+#: inc/mdt.class.php:141
 msgid "Database login OK!"
 msgstr "Database login OK!"
 
-#: inc/mdt.class.php:152
-msgid " Schema "
+#: inc/mdt.class.php:151 inc/config.class.php:140
+msgid "Schema"
 msgstr "Schema"
 
-#: inc/mdt.class.php:152
-msgid " contains "
-msgstr " contains "
+#: inc/mdt.class.php:151
+msgid "contains"
+msgstr ""
 
-#: inc/mdt.class.php:152
-msgid " tables "
-msgstr " tables "
+#: inc/mdt.class.php:151
+msgid "tables"
+msgstr ""
 
-#: inc/mdt.class.php:156
-msgid "Could not count tables in schema "
-msgstr "Could not count tables in schema "
+#: inc/mdt.class.php:155
+msgid "Could not count tables in schema"
+msgstr ""
 
-#: inc/mdt.class.php:162
+#: inc/mdt.class.php:160
 msgid "Database login KO!"
 msgstr "Database login KO!"
 
-#: inc/computer.class.php:58 inc/computer.class.php:61
+#: inc/computer.class.php:58 inc/computer.class.php:60
 msgid "Auto Install"
 msgstr "Auto Install"
 
-#: inc/computer.class.php:317
+#: inc/computer.class.php:340
 msgid "Automatic installation"
 msgstr "Automatic installation"
 
-#: inc/computer.class.php:321
+#: inc/computer.class.php:344
 msgid "Enable automatic installation"
 msgstr "Enable automatic installation"
 
-#: inc/computer.class.php:323 inc/config.class.php:86
+#: inc/computer.class.php:346 inc/config.class.php:86
 msgid "YES"
 msgstr "Yes"
 
-#: inc/computer.class.php:324 inc/config.class.php:87
+#: inc/computer.class.php:347 inc/config.class.php:87
 msgid "NO"
 msgstr "No"
 
-#: inc/computer.class.php:333
+#: inc/computer.class.php:356
 msgid "Reset after (empty for permanent):"
 msgstr "Reset after (empty for permanent):"
 
-#: inc/computer.class.php:343
+#: inc/computer.class.php:366
 msgid "Task sequence"
 msgstr "Task sequence"
 
-#: inc/computer.class.php:372
+#: inc/computer.class.php:395
 msgid "Applications"
 msgstr "Applications"
 
-#: inc/computer.class.php:384
+#: inc/computer.class.php:407
 msgid "Roles"
 msgstr "Roles"
 
@@ -117,10 +117,6 @@ msgstr "Login"
 #: inc/config.class.php:132
 msgid "Password"
 msgstr "Password"
-
-#: inc/config.class.php:140
-msgid "Schema"
-msgstr "Schema"
 
 #: inc/config.class.php:148
 msgid "Local path to deployment share control directory"
@@ -194,14 +190,14 @@ msgstr "Features"
 msgid "Setup"
 msgstr "Setup"
 
-#: setup.php:102
+#: setup.php:101
 msgid "Incompatible PHP Installation. Requires module mssql or module odbc"
 msgstr "Incompatible PHP Installation. Requires module mssql or module odbc"
 
-#: setup.php:107
+#: setup.php:106
 msgid "Incompatible PHP Installation. Requires module"
 msgstr "Incompatible PHP Installation. Requires module"
 
-#: setup.php:126
+#: setup.php:125
 msgid "Installed / not configured"
 msgstr "Installed / not configured"

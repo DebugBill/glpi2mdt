@@ -94,7 +94,7 @@ class PluginGlpi2mdtMdt extends CommonDBTM {
 
          // Conection to MSSQL using native MSSQL PHP module available until PHP 5.6
       } else if (extension_loaded('mssql')) {
-         $DBModule = 'mssql';
+         $this->DBModule = 'mssql';
          $DBLink = mssql_connect($DBServer.":".$DBPort, $DBLogin, $DBPassword);
          if ($DBLink) {
             mssql_select_db($DBSchema, $MDT);
@@ -148,11 +148,11 @@ class PluginGlpi2mdtMdt extends CommonDBTM {
          $nb = reset($this->fetch_array($result));
          if ($nb > 0) {
             echo "<font color='green'>";
-            echo __(" Schema ", 'glpi2mdt').$dbschema.__(" contains ", 'glpi2mdt').$nb.__(" tables ", 'glpi2mdt');
+            echo __("Schema", 'glpi2mdt')." ".$dbschema." ".__("contains", 'glpi2mdt')." ".$nb." ".__("tables", 'glpi2mdt').".";
             echo "</font><br>";
          } else {
             echo "<h1><font color='red'>";
-            echo __("Could not count tables in schema ", 'glpi2mdt').$this->DBSchema;
+            echo __("Could not count tables in schema", 'glpi2mdt')." ".$this->DBSchema;
             echo "</font></h1><br>";
          }
       } else {

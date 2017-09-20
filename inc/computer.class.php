@@ -152,6 +152,15 @@ class PluginGlpi2mdtComputer extends PluginGlpi2mdtMdt {
          $parameters[$line['column_name']] = true;
       }
 
+      // Build password according to rules
+      if ($globalconfig['Complexity'] == 'Trivial') {
+         $adminpasscomposite = $name;
+      } else if ($globalconfig['Complexity'] == 'Unique') {
+         $adminpasscomposite = $globalconfig['LocalAdmin'].'-'.$name;
+      } else { // Default case, Basic
+         $adminpasscomposite = $globalconfig['LocalAdmin'];
+      }
+
       $globalconfig = $this->globalconfig;
 
       // Get data for current computer
@@ -209,9 +218,9 @@ class PluginGlpi2mdtComputer extends PluginGlpi2mdtMdt {
          $ids="ID = ''";
       }
       // Check if the computer entries in MDT are the ones expected by GLPI.
-      // If no, delete everything and recreate
+      // If not, delete everything and recreate
       // If yes, depending on coupling mode, delete and recreate or simply update
-      $query = ("SELECT FROM dbo.ComputerIdentity 
+      $query = ("SELECT ID FROM dbo.ComputerIdentity 
                   WHERE (UUID='$uuid') AND Description='$name' AND SerialNumber='$serial' AND $macs");
       $result = $this->query($query);
       $nblinesactual = $this->numrows($result);
@@ -220,7 +229,7 @@ class PluginGlpi2mdtComputer extends PluginGlpi2mdtMdt {
          $this->queryOrDie("INSERT INTO dbo.ComputerIdentity (Description, UUID, SerialNumber, AssetTag, MacAddress) VALUES $values");
       }
       // Delete corresponding records in side tables depending on coupling mode
-      if ($nblines <> $nblinesactual OR $mode == 'strict') {
+      if ($nblines <> $nblinesactual OR $globalconfig['Mode'] == 'Strict') {
          $this->queryOrDie("DELETE FROM dbo.Settings WHERE Type='C' and $ids");
          $this->queryOrDie("DELETE FROM dbo.Settings_Applications WHERE Type='C' and $ids");
          $this->queryOrDie("DELETE FROM dbo.Settings_Administrators WHERE Type='C' and $ids");
@@ -232,55 +241,65 @@ class PluginGlpi2mdtComputer extends PluginGlpi2mdtMdt {
       $query = "SELECT ID FROM dbo.ComputerIdentity WHERE Description='$name'";
       $result = $this->queryOrDie($query);
       $ids = "(";
-      $values = '';
 
       while ($row = $this->fetch_array($result)) {
          $mdtid = $row['ID'];
-         $ids = $ids.$mdtid.", ";
-         $values = $values."('C', $mdtid, '$name', '$name', '$name', '$adminpasscomposite'), ";
+         $ids = $ids.$row['ID'].", ";
          $arrayid[$row['ID']] = $row['ID'];
+         $values = "('C', $mdtid, '$name', '$name', '$name', '$adminpasscomposite') ";
+         // Check if settings line does exist already. Insert if not, update if yes
+         // (because "on duplicate" does not exist in MS-SQL 
+         $exists = $this->queryOrDie("SELECT ID FROM dbo.Settings WHERE Type='C' AND ID=$mdtid;");
+         if ($this->numrows($exists) == 1) {
+            $query = "UPDATE dbo.Settings SET ComputerName='$name', OSDComputerName='$name', FullName='$name', AdminPassword='$adminpasscomposite'
+                         WHERE Type='C' and ID=$mdtid";
+         } else {
+            $query = "INSERT INTO dbo.Settings (Type, ID, ComputerName, OSDComputerName, FullName, AdminPassword) VALUES $values;";
+         }
+         $this->queryOrDie($query);
       }
       $ids = substr($ids, 0, -2).") ";
-      $values = substr($values, 0, -2);
-
-         // Build password according to rules
-      if ($globalconfig['Complexity'] == 'Trivial') {
-         $adminpasscomposite = $name;
-      } else if ($globalconfig['Complexity'] == 'Unique') {
-         $adminpasscomposite = $globalconfig['LocalAdmin'].'-'.$name;
-      } else { // Default case, Basic
-         $adminpasscomposite = $globalconfig['LocalAdmin'];
-      }
-
-      $query = "INSERT INTO dbo.Settings (Type, ID, ComputerName, OSDComputerName, FullName, AdminPassword) VALUES $values";
-      $this->queryOrDie($query);
 
       // Update settings with additional parameters
       $query = "SELECT `key`, `value` FROM glpi_plugin_glpi2mdt_settings WHERE id=$id AND category='C' AND type='C';";
-      $result = $DB->query($query)
-           or die("Cannot select additional parameters.<br>". $query."<br><br>".$DB->error());
+      $result = $DB->queryOrDie($query, "Cannot select additional parameters.<br>");
       while ($pair = $DB->fetch_array($result)) {
          $key = $pair['key'];
          $value = $pair['value'];
          $query = "UPDATE dbo.Settings SET $key='$value' WHERE ID IN $ids;";
-         if ($parameter[$key]) {
+         // Check if key is a valid field for database "settings"
+         if ($parameters[$key]) {
             $this->queryOrDie("$query");
          }
       }
-
       // Update applications table
       $query = "SELECT `key`, `value` FROM glpi_plugin_glpi2mdt_settings WHERE id=$id AND category='A' AND type='C';";
-      $result = $DB->query($query)
-            or die("Cannot select additional applications.<br>". $query."<br><br>".$DB->error());
-      $query = "DELETE FROM dbo.Settings_Applications WHERE type='C' AND ID='$id'";
-      $this->queryOrDie("$query");
+      $result = $DB->queryOrDie($query, "Cannot select additional applications.");
       while ($pair = $DB->fetch_array($result)) {
          $key = $pair['key'];
          $value = $pair['value'];
          foreach ($arrayid as $mdtid) {
-            $query = "INSERT INTO dbo.Settings_Applications (Type, ID, Sequence, Applications)
-                   VALUES ('C', '$mdtid', $value, '$key');";
-            $this->queryOrDie("$query");
+            // GLPI2MDT does not manage ranks, so keep the existing one if any
+            $ranks = $this->queryOrDie("SELECT Sequence FROM dbo.Settings_Applications WHERE ID=$mdtid AND type='C' AND Applications='$key';");
+            if ($this->numrows($ranks) == 0) {
+               $this->queryOrDie("INSERT INTO dbo.Settings_Applications (Type, ID, Sequence, Applications)
+                      VALUES ('C', '$mdtid', $value, '$key');");
+            }
+         }
+      }
+      // Update Roles table
+      $query = "SELECT `key`, `value` FROM glpi_plugin_glpi2mdt_settings WHERE id=$id AND category='R' AND type='C';";
+      $result = $DB->queryOrDie($query, "Cannot select additional roles.");
+      while ($pair = $DB->fetch_array($result)) {
+         $key = $pair['key'];
+         $value = $pair['value'];
+         foreach ($arrayid as $mdtid) {
+            // GLPI2MDT does not manage ranks, so keep the existing one if any
+            $ranks = $this->queryOrDie("SELECT Sequence FROM dbo.Settings_Roles WHERE ID=$mdtid AND type='C' AND Role='$key';");
+            if ($this->numrows($ranks) == 0) {
+               $this->queryOrDie("INSERT INTO dbo.Settings_Roles (Type, ID, Sequence, Role)
+                      VALUES ('C', '$mdtid', $value, '$key');");
+            }
          }
       }
    }
@@ -407,18 +426,6 @@ class PluginGlpi2mdtComputer extends PluginGlpi2mdtMdt {
          echo '</form>';
       }
       return true;
-   }
-   /**
-   * This function is called by GLPI when an update is made to a computer
-   *
-   * @param  GLPI object ID, here a computer
-   * @param  Expire: will only reset "OSInstall flag set to true and coupling mode is not "strict master slave"
-   * @return string type for the cron list page
-   */
-   function update_item(computer $item) {
-      Session::addMessageAfterRedirect("Glpi2mdt after update hook", true);
-      print_f($item);
-      die("Here we are");
    }
 }
 

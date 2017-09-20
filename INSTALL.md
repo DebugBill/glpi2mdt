@@ -18,10 +18,10 @@ That's all for now!
 * Go to one of your computers. 
 * It should have at least one unique identifier availalble: Serial (might not be unique), Mac address, GUID.
 * Go to sub-item "auto-install" in the computer page.
-* Set your desired values, mainly "Automatic Install" to YES. Choose the proper task sequence and application (yes just one for now)
+* Set your desired values, mainly "Automatic Install" to YES. Choose the proper task sequence and application(s) and role(s) as you would from MDT's interface
 * Save
 
-The computer is now created into MDT with those settings. Pressing F12 for PXE boot should fire the install.
+The computer is now created or updated in MDT with those settings. Pressing F12 for PXE boot should fire the install.
 
 
 Hope it works for you too!
