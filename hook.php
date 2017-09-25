@@ -33,6 +33,7 @@
  */
 function plugin_glpi2mdt_install() {
    global $DB;
+   $dbversion = 1;
 
    // Global plugin settings
    if (!TableExists("glpi_plugin_glpi2mdt_parameters")) {
@@ -52,7 +53,7 @@ function plugin_glpi2mdt_install() {
 
       $query = "INSERT INTO `glpi_plugin_glpi2mdt_parameters`
                        (`id`, `parameter`, `scope`, `value_num`, `is_deleted`)
-                       VALUES (1, 'database_version', 'global', 1, false)";
+                       VALUES (1, 'DBVersion', 'global', $dbversion, false)";
       $DB->query($query) or die("error updating glpi_plugin_glpi2mdt_parameters ". $DB->error());
    }
 
@@ -69,7 +70,7 @@ function plugin_glpi2mdt_install() {
                 KEY `is_in_sync` (`is_in_sync`),
                 KEY `type` (`type`),
                 KEY `category` (`category`)
-                ) ENGINE=MyISAM AUTO_INCREMENT=34 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
+                ) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
 
        $DB->query($query) or die("error creating glpi_plugin_glpi2mdt_settings ". $DB->error());
    }
@@ -240,6 +241,21 @@ function plugin_glpi2mdt_install() {
    CronTask::Register('PluginGlpi2mdtCrontask', 'expireOSInstallFlag', 300,
                          array('mode' => 2, 'allowmode' => 3, 'logs_lifetime' => 30,
                                'comment' => 'Daily task checking for updates'));
+
+   // Update database if necessary
+   $DB->query("UPDATE glpi_plugin_glpi2mdt_parameters SET parameter='DBVersion' WHERE scope='global' AND parameter='database_version';");
+   $result = $DB->query("SELECT sum(value_num) as version FROM glpi_plugin_glpi2mdt_parameters WHERE scope='global' AND parameter='DBVersion'");
+   if ($DB->numrows($result) == 0) {
+      die(__("Glpi2mdt database is corrupted. Please uninstall and reinstall the plugin", 'glpi2mdt'));
+   }
+   if ($DB->numrows($result) == 1) {
+      $currentdbversion = $DB->fetch_array($result)['version'];
+   }
+
+   // Upgrade to version 2 of the database
+   if ($currentdbversion == 1) {
+      return true;
+   }
    return true;
 }
 
@@ -262,6 +278,7 @@ function plugin_glpi2mdt_uninstall() {
 
    return true;
 }
+
 
 /**
 * This function is called by GLPI when an update is made to a computer

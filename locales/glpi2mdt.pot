@@ -19,84 +19,73 @@ msgstr ""
 
 
 
-#: inc/mdt.class.php:137
-msgid "Testing connection using PHP module"
+#: hook.php:249
+msgid ""
+"Glpi2mdt database is corrupted. Please uninstall and reinstall the plugin"
 msgstr ""
 
-#: inc/mdt.class.php:141
-msgid "Database login OK!"
+#: setup.php:101
+msgid "Incompatible PHP Installation. Requires module mssql or module odbc"
 msgstr ""
 
-#: inc/mdt.class.php:151 inc/config.class.php:140
-msgid "Schema"
+#: setup.php:106
+msgid "Incompatible PHP Installation. Requires module"
 msgstr ""
 
-#: inc/mdt.class.php:151
-msgid "contains"
+#: setup.php:125
+msgid "Installed / not configured"
 msgstr ""
 
-#: inc/mdt.class.php:151
-msgid "tables"
-msgstr ""
-
-#: inc/mdt.class.php:155
-msgid "Could not count tables in schema"
-msgstr ""
-
-#: inc/mdt.class.php:160
-msgid "Database login KO!"
-msgstr ""
-
-#: inc/computer.class.php:58 inc/computer.class.php:60
-msgid "Auto Install"
-msgstr ""
-
-#: inc/computer.class.php:347
-msgid "Automatic installation"
-msgstr ""
-
-#: inc/computer.class.php:351
-msgid "Enable automatic installation"
-msgstr ""
-
-#: inc/computer.class.php:353 inc/config.class.php:86
-msgid "YES"
-msgstr ""
-
-#: inc/computer.class.php:354 inc/config.class.php:87
-msgid "NO"
-msgstr ""
-
-#: inc/computer.class.php:363
-msgid "Reset after (empty for permanent):"
-msgstr ""
-
-#: inc/computer.class.php:373
-msgid "Task sequence"
-msgstr ""
-
-#: inc/computer.class.php:402
-msgid "Applications"
-msgstr ""
-
-#: inc/computer.class.php:414
-msgid "Roles"
-msgstr ""
-
-#: inc/crontask.class.php:198 inc/crontask.class.php:235
-#: inc/crontask.class.php:281 inc/crontask.class.php:327
-#: inc/crontask.class.php:368 inc/crontask.class.php:414
+#: inc/crontask.class.php:179 inc/crontask.class.php:216
+#: inc/crontask.class.php:262 inc/crontask.class.php:308
+#: inc/crontask.class.php:349 inc/crontask.class.php:395
 msgid "lines loaded into table"
 msgstr ""
 
-#: inc/crontask.class.php:206 inc/crontask.class.php:290
-#: inc/crontask.class.php:338 inc/crontask.class.php:377
-#: inc/crontask.class.php:425
+#: inc/crontask.class.php:187 inc/crontask.class.php:271
+#: inc/crontask.class.php:319 inc/crontask.class.php:358
+#: inc/crontask.class.php:406
 msgid "lines deleted from table"
 msgstr ""
 
-#: inc/crontask.class.php:531
+#: inc/crontask.class.php:540
 msgid "Glpi2mdt Plugin"
+msgstr ""
+
+#: inc/mdt.class.php:154
+msgid "Testing connection using PHP module"
+msgstr ""
+
+#: inc/mdt.class.php:158
+msgid "Database login OK!"
+msgstr ""
+
+#: inc/mdt.class.php:168 inc/config.class.php:140
+msgid "Schema"
+msgstr ""
+
+#: inc/mdt.class.php:168
+msgid "contains"
+msgstr ""
+
+#: inc/mdt.class.php:168
+msgid "tables"
+msgstr ""
+
+#: inc/mdt.class.php:172
+msgid "Could not count tables in schema"
+msgstr ""
+
+#: inc/mdt.class.php:177
+msgid "Database login KO!"
+msgstr ""
+
+#: inc/config.class.php:86 inc/computer.class.php:321
+msgid "YES"
+msgstr ""
+
+#: inc/config.class.php:87 inc/computer.class.php:322
+msgid "NO"
 msgstr ""
 
 #: inc/config.class.php:95
@@ -183,22 +172,47 @@ msgstr ""
 msgid "Initialise data"
 msgstr ""
 
+#: inc/config.class.php:236 inc/computer.class.php:403
+#, php-format
+msgid "A new version of plugin glpi2mdt is available: v%s"
+msgstr ""
+
+#: inc/computer.class.php:66 inc/computer.class.php:68
+msgid "Auto Install"
+msgstr ""
+
+#: inc/computer.class.php:315
+msgid "Automatic installation"
+msgstr ""
+
+#: inc/computer.class.php:319
+msgid "Enable automatic installation"
+msgstr ""
+
+#: inc/computer.class.php:323
+msgid "Default"
+msgstr ""
+
+#: inc/computer.class.php:332
+msgid "Reset after (empty for permanent):"
+msgstr ""
+
+#: inc/computer.class.php:342
+msgid "Task sequence"
+msgstr ""
+
+#: inc/computer.class.php:371
+msgid "Applications"
+msgstr ""
+
+#: inc/computer.class.php:383
+msgid "Roles"
+msgstr ""
+
 #: front/computer.form.php:36
 msgid "Features"
 msgstr ""
 
 #: front/config.form.php:36
 msgid "Setup"
-msgstr ""
-
-#: setup.php:101
-msgid "Incompatible PHP Installation. Requires module mssql or module odbc"
-msgstr ""
-
-#: setup.php:106
-msgid "Incompatible PHP Installation. Requires module"
-msgstr ""
-
-#: setup.php:125
-msgid "Installed / not configured"
 msgstr ""

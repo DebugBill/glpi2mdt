@@ -38,27 +38,30 @@ if (!defined('GLPI_ROOT')) {
 
 
 /**
- * Glpi2mdtcrontasks class
+ * Glpi2mdtcrontask class
 **/
 class PluginGlpi2mdtCronTask extends PluginGlpi2mdtMdt {
 
    /**
-    * Check if new version is available
-    *
-    * @param $auto                  boolean: check done by cron ? (if not display result)
-    *                                        (default true)
-    * @param $messageafterredirect  boolean: use message after redirect instead of display
-    *                                        (default false)
-    *
-    * @return string explaining the result
+   * Check if new version is available
+   *
+   * @param $auto                  boolean: check done by cron ? (if not display result)
+   *                                        (default true)
+   * @param $messageafterredirect  boolean: use message after redirect instead of display
+   *                                        (default false)
+   *
+   * @return integer if started in cron mode. Outputs HTML data otherwise
+   *    >0 : done
+   *    <0 : to be run again (not finished)
+   *     0 : nothing to be done
    **/
    static function cronCheckGlpi2mdtUpdate($task, $cron=true, $messageafterredirect=false) {
       $currentversion = PLUGIN_GLPI2MDT_VERSION;
       global $DB;
-      //      if (!$auto
-      //          && !Session::haveRight('backup', Backup::CHECKUPDATE)) {
-      //         return false;
-      //      }
+
+      // if (!$cron && !Session::haveRight('backup', Backup::CHECKUPDATE)) {
+      //   return false;
+      // }
 
       //parse github releases (get last version number)
       $error = "";
@@ -74,14 +77,14 @@ class PluginGlpi2mdtCronTask extends PluginGlpi2mdtMdt {
       $latest_version = array_pop($released_tags);
       // Did we get something? Maybe not if the server has no internet access...
       if (strlen(trim($latest_version)) == 0) {
-         if (!$auto) {
+         if ($cron) {
+            $task->log($error);
+         } else {
             if ($messageafterredirect) {
                Session::addMessageAfterRedirect($error, true, ERROR);
             } else {
-               echo "<div class='center'>$error</div>";
+               return $error;
             }
-         } else {
-            return $error;
          }
       } else {
          // Build a unique ID which will differentiate platforms (dev, prod..) behind the same public IP
@@ -94,6 +97,7 @@ class PluginGlpi2mdtCronTask extends PluginGlpi2mdtMdt {
          $query = "SELECT value_char FROM glpi_plugin_glpi2mdt_parameters
                      WHERE is_deleted=false AND scope='global' AND parameter='ReportUsage'";
          if ($DB->fetch_assoc($DB->query($query))['value_char'] == 'YES') {
+            $CO = $globalconfig['Mode'];
             $AP = $DB->fetch_row($DB->query("SELECT count(*) FROM glpi_plugin_glpi2mdt_applications WHERE is_deleted=false"))[0];
             $AG = $DB->fetch_row($DB->query("SELECT count(*) FROM glpi_plugin_glpi2mdt_application_groups WHERE is_deleted=false"))[0];
             $TS = $DB->fetch_row($DB->query("SELECT count(*) FROM glpi_plugin_glpi2mdt_task_sequences WHERE is_deleted=false"))[0];
@@ -102,50 +106,27 @@ class PluginGlpi2mdtCronTask extends PluginGlpi2mdtMdt {
             $MO = $DB->fetch_row($DB->query("SELECT count(*) FROM glpi_plugin_glpi2mdt_models WHERE is_deleted=false"))[0];
             $PK = 0; //$DB->fetch_row($DB->query("SELECT count(*) FROM glpi_plugin_glpi2mdt_packages WHERE is_deleted=false"))[0];
             $ST = $DB->fetch_row($DB->query("SELECT count(*) FROM glpi_plugin_glpi2mdt_settings"))[0];
-            $gets = $gets."&AP=$AP&AG=$AG&TS=$TS&TG=$TG&RO=$RO&MO=$MO&PK=$PK&ST=$ST";
+            $gets = $gets."&CO=$CO&&AP=$AP&AG=$AG&TS=$TS&TG=$TG&RO=$RO&MO=$MO&PK=$PK&ST=$ST";
          }
          Toolbox::getURLContent("https://glpi2mdt.thauvin.org/report.php".$gets);
-         $newversion = sprintf(__('A new version of plugin glpi2mdt is available: v%s'), $latest_version);
-         $uptodate = sprintf(__('You have the latest available version of glpi2mdti: v%s'), $latest_version);
-         $repository = __('You will find it on GitHub.com.');
+         $task->log("https://glpi2mdt.thauvin.org/report.php".$gets);
          $query = "INSERT INTO glpi_plugin_glpi2mdt_parameters
                           (`parameter`, `scope`, `value_char`, `is_deleted`)
                           VALUES ('LatestVersion', 'global', '$latest_version', false)
                    ON DUPLICATE KEY UPDATE value_char='$latest_version', value_num=NULL, is_deleted=false";
          $DB->queryOrDie($query, "Database error");
          if (version_compare($currentversion, $latest_version, '<')) {
-
-            if (!$auto) {
-               if ($messageafterredirect) {
-                  Session::addMessageAfterRedirect($newversion);
-                  Session::addMessageAfterRedirect($repository);
-               } else {
-                  echo "<div class='center'>".$newversion."</div>";
-                  echo "<div class='center'>".$repository."</div>";
-               }
-
-            } else {
-               if ($messageafterredirect) {
-                  Session::addMessageAfterRedirect($newversion);
-               } else {
-                  return $newversion;
-               }
-            }
-
+            $message = sprintf(__('A new version of plugin glpi2mdt is available: v%s'), $latest_version);
          } else {
-            if (!$auto) {
-               if ($messageafterredirect) {
-                  Session::addMessageAfterRedirect($uptodate);
-               } else {
-                  echo "<div class='center'>".$uptodate."</div>";
-               }
-
+            $message = sprintf(__('You have the latest available version of glpi2mdti: v%s'), $latest_version);
+         }
+         if ($cron) {
+               $task->log($message);
+         } else {
+            if ($messageafterredirect) {
+               Session::addMessageAfterRedirect($message);
             } else {
-               if ($messageafterredirect) {
-                  Session::addMessageAfterRedirect($uptodate);
-               } else {
-                  return $uptodate;
-               }
+               return $message;
             }
          }
       }
@@ -429,15 +410,78 @@ class PluginGlpi2mdtCronTask extends PluginGlpi2mdtMdt {
 
    /**
    * Task to synchronize data between MDT and GLPI in Master-Master mode
+   * Can be used atomically to update one machine, or globally by cron
    *
    * @param $task Object of CronTask class for log / stat
+   * @param $id; computer ID to update
    *
    * @return integer
    *    >0 : done
    *    <0 : to be run again (not finished)
    *     0 : nothing to be done
    */
-   static function cronSyncMasterMaster($task) {
+   static function cronSyncMasterMaster($task, $id=0) {
+      global $DB;
+      $MDT = new PluginGlpi2mdtMdt;
+      $globalconfig = $MDT->globalconfig;
+      if ($globalconfig['Mode'] <> "Master") {
+         $task->log("This cron task runs only in Master-Master mode");
+         return 0;
+      }
+      // Build array of valid variables
+      $variables = $globalconfig['variables'];
+      if ($id > 0) {
+         $mdt = $MDT->getMdtIds($id);
+         $mdtids = "AND c.".$mdt['mdtids'];
+         $arraymdtids = $mdt['arraymdtids'];
+      }
+
+      //GET all computers and settings
+      $query="SELECT * FROM dbo.ComputerIdentity c, dbo.Settings s WHERE c.id=s.id $mdtids";
+      $result = $MDT->queryOrDie($query, "Cannot retreive computers from MDT");
+      if (isset($task)) {
+         $task->setVolume($MDT->numrows($result));
+         $task->log("Computer entries found in MDT database");
+      }
+      $correspondances = 0;
+      $fields = 0;
+      $previousid = 0;
+      while ($row = $MDT->fetch_array($result)) {
+         // Find correspondance in GLPI
+         $query = "SELECT c.id as id FROM glpi_computers c, glpi_networkports n
+                    WHERE c.id=n.items_id AND n.itemtype='Computer' AND n.instantiation_type='NetworkPortEthernet' 
+                    AND c.is_deleted=FALSE AND n.is_deleted=false AND c.name = '".$row['Description']."' 
+                    AND UPPER(n.mac)='".$row['MacAddress']."' AND serial='".$row['SerialNumber']."' AND otherserial='".
+                    $row['AssetTag']."' AND uuid='".$row['UUID']."' ORDER BY c.id";
+         $glpi = $DB->queryOrDie($query, "Can't find correspondance in GLPI");
+         if ($DB->numrows($glpi) == 1) {
+            $array = $DB->fetch_array($glpi);
+            $id = $array['id'];
+            // Mark settings that may have to be deleted only if first iteration on this computer
+            if ($previousid<>$id) {
+               $DB->query("UPDATE glpi_plugin_glpi2mdt_settings SET is_in_sync=false WHERE type='C' AND category='C' AND id=$id");
+            }
+            $previousid = $id;
+            $correspondances += 1;
+            // Update GLPI with data from MDT
+            foreach ($row as $key=>$value) {
+               if (isset($variables[$key]) AND $value <>'' AND $value<>null) {
+                  $DB->queryOrDie("INSERT INTO glpi_plugin_glpi2mdt_settings (ID, type, category, `key`, `value`, `is_in_sync`) 
+                              VALUES ($id, 'C', 'C', '$key', '$value', true)
+                              ON DUPLICATE KEY UPDATE `key`='$key', value='$value', is_in_sync=true;", "Can't insert setting");
+                  $fields += 1;
+               }
+            }
+            $DB->query("DELETE FROM glpi_plugin_glpi2mdt_settings WHERE type='C' AND category='C' AND is_in_sync=false AND id=$id");
+         }
+      }
+      if (isset($task)) {
+         $task->setVolume($correspondances);
+         $task->log("computers updated in GLPI");
+         $task->setVolume($fields);
+         $task->log("settings updated in GLPI");
+         return 1;
+      }
       return 0;
    }
 
@@ -469,50 +513,15 @@ class PluginGlpi2mdtCronTask extends PluginGlpi2mdtMdt {
       while ($row=$DB->fetch_array($result)) {
          $nb += 1;
          $id = $row['id'];
-
-         // Get data for current computer
-         $query = "SELECT name, uuid, serial, otherserial FROM glpi_computers WHERE id=$id AND is_deleted=false";
-         $result = $DB->query($query) or $task->log("Database error: ". $DB->error()."<br><br>".$query);
-         $common = $DB->fetch_array($result);
-
-         // Build list of IDs of existing records in MDT bearing same name, uuid, serial or mac adresses
-         //  as the computer being updated (this might clean up other bogus entries and remove duplicate names
-         $uuid = $common['uuid'];
-         $name = $common['name'];
-         $serial = $common['serial'];
-         $assettag = $common['otherserial'];
-
-         // Build list of mac addresses to search for
-         $result = $DB->query("SELECT UPPER(n.mac) as mac
-                                 FROM glpi_computers c, glpi_networkports n
-                                 WHERE c.id=$id AND c.id=n.items_id AND itemtype='Computer'
-                                   AND n.instantiation_type='NetworkPortEthernet' AND n.mac<>'' 
-                                   AND c.is_deleted=FALSE AND n.is_deleted=false")
-                     or $task->log("Database error: ". $DB->error()."<br><br>".$query);
-         $macs="MacAddress IN (";
-         unset($values);
-         while ($line = $DB->fetch_array($result)) {
-            $mac = $line['mac'];
-            $macs=$macs."'".$mac."', ";
-         }
-         $macs = substr($macs, 0, -2).") ";
-         if ($macs ==  "MacAddress IN ()") {
-            $macs='false';
-         }
+         $ids = $this->GetMdtIDs($id);
          // Cancel installation flag directly into MDT and MSSQL
-         $query = "UPDATE dbo.Settings
-                     SET OSInstall='NO' 
-                     FROM dbo.ComputerIdentity i, dbo.Settings s
-                     WHERE i.id=s.id AND s.type='C' 
-                        AND ((UUID<>'' AND UUID='$uuid')
-                          OR (Description<>'' AND Description='$name')
-                          OR (SerialNumber<>'' AND SerialNumber='$serial') 
-                          OR $macs)";
+         $query = "UPDATE dbo.Settings SET OSInstall='' 
+                     FROM dbo.Settings WHERE type='C' AND ".$ids['mdtids'].";";
          $MDT->query($query) or $task->log("Can't reset OSInstall flag<br><br>".$query."<br><br>".$MDT->dberror());
 
          // Do the same now on GLPI database
          $query = "DELETE FROM glpi_plugin_glpi2mdt_settings WHERE type='C' AND category='C' 
-                        AND id=$id AND (`key`='OSInstall' OR `key`='OSInstallExpire');";
+                        AND id=$id AND ((`key`='OSInstall' AND  values='YES') OR `key`='OSInstallExpire');";
          $DB->query($query) or $task->log("Database error: ". $DB->error()."<br><br>".$query);
       }
       $task->log('record(s) expired');

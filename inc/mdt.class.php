@@ -40,6 +40,7 @@ if (!defined('GLPI_ROOT')) {
 class PluginGlpi2mdtMdt extends CommonDBTM {
    // Post parameters valid for configuration form and their expected content
    protected $validkeys=array(
+                 'DBVersion' => 'txt',
                  'DBDriver' =>'txt',
                  'DBServer' => 'txt',
                  'DBLogin' => 'txt',
@@ -51,7 +52,8 @@ class PluginGlpi2mdtMdt extends CommonDBTM {
                  'LocalAdmin' => 'txt',
                  'Complexity' => 'txt',
                  'CheckNewVersion' => 'txt',
-                 'ReportUsage' => 'txt'
+                 'ReportUsage' => 'txt',
+                 'LatestVersion' => 'txt'
                 );
    protected $globalconfig;
    protected $DBLink, $DBModule;
@@ -80,12 +82,26 @@ class PluginGlpi2mdtMdt extends CommonDBTM {
             }
          }
       }
+
+      // Build array of valid variables
+      $result = $DB->query("SELECT column_name FROM glpi_plugin_glpi2mdt_descriptions WHERE is_deleted=false");
+      while ($line = $DB->fetch_array($result)) {
+         $this->globalconfig['variables'][$line['column_name']] = true;
+      }
+
+      // Shortcut variables
       $DBServer = $this->globalconfig['DBServer'];
       $DBPort = $this->globalconfig['DBPort'];
       $DBSchema = $this->globalconfig['DBSchema'];
       $DBLogin = $this->globalconfig['DBLogin'];
       $DBPassword = $this->globalconfig['DBPassword'];
       $DBDriver = $this->globalconfig['DBDriver'];
+
+      // Plugin version check
+      $currentversion = PLUGIN_GLPI2MDT_VERSION;
+      if (version_compare($currentversion, $this->globalconfig['LatestVersion'], '<')) {
+         $this->globalconfig['newversion'] = sprintf(__('A new version of plugin glpi2mdt is available: v%s'), $latest_version);
+      }
 
       // Connection to MSSQL using ODBC PHP module
       if (extension_loaded('odbc')) {
@@ -100,6 +116,7 @@ class PluginGlpi2mdtMdt extends CommonDBTM {
             mssql_select_db($DBSchema, $MDT);
          }
       }
+
       $this->DBLink = $DBLink;
    }
 
@@ -236,5 +253,92 @@ class PluginGlpi2mdtMdt extends CommonDBTM {
       } else if ($this->DBModule == 'odbc') {
          return odbc_free_result($result);
       }
+   }
+
+   /**
+    * This function returns the list of computer IDs in MDT
+    * corresponding to one computer ID in GLPI (because a computer in GLPI can have 0 to N mac addresses
+    * when MDT has a 1 to 1 relationship on this item
+    *
+    * @param computer ID in GLPI
+    *
+    * @return array with three elements: macs, values, ids
+    *            macs   string, list of mac addresses ready to be included in a WHERE clause
+    *            values string, list ready to be used in a "INSERT VALUES" clause
+    *            ids    string, list of IDs ready to be included in a WHERE clause
+   **/
+   function getMdtIds(Computer $id) {
+      global $DB;
+
+      // Get data for current computer
+      $query = "SELECT name, uuid, serial, otherserial FROM glpi_computers WHERE id=$id AND is_deleted=false";
+      $result = $DB->query($query) or $task->log("Database error: ". $DB->error()."<br><br>".$query);
+      $common = $DB->fetch_array($result);
+      $uuid = $common['uuid'];
+      $name = $common['name'];
+      $serial = $common['serial'];
+      $otherserial = $common['otherserial']; // Asset Tag
+
+      // Build list of mac addresses to search for
+      $result = $DB->query("SELECT UPPER(n.mac) as mac
+                              FROM glpi_computers c, glpi_networkports n
+                              WHERE c.id=$id AND c.id=n.items_id AND itemtype='Computer'
+                                AND n.instantiation_type='NetworkPortEthernet' AND n.mac<>'' 
+                                AND c.is_deleted=FALSE AND n.is_deleted=false");
+      $macs="MacAddress IN (";
+      unset($values);
+      $nbrows = 0;
+      while ($line = $DB->fetch_array($result)) {
+         $mac = $line['mac'];
+         $macs=$macs."'".$mac."', ";
+         $values = $values."('$name', '$uuid', '$serial', '$otherserial', '$mac'), ";
+         $nbrows += 1;
+      }
+      // There should be one record per mac address in MDT, and at least one if no mac is provided.
+      if ($nbrows == 0) {
+         $nbrows = 1;
+      }
+      // $macs is a list of mac addresses ready to be included in a WHERE clause
+      $macs = substr($macs, 0, -2).") ";
+
+      //$values is a list ready to be used in a "INSERT VALUES" clause
+      $values =  substr($values, 0, -2)." ";
+      if ($macs ==  "MacAddress IN ()") {
+         // When no mac address is defined, don't match on MacAddress in WHERE clause.
+         $macs="MacAddress=''";
+         $values= "('$name', '$uuid', '$serial', '$assettag', '')";
+      }
+
+      // Build list of IDs of existing records in MDT bearing same name, uuid, serial or mac adresses
+      // as the computer being updated (this might clean up other bogus entries and remove duplicate names)
+      // There can be several because of multiple mac addresses or duplicate names, serials....
+      $query = "SELECT ID FROM dbo.ComputerIdentity 
+                  WHERE (UUID<>'' AND UUID='$uuid')
+                     OR (Description<>'' AND Description='$name')
+                     OR (SerialNumber<>'' AND SerialNumber='$serial') 
+                     OR (AssetTag<>'' AND AssetTag='$otherserial') 
+                     OR (MacAddress<>'' AND $macs);";
+      $result = $this->queryOrDie("$query", "Can't read IDs");
+
+      $mdtids = "ID IN (";
+      while ($line = $this->fetch_array($result)) {
+         $mtdid = $line['ID'];
+         $mdtids=$mdtids."'".$mtdid."', ";
+         $arraymdtids[$mtdid] = $mtdid;
+      }
+      $mdtids = substr($mdtids, 0, -2).")";
+      if ($mdtids ==  "ID IN)") {
+         $mdtids="ID = ''";
+      }
+      $mdt['macs'] = $macs;
+      $mdt['values'] = $values;
+      $mdt['mdtids'] = $mdtids;
+      $mdt['arraymdtids'] = $arraymdtids;
+      $mdt['name'] = $name;
+      $mdt['uuid'] = $uuid;
+      $mdt['serial'] = $serial;
+      $mdt['otherserial'] = $otherserial; //asset tag
+      $mdt['nbrows'] = $nbrows;
+      return $mdt;
    }
 }
