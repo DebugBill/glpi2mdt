@@ -1,7 +1,7 @@
  <root>
             <name>GLPI to MDT connector</name>
             <key>glpi2mdt</key>
-            <state>alpha</state> <!-- stable | unstable | beta | alpha -->
+            <state>beta</state> <!-- stable | unstable | beta | alpha -->
             <logo>https://raw.githubusercontent.com/DebugBill/glpi2mdt/master/logo_40x40.png</logo>
             <description>
                <short>
@@ -11,18 +11,18 @@
                <long>
                   <en>This plugin synchronises GLPI and MDT databases in order to manage Windows automatic deployment from GLPI and based on its data. 
 
-Version 0.0.1 is functionnal though very limited. The README and INSTALL files in the distribution package will give you more information as to what is already available and what I plan to deliver next. It works on my specific configuration (MDT 2013 on Server 2012 + MS-SQL 2012, and GLPI 9.1.6 on Linux PHP 5.5). It is developed and tested in this environment only. If you experience problem with a different configuration please report the issue on GitHub (link below). 
+Version 0.1.0 is functionnal and running in production in our environmnent. The README and INSTALL files in the distribution package will give you more information as to what is already available and what I plan to deliver next. It works on my specific configuration (MDT 2013 on Server 2012 + MS-SQL 2012, and GLPI 9.1.6 on Linux PHP 5.5). It is developed and tested in this environment only. If you experience problem with a different configuration please report the issue on GitHub (link below). 
 
 If you're insterested in this plugin, don't hesitate to contact the author and describe your current architecture so he can make sure the plugin design is compatible with most environments</en>
                   <fr>Ce plugin synchronise les bases de données MDT et GLPI afin de gérer le déploiement automatique de Windows depuis GLPI et à partir de ses données.
 
-La version 0.0.1 est opérationnelle bien que très limitée. Les fichiers README et INSTALL de la distribution vous donneront plus de détails sur ce qui est en place et ce qu'il est prévu d'ajouter en priorité. Le plugin fonctionne dans mon environement spécifique (MDT 2013 sur Server 2012 et MS-SQL 2012, associés à GLPI 9.1.6 sur Linux et PHP 5.5). Il est développé et testé uniquement dans ce contexte. Si vous rencontrez des problèmes avec une configuration différente merci d'ouvrir un ticket avec le lien GitHub ci-dessous.
+La version 0.1.0 est opérationnelle et en prodution dans notre environement. Les fichiers README et INSTALL de la distribution vous donneront plus de détails sur ce qui est en place et ce qu'il est prévu d'ajouter en priorité. Le plugin fonctionne dans mon environement spécifique (MDT 2013 sur Server 2012 et MS-SQL 2012, associés à GLPI 9.1.6 sur Linux et PHP 5.5). Il est développé et testé uniquement dans ce contexte. Si vous rencontrez des problèmes avec une configuration différente merci d'ouvrir un ticket avec le lien GitHub ci-dessous.
 
 Si ce plugin vous intéresse n'hésitez pas à contacter l'auteur avec une description de votre architecture actuelle afin qu'il s'assure que ses choix de design seront compatibles avec la plupart des environements.</fr>
                </long>
             </description>
             <homepage>https://github.com/DebugBill/glpi2mdt</homepage>
-            <download>https://github.com/DebugBill/glpi2mdt/releases/download/0.0.1/glpi2mdt-0.0.1.tar.gz</download>
+            <download>https://github.com/DebugBill/glpi2mdt/releases/download/0.1.0/glpi2mdt-0.1.0.tar.gz</download>
             <issues>https://github.com/DebugBill/glpi2mdt/issues</issues>
             <readme>https://raw.githubusercontent.com/DebugBill/glpi2mdt/master/README.md</readme>
             <authors>
