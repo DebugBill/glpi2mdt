@@ -31,10 +31,7 @@ Si ce plugin vous intéresse n'hésitez pas à contacter l'auteur avec une descr
             <versions>
                <version>
                   <num>0.1.0</num>
-                  <compatibility>9.1.1</compatibility>
-                  <compatibility>9.1.2</compatibility>
-                  <compatibility>9.1.4</compatibility>
-                  <compatibility>9.1.6</compatibility>
+                  <compatibility>9.1.x</compatibility>
                   <compatibility>9.2.0</compatibility>
                </version>
             </versions>
@@ -62,5 +59,4 @@ Si ce plugin vous intéresse n'hésitez pas à contacter l'auteur avec une descr
             <screenshots>
                <screenshot>https://raw.githubusercontent.com/DebugBill/glpi2mdt/master/screenshot01.jpg</screenshot>
                <screenshot>https://raw.githubusercontent.com/DebugBill/glpi2mdt/master/screenshot02.jpg</screenshot>
-            </screenshots>
-         </root>
+            </scre
