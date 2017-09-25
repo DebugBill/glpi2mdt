@@ -53,7 +53,7 @@ class PluginGlpi2mdtComputer extends PluginGlpi2mdtMdt {
    function getTabNameForItem(CommonGLPI $item, $withtemplate=0) {
       global $DB;
       $id = $item->getID();
-      $result = $DB->query("SELECT value_char as mode FROM glpi_dev.glpi_plugin_glpi2mdt_parameters 
+      $result = $DB->query("SELECT value_char as mode FROM glpi_plugin_glpi2mdt_parameters 
                              WHERE scope='global' AND parameter='Mode';");
       $mode = $DB->fetch_array($result)['mode'];
       if ($mode == 'Master') {
@@ -61,8 +61,7 @@ class PluginGlpi2mdtComputer extends PluginGlpi2mdtMdt {
       }
       $result = $DB->query("SELECT value FROM glpi_plugin_glpi2mdt_settings 
                               WHERE type='C' AND category='C' AND `key`='OSInstall' AND id=$id");
-      $row = $DB->fetch_array($result);
-      if ($row['value'] == "YES") {
+      if (($DB->numrows($result) == 1) AND ($DB->fetch_array($result)['value'] == 'YES')) {
          return self::createTabEntry(__('Auto Install', 'glpi2mdt'), __('YES'));
       } else {
          return self::createTabEntry(__('Auto Install', 'glpi2mdt'), __('NO'));

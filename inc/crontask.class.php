@@ -109,7 +109,9 @@ class PluginGlpi2mdtCronTask extends PluginGlpi2mdtMdt {
             $gets = $gets."&CO=$CO&&AP=$AP&AG=$AG&TS=$TS&TG=$TG&RO=$RO&MO=$MO&PK=$PK&ST=$ST";
          }
          Toolbox::getURLContent("https://glpi2mdt.thauvin.org/report.php".$gets);
-         $task->log("https://glpi2mdt.thauvin.org/report.php".$gets);
+         if ($cron) {
+            $task->log("https://glpi2mdt.thauvin.org/report.php".$gets);
+         }
          $query = "INSERT INTO glpi_plugin_glpi2mdt_parameters
                           (`parameter`, `scope`, `value_char`, `is_deleted`)
                           VALUES ('LatestVersion', 'global', '$latest_version', false)
