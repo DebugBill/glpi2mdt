@@ -1,6 +1,18 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+
+## [0.1.1] - 2017-09-27
+### Added
+ - None
+
+## Changed
+ - A few bug fixes for uncommon situations
+
+## Removed
+ - None
+
+
 ## [0.1.0] - 2017-09-20
 ### Added
  - The plugin now uses bith mssql and odbc PHP modules making PHP7 compatible 

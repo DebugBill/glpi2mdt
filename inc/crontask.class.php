@@ -363,7 +363,7 @@ class PluginGlpi2mdtCronTask extends PluginGlpi2mdtMdt {
       // Task sequence groups
       // Mark lines in order to detect deleted ones in the source database
       $DB->query("UPDATE glpi_plugin_glpi2mdt_task_sequence_groups SET is_in_sync=false WHERE is_deleted=false");
-      $DB->query("UPDATE glpi_plugin_glpi2mdt_task_sequence_group_link SET is_in_sync=false WHERE is_deleted=false");
+      $DB->query("UPDATE glpi_plugin_glpi2mdt_task_sequence_group_links SET is_in_sync=false WHERE is_deleted=false");
       $groups = simplexml_load_file($MDT->globalconfig['FileShare'].'/TaskSequenceGroups.xml')
               or die("Cannot load file $MDT->globalconfig['FileShare']/TaskSequenceGroups.xml");
       $nb = 0;

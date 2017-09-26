@@ -303,7 +303,7 @@ class PluginGlpi2mdtMdt extends CommonDBTM {
 
       //$values is a list ready to be used in a "INSERT VALUES" clause
       $values =  substr($values, 0, -2)." ";
-      if ($macs ==  "MacAddress IN ()") {
+      if ($macs ==  "MacAddress IN) ") {
          // When no mac address is defined, don't match on MacAddress in WHERE clause.
          $macs="MacAddress=''";
          $values= "('$name', '$uuid', '$serial', '$assettag', '')";

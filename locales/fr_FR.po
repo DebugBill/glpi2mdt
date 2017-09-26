@@ -38,19 +38,19 @@ msgstr "Installation de PHP incompatible. Nécessite le module"
 msgid "Installed / not configured"
 msgstr "Installé / Non configuré"
 
-#: inc/crontask.class.php:179 inc/crontask.class.php:216
-#: inc/crontask.class.php:262 inc/crontask.class.php:308
-#: inc/crontask.class.php:349 inc/crontask.class.php:395
+#: inc/crontask.class.php:181 inc/crontask.class.php:218
+#: inc/crontask.class.php:264 inc/crontask.class.php:310
+#: inc/crontask.class.php:351 inc/crontask.class.php:397
 msgid "lines loaded into table"
 msgstr "ligne(s) chargée(s) dans la table"
 
-#: inc/crontask.class.php:187 inc/crontask.class.php:271
-#: inc/crontask.class.php:319 inc/crontask.class.php:358
-#: inc/crontask.class.php:406
+#: inc/crontask.class.php:189 inc/crontask.class.php:273
+#: inc/crontask.class.php:321 inc/crontask.class.php:360
+#: inc/crontask.class.php:408
 msgid "lines deleted from table"
 msgstr "ligne(s) supprimée(s) de la table"
 
-#: inc/crontask.class.php:540
+#: inc/crontask.class.php:542
 msgid "Glpi2mdt Plugin"
 msgstr "Plugin Glpi2mdt"
 
@@ -82,11 +82,11 @@ msgstr "Impossible de compter les tables du schéma"
 msgid "Database login KO!"
 msgstr "Echec de connexion à la base!"
 
-#: inc/config.class.php:86 inc/computer.class.php:321
+#: inc/config.class.php:86 inc/computer.class.php:320
 msgid "YES"
 msgstr "Oui"
 
-#: inc/config.class.php:87 inc/computer.class.php:322
+#: inc/config.class.php:87 inc/computer.class.php:321
 msgid "NO"
 msgstr "Non"
 
@@ -176,40 +176,40 @@ msgstr "Tester la connexion"
 msgid "Initialise data"
 msgstr "Initialiser les données"
 
-#: inc/config.class.php:236 inc/computer.class.php:403
+#: inc/config.class.php:236 inc/computer.class.php:402
 #, php-format
 msgid "A new version of plugin glpi2mdt is available: v%s"
 msgstr "Une nouvelle version du plugin glpi2mdt est disponible: v%s"
 
-#: inc/computer.class.php:66 inc/computer.class.php:68
+#: inc/computer.class.php:65 inc/computer.class.php:67
 msgid "Auto Install"
 msgstr "Install auto"
 
-#: inc/computer.class.php:315
+#: inc/computer.class.php:314
 msgid "Automatic installation"
 msgstr "Installation automatique"
 
-#: inc/computer.class.php:319
+#: inc/computer.class.php:318
 msgid "Enable automatic installation"
 msgstr "Activer l'installation automatique"
 
-#: inc/computer.class.php:323
+#: inc/computer.class.php:322
 msgid "Default"
 msgstr "Défault"
 
-#: inc/computer.class.php:332
+#: inc/computer.class.php:331
 msgid "Reset after (empty for permanent):"
 msgstr "Annuler après (vide pour jamais)"
 
-#: inc/computer.class.php:342
+#: inc/computer.class.php:341
 msgid "Task sequence"
 msgstr "Séquence de tâches"
 
-#: inc/computer.class.php:371
+#: inc/computer.class.php:370
 msgid "Applications"
 msgstr "Applications"
 
-#: inc/computer.class.php:383
+#: inc/computer.class.php:382
 msgid "Roles"
 msgstr "Rôles"
 
