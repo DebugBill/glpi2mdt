@@ -233,6 +233,7 @@ class PluginGlpi2mdtCronTask extends PluginGlpi2mdtMdt {
             echo "<tr class='tab_bg_1'><td><font color='red'>Looks like '$dst' exists but is not readable. ";
             echo "Check access rights, and more specifically SELinux settings.</td></tr>";
          } else {
+            $task->log("File '$dst' exists but is not readable. check access rights, and more specifically SELinux settings.");
             return -1;
          }
       }
@@ -515,7 +516,7 @@ class PluginGlpi2mdtCronTask extends PluginGlpi2mdtMdt {
       while ($row=$DB->fetch_array($result)) {
          $nb += 1;
          $id = $row['id'];
-         $ids = $this->GetMdtIDs($id);
+         $ids = $MDT->getMdtIDs($id);
          // Cancel installation flag directly into MDT and MSSQL
          $query = "UPDATE dbo.Settings SET OSInstall='' 
                      FROM dbo.Settings WHERE type='C' AND ".$ids['mdtids'].";";
@@ -523,7 +524,7 @@ class PluginGlpi2mdtCronTask extends PluginGlpi2mdtMdt {
 
          // Do the same now on GLPI database
          $query = "DELETE FROM glpi_plugin_glpi2mdt_settings WHERE type='C' AND category='C' 
-                        AND id=$id AND ((`key`='OSInstall' AND  values='YES') OR `key`='OSInstallExpire');";
+                        AND id=$id AND ((`key`='OSInstall' AND  value='YES') OR `key`='OSInstallExpire');";
          $DB->query($query) or $task->log("Database error: ". $DB->error()."<br><br>".$query);
       }
       $task->log('record(s) expired');

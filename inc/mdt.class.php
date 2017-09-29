@@ -267,7 +267,7 @@ class PluginGlpi2mdtMdt extends CommonDBTM {
     *            values string, list ready to be used in a "INSERT VALUES" clause
     *            ids    string, list of IDs ready to be included in a WHERE clause
    **/
-   function getMdtIds(Computer $id) {
+   function getMdtIds($id) {
       global $DB;
 
       // Get data for current computer
