@@ -128,9 +128,9 @@ class PluginGlpi2mdtMdt extends CommonDBTM {
     * @return None
    **/
    function __destruct() {
-      if ($DBModule == "mssql") {
+      if ($this->DBModule == "mssql") {
          mssql_close($this->DBLink);
-      } else if ($DBModule == "odbc") {
+      } else if ($this->DBModule == "odbc") {
          odbc_close($this->DBLink);
       }
 
