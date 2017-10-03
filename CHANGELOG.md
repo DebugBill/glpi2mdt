@@ -1,6 +1,16 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [0.1.2] - 2017-10-03
+### Added
+ - None
+
+## Changed
+ - Several bugs and warnings linked to PHP7 are corrected.
+
+## Removed
+ - None
+
 
 ## [0.1.1] - 2017-09-27
 ### Added

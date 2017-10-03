@@ -566,16 +566,16 @@ class PluginGlpi2mdtCronTask extends PluginGlpi2mdtMdt {
 
       switch ($name) {
          case 'checkGlpi2mdtUpdate' :
-            return array('description' => __('Check for new updates'));
+            return array('description' => __('Check for new updates', 'glpi2mdt'));
 
          case 'updateBaseconfigFromMDT' :
-            return array('description' => __('Update base data from MDT XML files and MS-SQL DB'));
+            return array('description' => __('Update base data from MDT XML files and MS-SQL DB', 'glpi2mdt'));
 
          case 'syncMasterMaster' :
-            return array('description' => __('Syncrhonize data between MDT and GLPI in Master-Master mode'));
+            return array('description' => __('Synchronize data between MDT and GLPI in Master-Master mode', 'glpi2mdt'));
 
          case 'expireOSInstallFlag' :
-            return array('description' => __('Disable "OS Install" flag when expired'));
+            return array('description' => __('Disable "OS Install" flag when expired', 'glpi2mdt'));
 
       }
    }
@@ -587,7 +587,7 @@ class PluginGlpi2mdtCronTask extends PluginGlpi2mdtMdt {
     * $task task object is launched from cron
     * $cron flag "started by cron or interactively"
     *
-    * @return "false" if failed, handle to XML is success
+    * @return "false" if failed, handle to XML if successful
    **/
    static function checkFile($file, $task, $cron) {
       if (!file_exists($file)) {

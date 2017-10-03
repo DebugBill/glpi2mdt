@@ -24,18 +24,6 @@ msgid ""
 msgstr ""
 "Glpi2mdt database is corrupted. Please uninstall and reinstall the plugin"
 
-#: setup.php:101
-msgid "Incompatible PHP Installation. Requires module mssql or module odbc"
-msgstr "Incompatible PHP Installation. Requires module mssql or module odbc"
-
-#: setup.php:106
-msgid "Incompatible PHP Installation. Requires module"
-msgstr "Incompatible PHP Installation. Requires module"
-
-#: setup.php:125
-msgid "Installed / not configured"
-msgstr "Installed / not configured"
-
 #: inc/mdt.class.php:154
 msgid "Testing connection using PHP module"
 msgstr "Testing connection using PHP module"
@@ -79,6 +67,22 @@ msgstr "line's) deleted from table"
 #: inc/crontask.class.php:552
 msgid "Glpi2mdt Plugin"
 msgstr "Glpi2mdt Plugin"
+
+#: inc/crontask.class.php:569
+msgid "Check for new updates"
+msgstr "Check for new updates"
+
+#: inc/crontask.class.php:572
+msgid "Update base data from MDT XML files and MS-SQL DB"
+msgstr "Update base data from MDT XML files and MS-SQL DB"
+
+#: inc/crontask.class.php:575
+msgid "Synchronize data between MDT and GLPI in Master-Master mode"
+msgstr "Synchronize data between MDT and GLPI in Master-Master mode"
+
+#: inc/crontask.class.php:578
+msgid "Disable \"OS Install\" flag when expired"
+msgstr "Disable \"OS Install\" flag when expired"
 
 #: inc/crontask.class.php:597
 #, php-format
@@ -231,3 +235,15 @@ msgstr "Features"
 #: front/config.form.php:36
 msgid "Setup"
 msgstr "Setup"
+
+#: setup.php:101
+msgid "Incompatible PHP Installation. Requires module mssql or module odbc"
+msgstr "Incompatible PHP Installation. Requires module mssql or module odbc"
+
+#: setup.php:106
+msgid "Incompatible PHP Installation. Requires module"
+msgstr "Incompatible PHP Installation. Requires module"
+
+#: setup.php:125
+msgid "Installed / not configured"
+msgstr "Installed / not configured"

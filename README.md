@@ -23,7 +23,7 @@ This plugin works fine on my specific configuration
 * MDT 2013 on Server 2012
 * MS-SQL 2012
 * GLPI 9.1.6 on Linux 
-* PHP 5.5 
+* PHP 5.6 
 It is developed and tested in this environment only. If you experience problem with a different configuration please report the issue on GitHub. I'll do my best to make it compatible with other setups as long as I am aware of the issue.
 
 ## Prerequisites
@@ -43,10 +43,10 @@ The plugin is available in French and English, other translators welcome.
 
 ## TODOs
 * Manage ranks in applications (this is mainly UI interface stuff, the code can already handle it. My main question is "is it really needded? We don't as we don't have dependencies between applications (and no so many applications to install anyway).
-* Handle models, packages in the same way applications are handled (but are you using those features in MDT)? Models are an issue because of a limitatio in Fusion Inventory. It may be aleviated with GLPI 9.2.x. More to come...
+* Handle models, packages in the same way applications are handled (but are you using those features in MDT)? Models are an issue because of a limitation in Fusion Inventory. It may be aleviated with GLPI 9.2.x. More to come...
 * Automate some actions based on information available in GLPI and not managed by MDT (location, entity....)
 * Be multi-MDT-server, multi-deployment-share, multi-domain aware. Currently the plugin is not domain aware and is connected to only one MDT database. This raises quite a few questions as to how it should work then.
-* Several coupling modes are proposed in the config page.... The strict and loose coupling are there, master-master is not for the time being. Is ithis mode desirable anyway? For me the "Strict Master-Slave is fine" as I want everything to be done in GLPI. Feedback is welcome.
+* Several coupling modes are proposed in the config page.... from the ligthest to the tighter link between MDT and GLPI. 
 * Fix Bugs!!!!! There most probably are many, this is the first release.
 
 
