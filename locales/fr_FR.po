@@ -38,22 +38,6 @@ msgstr "Installation de PHP incompatible. Nécessite le module"
 msgid "Installed / not configured"
 msgstr "Installé / Non configuré"
 
-#: inc/crontask.class.php:181 inc/crontask.class.php:218
-#: inc/crontask.class.php:264 inc/crontask.class.php:310
-#: inc/crontask.class.php:351 inc/crontask.class.php:397
-msgid "lines loaded into table"
-msgstr "ligne(s) chargée(s) dans la table"
-
-#: inc/crontask.class.php:189 inc/crontask.class.php:273
-#: inc/crontask.class.php:321 inc/crontask.class.php:360
-#: inc/crontask.class.php:408
-msgid "lines deleted from table"
-msgstr "ligne(s) supprimée(s) de la table"
-
-#: inc/crontask.class.php:542
-msgid "Glpi2mdt Plugin"
-msgstr "Plugin Glpi2mdt"
-
 #: inc/mdt.class.php:154
 msgid "Testing connection using PHP module"
 msgstr "Test de la connexion avec le module PHP"
@@ -81,6 +65,40 @@ msgstr "Impossible de compter les tables du schéma"
 #: inc/mdt.class.php:177
 msgid "Database login KO!"
 msgstr "Echec de connexion à la base!"
+
+#: inc/crontask.class.php:181 inc/crontask.class.php:218
+#: inc/crontask.class.php:257 inc/crontask.class.php:306
+#: inc/crontask.class.php:349 inc/crontask.class.php:397
+msgid "lines loaded into table"
+msgstr "ligne(s) chargée(s) dans la table"
+
+#: inc/crontask.class.php:189 inc/crontask.class.php:266
+#: inc/crontask.class.php:317 inc/crontask.class.php:358
+#: inc/crontask.class.php:408
+msgid "lines deleted from table"
+msgstr "ligne(s) supprimée(s) de la table"
+
+#: inc/crontask.class.php:543
+msgid "Glpi2mdt Plugin"
+msgstr "Plugin Glpi2mdt"
+
+#: inc/crontask.class.php:588
+#, php-format
+msgid "File %s not found."
+msgstr "Fichier '%s' introuvable."
+
+#: inc/crontask.class.php:595
+#, php-format
+msgid "Looks like '%s' exists but is not readable. "
+msgstr ""
+"Il semble que le fichier '%s' existe mais ne soit pas autorisé en lecture."
+
+#: inc/crontask.class.php:604
+#, php-format
+msgid "File '%s' contains no valid data. Check MDT configuration"
+msgstr ""
+"Le fichier '%s' ne contient aucune donnée valide. Vérifiez la configuration "
+"de MDT."
 
 #: inc/config.class.php:86 inc/computer.class.php:320
 msgid "YES"

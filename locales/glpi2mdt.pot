@@ -36,22 +36,6 @@ msgstr ""
 msgid "Installed / not configured"
 msgstr ""
 
-#: inc/crontask.class.php:181 inc/crontask.class.php:218
-#: inc/crontask.class.php:264 inc/crontask.class.php:310
-#: inc/crontask.class.php:351 inc/crontask.class.php:397
-msgid "lines loaded into table"
-msgstr ""
-
-#: inc/crontask.class.php:189 inc/crontask.class.php:273
-#: inc/crontask.class.php:321 inc/crontask.class.php:360
-#: inc/crontask.class.php:408
-msgid "lines deleted from table"
-msgstr ""
-
-#: inc/crontask.class.php:542
-msgid "Glpi2mdt Plugin"
-msgstr ""
-
 #: inc/mdt.class.php:154
 msgid "Testing connection using PHP module"
 msgstr ""
@@ -78,6 +62,37 @@ msgstr ""
 
 #: inc/mdt.class.php:177
 msgid "Database login KO!"
+msgstr ""
+
+#: inc/crontask.class.php:181 inc/crontask.class.php:218
+#: inc/crontask.class.php:257 inc/crontask.class.php:306
+#: inc/crontask.class.php:349 inc/crontask.class.php:397
+msgid "lines loaded into table"
+msgstr ""
+
+#: inc/crontask.class.php:189 inc/crontask.class.php:266
+#: inc/crontask.class.php:317 inc/crontask.class.php:358
+#: inc/crontask.class.php:408
+msgid "lines deleted from table"
+msgstr ""
+
+#: inc/crontask.class.php:543
+msgid "Glpi2mdt Plugin"
+msgstr ""
+
+#: inc/crontask.class.php:588
+#, php-format
+msgid "File %s not found."
+msgstr ""
+
+#: inc/crontask.class.php:595
+#, php-format
+msgid "Looks like '%s' exists but is not readable. "
+msgstr ""
+
+#: inc/crontask.class.php:604
+#, php-format
+msgid "File '%s' contains no valid data. Check MDT configuration"
 msgstr ""
 
 #: inc/config.class.php:86 inc/computer.class.php:320
