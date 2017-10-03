@@ -226,22 +226,22 @@ function plugin_glpi2mdt_install() {
 
    // Create or update crontask for checking new plugin updates and reporting usage
    CronTask::Register('PluginGlpi2mdtCrontask', 'checkGlpi2mdtUpdate', (3600 * 24),
-                         array('mode' => 1, 'allowmode' => 3, 'logs_lifetime' => 30,
+                         array('mode' => 2, 'allowmode' => 3, 'logs_lifetime' => 30,
                                'comment' => 'Daily task checking for updates'));
 
    // Create or update crontask for updating base data from MDT files and database
    CronTask::Register('PluginGlpi2mdtCrontask', 'updateBaseconfigFromMDT', 300,
-                         array('mode' => 1, 'allowmode' => 3, 'logs_lifetime' => 30,
+                         array('mode' => 2, 'allowmode' => 3, 'logs_lifetime' => 30,
                                'comment' => 'Update base data from MDT XML files and MS-SQL DB'));
 
    // Create or update crontask for syncrhonizing data between MDT and GLPI (Master-Master mode)
    CronTask::Register('PluginGlpi2mdtCrontask', 'syncMasterMaster', 3600,
-                         array('mode' => 1, 'allowmode' => 3, 'logs_lifetime' => 30,
+                         array('mode' => 2, 'allowmode' => 3, 'logs_lifetime' => 30,
                                'comment' => 'Synchronize data between MDT and GLPI in Master-Master mode'));
 
    // Create or update crontask for disabling "OS Install" flag when expired
    CronTask::Register('PluginGlpi2mdtCrontask', 'expireOSInstallFlag', 300,
-                         array('mode' => 1, 'allowmode' => 3, 'logs_lifetime' => 30,
+                         array('mode' => 2, 'allowmode' => 3, 'logs_lifetime' => 30,
                                'comment' => 'Disable "OS Install" flag when expired'));
 
    // Update database if necessary

@@ -343,6 +343,8 @@ class PluginGlpi2mdtComputer extends PluginGlpi2mdtMdt {
       echo "<td>";
        $result = $DB->query("SELECT id, name FROM glpi_plugin_glpi2mdt_task_sequences 
                                 WHERE is_deleted=false AND hide=false AND enable=true");
+      // first value in array is "default"
+      $tasksequenceids['*undef*']=__("Default task sequence", 'glpi2mdt');
       while ($row = $DB->fetch_array($result)) {
          $tasksequenceids[$row['id']]=$row['name'];
       }

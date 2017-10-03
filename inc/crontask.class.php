@@ -229,7 +229,7 @@ class PluginGlpi2mdtCronTask extends PluginGlpi2mdtMdt {
       $dst = $MDT->globalconfig['FileShare'].'/Applications.xml';
       $applications = PluginGlpi2mdtCronTask::checkFile($dst, $task, $cron);
 
-      if ($applications <> false) {
+      if ($applications !== false) {
          $DB->query("UPDATE glpi_plugin_glpi2mdt_applications SET is_in_sync=false WHERE is_deleted=false");
          $nb = 0;
          foreach ($applications->application as $application) {
@@ -275,7 +275,7 @@ class PluginGlpi2mdtCronTask extends PluginGlpi2mdtMdt {
       $dst = $MDT->globalconfig['FileShare'].'/ApplicationGroups.xml';
       $groups = PluginGlpi2mdtCronTask::checkFile($dst, $task, $cron);
 
-      if ($groups <> false) {
+      if ($groups !== false) {
          $DB->queryOrDie("UPDATE glpi_plugin_glpi2mdt_application_groups SET is_in_sync=false WHERE is_deleted=false");
          $DB->queryOrDie("UPDATE glpi_plugin_glpi2mdt_application_group_links SET is_in_sync=false WHERE is_deleted=false");
          $nb = 0;
@@ -327,7 +327,7 @@ class PluginGlpi2mdtCronTask extends PluginGlpi2mdtMdt {
       $dst = $MDT->globalconfig['FileShare'].'/TaskSequences.xml';
       $tss = PluginGlpi2mdtCronTask::checkFile($dst, $task, $cron);
 
-      if ($tss <> false) {
+      if ($tss !== false) {
          $DB->query("UPDATE glpi_plugin_glpi2mdt_task_sequences SET is_in_sync=false WHERE is_deleted=false");
          $nb = 0;
          foreach ($tss->ts as $ts) {
@@ -370,7 +370,7 @@ class PluginGlpi2mdtCronTask extends PluginGlpi2mdtMdt {
       $dst = $MDT->globalconfig['FileShare'].'/TaskSequenceGroups.xml';
       $groups = PluginGlpi2mdtCronTask::checkFile($dst, $task, $cron);
 
-      if ($groups <> false) {
+      if ($groups !== false) {
          $DB->query("UPDATE glpi_plugin_glpi2mdt_task_sequence_groups SET is_in_sync=false WHERE is_deleted=false");
          $DB->query("UPDATE glpi_plugin_glpi2mdt_task_sequence_group_links SET is_in_sync=false WHERE is_deleted=false");
          $nb = 0;
@@ -608,7 +608,7 @@ class PluginGlpi2mdtCronTask extends PluginGlpi2mdtMdt {
          return false;
       }
       $XML = simplexml_load_file($file);
-      if ($XML == false) {
+      if ($XML === false) {
          if ($cron) {
             $task->log("File '$file' contains no valid data. Check MDT configuration");
          } else {

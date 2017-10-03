@@ -3,7 +3,7 @@ All notable changes to this project will be documented in this file.
 
 ## [0.1.2] - 2017-10-03
 ### Added
- - None
+ - Task sequence can now be undefined in order to use default task for model, or global to MDT
 
 ## Changed
  - Several bugs and warnings linked to PHP7 are corrected.
