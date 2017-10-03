@@ -148,6 +148,7 @@ class PluginGlpi2mdtCronTask extends PluginGlpi2mdtMdt {
    **/
    static function cronUpdateBaseconfigFromMDT($task, $cron=true) {
       global $DB;
+      $ok = 1;
       $MDT = new PluginGlpi2mdtMdt;
       $globalconfig = $MDT->globalconfig;
 
@@ -265,6 +266,8 @@ class PluginGlpi2mdtCronTask extends PluginGlpi2mdtMdt {
          if (!$cron) {
             echo "<td>$nb ".__("lines deleted from table", 'glpi2mdt')."'applications' </td><tr>";
          }
+      } else {
+         $ok = -1;
       }
 
       // Application groups
@@ -316,6 +319,8 @@ class PluginGlpi2mdtCronTask extends PluginGlpi2mdtMdt {
          if (!$cron) {
             echo "<td>$nb ".__("lines deleted from table", 'glpi2mdt')." 'application_group_links'.</td></tr>";
          }
+      } else {
+         $ok = -1;
       }
       // Task sequences
       // Mark lines in order to detect deleted ones in the source database
@@ -357,6 +362,8 @@ class PluginGlpi2mdtCronTask extends PluginGlpi2mdtMdt {
          if (!$cron) {
             echo "<td>$nb ".__("lines deleted from table", 'glpi2mdt')." 'task_sequence'.</td></tr>";
          }
+      } else {
+         $ok = -1;
       }
       // Task sequence groups
       // Mark lines in order to detect deleted ones in the source database
@@ -407,8 +414,10 @@ class PluginGlpi2mdtCronTask extends PluginGlpi2mdtMdt {
          if (!$cron) {
             echo "<td>$nb ".__("lines deleted from table", 'glpi2mdt')." 'task_sequence_group_links'.</td></tr></table>";
          }
+      } else {
+         $ok = -1;
       }
-      return 1;
+      return $ok;
    }
 
    /**
@@ -585,25 +594,28 @@ class PluginGlpi2mdtCronTask extends PluginGlpi2mdtMdt {
          if ($cron) {
             $task->log("File '$file' not found. Check mounting point.");
          } else {
-            echo "<tr class='tab_bg_1'><td><font color='red'>". printf(__('File %s not found.', 'glpi2mdt'), $file)."</font></td></tr> ";
+            echo "<tr class='tab_bg_1'><td><font color='red'>". sprintf(__("File '%s' not found.", 'glpi2mdt'), $file)."</font></td></tr> ";
          }
+         return false;
       }
       if (!is_readable($file)) {
          if ($cron) {
             $task->log("File '$file' exists but is not readable. check access rights, and more specifically SELinux settings.");
          } else {
-            echo "<tr class='tab_bg_1'><td><font color='red'>".printf(__("Looks like '%s' exists but is not readable. ", 'glpi2mdt'), $file);
+            echo "<tr class='tab_bg_1'><td><font color='red'>".sprintf(__("Looks like '%s' exists but is not readable. ", 'glpi2mdt'), $file);
             echo "<br>Check access rights, and more specifically SELinux settings.</font></td></tr>";
          }
+         return false;
       }
       $XML = simplexml_load_file($file);
       if ($XML == false) {
          if ($cron) {
             $task->log("File '$file' contains no valid data. Check MDT configuration");
          } else {
-            echo "<tr class='tab_bg_1'><td><font color='red'>".printf(__("File '%s' contains no valid data. Check MDT configuration", 'glpi2mdt'), $file);
+            echo "<tr class='tab_bg_1'><td><font color='red'>".sprintf(__("File '%s' contains no valid data. Check MDT configuration", 'glpi2mdt'), $file);
             echo "</font></td></tr>";
          }
+         return false;
       }
       return $XML;
    }
