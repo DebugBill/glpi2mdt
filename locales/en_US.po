@@ -64,33 +64,33 @@ msgstr "Could not count tables in schema"
 msgid "Database login KO!"
 msgstr "Database login KO!"
 
-#: inc/crontask.class.php:181 inc/crontask.class.php:218
-#: inc/crontask.class.php:257 inc/crontask.class.php:306
-#: inc/crontask.class.php:349 inc/crontask.class.php:397
+#: inc/crontask.class.php:182 inc/crontask.class.php:219
+#: inc/crontask.class.php:258 inc/crontask.class.php:309
+#: inc/crontask.class.php:354 inc/crontask.class.php:404
 msgid "lines loaded into table"
 msgstr "line(s) loaded into table"
 
-#: inc/crontask.class.php:189 inc/crontask.class.php:266
-#: inc/crontask.class.php:317 inc/crontask.class.php:358
-#: inc/crontask.class.php:408
+#: inc/crontask.class.php:190 inc/crontask.class.php:267
+#: inc/crontask.class.php:320 inc/crontask.class.php:363
+#: inc/crontask.class.php:415
 msgid "lines deleted from table"
 msgstr "line's) deleted from table"
 
-#: inc/crontask.class.php:543
+#: inc/crontask.class.php:552
 msgid "Glpi2mdt Plugin"
 msgstr "Glpi2mdt Plugin"
 
-#: inc/crontask.class.php:588
+#: inc/crontask.class.php:597
 #, php-format
-msgid "File %s not found."
-msgstr "File %s not found."
+msgid "File '%s' not found."
+msgstr "File '%s' not found."
 
-#: inc/crontask.class.php:595
+#: inc/crontask.class.php:605
 #, php-format
 msgid "Looks like '%s' exists but is not readable. "
 msgstr "Looks like '%s' exists but is not readable. "
 
-#: inc/crontask.class.php:604
+#: inc/crontask.class.php:615
 #, php-format
 msgid "File '%s' contains no valid data. Check MDT configuration"
 msgstr "File '%s' contains no valid data. Check MDT configuration"
