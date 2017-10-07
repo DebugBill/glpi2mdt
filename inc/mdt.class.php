@@ -113,7 +113,7 @@ class PluginGlpi2mdtMdt extends CommonDBTM {
          $this->DBModule = 'mssql';
          $DBLink = mssql_connect($DBServer.":".$DBPort, $DBLogin, $DBPassword);
          if ($DBLink) {
-            mssql_select_db($DBSchema, $MDT);
+            mssql_select_db($DBSchema, $DBLink);
          }
       }
 

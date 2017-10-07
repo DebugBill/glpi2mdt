@@ -447,6 +447,10 @@ class PluginGlpi2mdtCronTask extends PluginGlpi2mdtMdt {
          $mdtids = "AND c.".$mdt['mdtids'];
          $arraymdtids = $mdt['arraymdtids'];
       }
+      else {
+         $mdtids='';
+      }
+         
 
       //GET all computers and settings
       $query="SELECT * FROM dbo.ComputerIdentity c, dbo.Settings s WHERE c.id=s.id $mdtids";
