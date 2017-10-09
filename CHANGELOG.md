@@ -1,6 +1,17 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [0.1.3] - 2017-10-09
+### Added
+ - None
+
+## Changed
+ - Several bugs and warnings are corrected.
+
+## Removed
+ - None
+
+
 ## [0.1.2] - 2017-10-03
 ### Added
  - Task sequence can now be undefined in order to use default task for model, or global to MDT

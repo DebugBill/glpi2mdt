@@ -19,37 +19,16 @@ msgstr ""
 
 
 
-#: hook.php:249
-msgid ""
-"Glpi2mdt database is corrupted. Please uninstall and reinstall the plugin"
+#: setup.php:101
+msgid "Incompatible PHP Installation. Requires module mssql or module odbc"
 msgstr ""
 
-#: inc/mdt.class.php:154
-msgid "Testing connection using PHP module"
+#: setup.php:106
+msgid "Incompatible PHP Installation. Requires module"
 msgstr ""
 
-#: inc/mdt.class.php:158
-msgid "Database login OK!"
-msgstr ""
-
-#: inc/mdt.class.php:168 inc/config.class.php:140
-msgid "Schema"
-msgstr ""
-
-#: inc/mdt.class.php:168
-msgid "contains"
-msgstr ""
-
-#: inc/mdt.class.php:168
-msgid "tables"
-msgstr ""
-
-#: inc/mdt.class.php:172
-msgid "Could not count tables in schema"
-msgstr ""
-
-#: inc/mdt.class.php:177
-msgid "Database login KO!"
+#: setup.php:125
+msgid "Installed / not configured"
 msgstr ""
 
 #: inc/crontask.class.php:182 inc/crontask.class.php:219
@@ -64,37 +43,37 @@ msgstr ""
 msgid "lines deleted from table"
 msgstr ""
 
-#: inc/crontask.class.php:552
+#: inc/crontask.class.php:554
 msgid "Glpi2mdt Plugin"
 msgstr ""
 
-#: inc/crontask.class.php:569
+#: inc/crontask.class.php:571
 msgid "Check for new updates"
 msgstr ""
 
-#: inc/crontask.class.php:572
+#: inc/crontask.class.php:574
 msgid "Update base data from MDT XML files and MS-SQL DB"
 msgstr ""
 
-#: inc/crontask.class.php:575
+#: inc/crontask.class.php:577
 msgid "Synchronize data between MDT and GLPI in Master-Master mode"
 msgstr ""
 
-#: inc/crontask.class.php:578
+#: inc/crontask.class.php:580
 msgid "Disable \"OS Install\" flag when expired"
 msgstr ""
 
-#: inc/crontask.class.php:597
+#: inc/crontask.class.php:599
 #, php-format
 msgid "File '%s' not found."
 msgstr ""
 
-#: inc/crontask.class.php:605
+#: inc/crontask.class.php:607
 #, php-format
 msgid "Looks like '%s' exists but is not readable. "
 msgstr ""
 
-#: inc/crontask.class.php:615
+#: inc/crontask.class.php:617
 #, php-format
 msgid "File '%s' contains no valid data. Check MDT configuration"
 msgstr ""
@@ -125,6 +104,10 @@ msgstr ""
 
 #: inc/config.class.php:132
 msgid "Password"
+msgstr ""
+
+#: inc/config.class.php:140 inc/mdt.class.php:170
+msgid "Schema"
 msgstr ""
 
 #: inc/config.class.php:148
@@ -191,7 +174,7 @@ msgstr ""
 msgid "Initialise data"
 msgstr ""
 
-#: inc/config.class.php:236 inc/computer.class.php:402
+#: inc/config.class.php:236 inc/computer.class.php:404
 #, php-format
 msgid "A new version of plugin glpi2mdt is available: v%s"
 msgstr ""
@@ -220,12 +203,40 @@ msgstr ""
 msgid "Task sequence"
 msgstr ""
 
-#: inc/computer.class.php:370
+#: inc/computer.class.php:347
+msgid "Default task sequence"
+msgstr ""
+
+#: inc/computer.class.php:372
 msgid "Applications"
 msgstr ""
 
-#: inc/computer.class.php:382
+#: inc/computer.class.php:384
 msgid "Roles"
+msgstr ""
+
+#: inc/mdt.class.php:156
+msgid "Testing connection using PHP module"
+msgstr ""
+
+#: inc/mdt.class.php:160
+msgid "Database login OK!"
+msgstr ""
+
+#: inc/mdt.class.php:170
+msgid "contains"
+msgstr ""
+
+#: inc/mdt.class.php:170
+msgid "tables"
+msgstr ""
+
+#: inc/mdt.class.php:174
+msgid "Could not count tables in schema"
+msgstr ""
+
+#: inc/mdt.class.php:179
+msgid "Database login KO!"
 msgstr ""
 
 #: front/computer.form.php:36
@@ -236,14 +247,7 @@ msgstr ""
 msgid "Setup"
 msgstr ""
 
-#: setup.php:101
-msgid "Incompatible PHP Installation. Requires module mssql or module odbc"
-msgstr ""
-
-#: setup.php:106
-msgid "Incompatible PHP Installation. Requires module"
-msgstr ""
-
-#: setup.php:125
-msgid "Installed / not configured"
+#: hook.php:251
+msgid ""
+"Glpi2mdt database is corrupted. Please uninstall and reinstall the plugin"
 msgstr ""

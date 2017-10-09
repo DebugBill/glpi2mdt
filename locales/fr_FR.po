@@ -18,40 +18,18 @@ msgstr ""
 "Language: fr\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: hook.php:249
-msgid ""
-"Glpi2mdt database is corrupted. Please uninstall and reinstall the plugin"
+#: setup.php:101
+msgid "Incompatible PHP Installation. Requires module mssql or module odbc"
 msgstr ""
-"La base de données de glpi2mdt est corrompue. Merci de désinstaller et "
-"réinstaller le plugin"
+"Configuration PHP incompatible. Un module PHP MSSQL ou ODBC est nécessaire"
 
-#: inc/mdt.class.php:154
-msgid "Testing connection using PHP module"
-msgstr "Test de la connexion avec le module PHP"
+#: setup.php:106
+msgid "Incompatible PHP Installation. Requires module"
+msgstr "Installation de PHP incompatible. Nécessite le module"
 
-#: inc/mdt.class.php:158
-msgid "Database login OK!"
-msgstr "Connexion à la base réussie!"
-
-#: inc/mdt.class.php:168 inc/config.class.php:140
-msgid "Schema"
-msgstr "Schéma"
-
-#: inc/mdt.class.php:168
-msgid "contains"
-msgstr "contient"
-
-#: inc/mdt.class.php:168
-msgid "tables"
-msgstr "tables"
-
-#: inc/mdt.class.php:172
-msgid "Could not count tables in schema"
-msgstr "Impossible de compter les tables du schéma"
-
-#: inc/mdt.class.php:177
-msgid "Database login KO!"
-msgstr "Echec de connexion à la base!"
+#: setup.php:125
+msgid "Installed / not configured"
+msgstr "Installé / Non configuré"
 
 #: inc/crontask.class.php:182 inc/crontask.class.php:219
 #: inc/crontask.class.php:258 inc/crontask.class.php:309
@@ -65,40 +43,40 @@ msgstr "ligne(s) chargée(s) dans la table"
 msgid "lines deleted from table"
 msgstr "ligne(s) supprimée(s) de la table"
 
-#: inc/crontask.class.php:552
+#: inc/crontask.class.php:554
 msgid "Glpi2mdt Plugin"
 msgstr "Plugin Glpi2mdt"
 
-#: inc/crontask.class.php:569
+#: inc/crontask.class.php:571
 msgid "Check for new updates"
 msgstr "Vérification de la présence de mises à jour"
 
-#: inc/crontask.class.php:572
+#: inc/crontask.class.php:574
 msgid "Update base data from MDT XML files and MS-SQL DB"
 msgstr ""
 "Mise à jour des données de base depuis les fichiers XML et la base MS-SQL de"
 " MDT. "
 
-#: inc/crontask.class.php:575
+#: inc/crontask.class.php:577
 msgid "Synchronize data between MDT and GLPI in Master-Master mode"
 msgstr "Synchronisation des données entre MDT et GLPI en mode maître-maître"
 
-#: inc/crontask.class.php:578
+#: inc/crontask.class.php:580
 msgid "Disable \"OS Install\" flag when expired"
 msgstr "Désactivation de l'installation automatique après expiration."
 
-#: inc/crontask.class.php:597
+#: inc/crontask.class.php:599
 #, php-format
 msgid "File '%s' not found."
 msgstr "Fichier '%s' introuvable."
 
-#: inc/crontask.class.php:605
+#: inc/crontask.class.php:607
 #, php-format
 msgid "Looks like '%s' exists but is not readable. "
 msgstr ""
 "Il semble que le fichier '%s' existe mais ne soit pas autorisé en lecture."
 
-#: inc/crontask.class.php:615
+#: inc/crontask.class.php:617
 #, php-format
 msgid "File '%s' contains no valid data. Check MDT configuration"
 msgstr ""
@@ -132,6 +110,10 @@ msgstr "Identifiant"
 #: inc/config.class.php:132
 msgid "Password"
 msgstr "Mot de passe"
+
+#: inc/config.class.php:140 inc/mdt.class.php:170
+msgid "Schema"
+msgstr "Schéma"
 
 #: inc/config.class.php:148
 msgid "Local path to deployment share control directory"
@@ -199,7 +181,7 @@ msgstr "Tester la connexion"
 msgid "Initialise data"
 msgstr "Initialiser les données"
 
-#: inc/config.class.php:236 inc/computer.class.php:402
+#: inc/config.class.php:236 inc/computer.class.php:404
 #, php-format
 msgid "A new version of plugin glpi2mdt is available: v%s"
 msgstr "Une nouvelle version du plugin glpi2mdt est disponible: v%s"
@@ -228,13 +210,41 @@ msgstr "Annuler après (vide pour jamais)"
 msgid "Task sequence"
 msgstr "Séquence de tâches"
 
-#: inc/computer.class.php:370
+#: inc/computer.class.php:347
+msgid "Default task sequence"
+msgstr ""
+
+#: inc/computer.class.php:372
 msgid "Applications"
 msgstr "Applications"
 
-#: inc/computer.class.php:382
+#: inc/computer.class.php:384
 msgid "Roles"
 msgstr "Rôles"
+
+#: inc/mdt.class.php:156
+msgid "Testing connection using PHP module"
+msgstr "Test de la connexion avec le module PHP"
+
+#: inc/mdt.class.php:160
+msgid "Database login OK!"
+msgstr "Connexion à la base réussie!"
+
+#: inc/mdt.class.php:170
+msgid "contains"
+msgstr "contient"
+
+#: inc/mdt.class.php:170
+msgid "tables"
+msgstr "tables"
+
+#: inc/mdt.class.php:174
+msgid "Could not count tables in schema"
+msgstr "Impossible de compter les tables du schéma"
+
+#: inc/mdt.class.php:179
+msgid "Database login KO!"
+msgstr "Echec de connexion à la base!"
 
 #: front/computer.form.php:36
 msgid "Features"
@@ -244,15 +254,9 @@ msgstr "Fonctions"
 msgid "Setup"
 msgstr "Configuration"
 
-#: setup.php:101
-msgid "Incompatible PHP Installation. Requires module mssql or module odbc"
+#: hook.php:251
+msgid ""
+"Glpi2mdt database is corrupted. Please uninstall and reinstall the plugin"
 msgstr ""
-"Configuration PHP incompatible. Un module PHP MSSQL ou ODBC est nécessaire"
-
-#: setup.php:106
-msgid "Incompatible PHP Installation. Requires module"
-msgstr "Installation de PHP incompatible. Nécessite le module"
-
-#: setup.php:125
-msgid "Installed / not configured"
-msgstr "Installé / Non configuré"
+"La base de données de glpi2mdt est corrompue. Merci de désinstaller et "
+"réinstaller le plugin"
