@@ -95,7 +95,9 @@ class PluginGlpi2mdtMdt extends CommonDBTM {
       $DBSchema = $this->globalconfig['DBSchema'];
       $DBLogin = $this->globalconfig['DBLogin'];
       $DBPassword = $this->globalconfig['DBPassword'];
-      $DBDriver = $this->globalconfig['DBDriver'];
+      if (isset($this->globalconfig['DBDriver'])) {
+         $DBDriver = $this->globalconfig['DBDriver'];
+      }
 
       // Plugin version check
       $currentversion = PLUGIN_GLPI2MDT_VERSION;
