@@ -121,7 +121,7 @@ class PluginGlpi2mdtConfig extends PluginGlpi2mdtMdt {
       ?>
      <tr class="tab_bg_1">
       <td>
-         <?php echo _e('Login', 'glpi2mdt'); ?> : &nbsp;&nbsp;&nbsp;
+         <?php echo __('Login', 'glpi2mdt'); ?> : &nbsp;&nbsp;&nbsp;
       </td><td>
          <?php echo '<input type="text" name="DBLogin" value="'.$this->globalconfig['DBLogin'].'" size="50" class="ui-autocomplete-input" 
              autocomplete="off" required pattern="[a-Z0-9]"> &nbsp;&nbsp;&nbsp;' ?>
@@ -129,7 +129,7 @@ class PluginGlpi2mdtConfig extends PluginGlpi2mdtMdt {
      </tr>
      <tr class="tab_bg_1">
       <td>
-         <?php echo _e('Password', 'glpi2mdt'); ?> : &nbsp;&nbsp;&nbsp;
+         <?php echo __('Password', 'glpi2mdt'); ?> : &nbsp;&nbsp;&nbsp;
       </td><td>
          <?php echo '<input type="password" name="DBPassword" value="'.$this->globalconfig['DBPassword'].'" size="50" class="ui-autocomplete-input" 
              autocomplete="off" required> &nbsp;&nbsp;&nbsp;' ?>
@@ -137,7 +137,7 @@ class PluginGlpi2mdtConfig extends PluginGlpi2mdtMdt {
      </tr>
      <tr class="tab_bg_1">
       <td>
-         <?php echo _e('Schema', 'glpi2mdt'); ?> : &nbsp;&nbsp;&nbsp;
+         <?php echo __('Schema', 'glpi2mdt'); ?> : &nbsp;&nbsp;&nbsp;
       </td><td>
          <?php echo '<input type="text" name="DBSchema" value="'.$this->globalconfig['DBSchema'].'" size="50" class="ui-autocomplete-input" 
              autocomplete="off" required pattern="[a-Z0-9]" placeholder="MDT"> &nbsp;&nbsp;&nbsp;' ?>
@@ -145,7 +145,7 @@ class PluginGlpi2mdtConfig extends PluginGlpi2mdtMdt {
      </tr>
      <tr class="tab_bg_1">
       <td>
-         <?php echo _e('Local path to deployment share control directory', 'glpi2mdt'); ?> : &nbsp;&nbsp;&nbsp;
+         <?php echo __('Local path to deployment share control directory', 'glpi2mdt'); ?> : &nbsp;&nbsp;&nbsp;
       </td><td>
          <?php echo '<input type="text" name="FileShare" value="'.$this->globalconfig['FileShare'].'" size="50" class="ui-autocomplete-input" 
             autocomplete="off" required placeholder="/mnt/smb-share/Deployment-share/Control"> &nbsp;&nbsp;&nbsp;' ?>
@@ -153,7 +153,7 @@ class PluginGlpi2mdtConfig extends PluginGlpi2mdtMdt {
      </tr>
      <tr class="tab_bg_1">
       <td>
-         <?php echo _e('Local admin password', 'glpi2mdt'); ?> : &nbsp;&nbsp;&nbsp;
+         <?php echo __('Local admin password', 'glpi2mdt'); ?> : &nbsp;&nbsp;&nbsp;
       </td><td>
          <?php echo '<input type="password" name="LocalAdmin" value="'.$this->globalconfig['LocalAdmin'].'" size="50" class="ui-autocomplete-input" 
             autocomplete="off" required> &nbsp;&nbsp;&nbsp;' ?>
@@ -162,7 +162,7 @@ class PluginGlpi2mdtConfig extends PluginGlpi2mdtMdt {
      <tr class="tab_bg_1">
         <td>
       <?php
-        echo _e('Local admin password complexity', 'glpi2mdt');
+        echo __('Local admin password complexity', 'glpi2mdt');
         echo "</td><td>";
         Dropdown::showFromArray("Complexity", array(
         'Basic' => __('Same password on all machines', 'glpi2mdt'),
@@ -176,7 +176,7 @@ class PluginGlpi2mdtConfig extends PluginGlpi2mdtMdt {
      <tr class="tab_bg_1">
         <td>
          <?php
-         echo _e('Link mode', 'glpi2mdt');
+         echo __('Link mode', 'glpi2mdt');
          echo "</td><td>";
          Dropdown::showFromArray("Mode", array(
          'Strict' => __('Strict Master-Slave', 'glpi2mdt'),
@@ -189,7 +189,7 @@ class PluginGlpi2mdtConfig extends PluginGlpi2mdtMdt {
        <tr class="tab_bg_1">
         <td>
       <?php
-        echo _e('Automatically check for new versions', 'glpi2mdt');
+        echo __('Automatically check for new versions', 'glpi2mdt');
         echo "</td><td>";
         Dropdown::showFromArray("CheckNewVersion", $yesno,
         array('value' => $this->globalconfig['CheckNewVersion'])
@@ -200,7 +200,7 @@ class PluginGlpi2mdtConfig extends PluginGlpi2mdtMdt {
        <tr class="tab_bg_1">
         <td>
       <?php
-        echo _e('Report usage data (anonymous data to help in designing the plugin)', 'glpi2mdt');
+        echo __('Report usage data (anonymous data to help in designing the plugin)', 'glpi2mdt');
         echo "</td><td>";
         Dropdown::showFromArray("ReportUsage", $yesno,
         array('value' => $this->globalconfig['ReportUsage'])

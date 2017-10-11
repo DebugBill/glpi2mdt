@@ -101,8 +101,9 @@ class PluginGlpi2mdtMdt extends CommonDBTM {
 
       // Plugin version check
       $currentversion = PLUGIN_GLPI2MDT_VERSION;
-      if (version_compare($currentversion, $this->globalconfig['LatestVersion'], '<')) {
-         $this->globalconfig['newversion'] = sprintf(__('A new version of plugin glpi2mdt is available: v%s'), $latest_version);
+      $latestversion = $this->globalconfig['LatestVersion'];
+      if (version_compare($currentversion, $latestversion, '<')) {
+         $this->globalconfig['newversion'] = sprintf(__('A new version of plugin glpi2mdt is available: v%s'), $latestversion);
       }
 
       // Connection to MSSQL using ODBC PHP module
@@ -288,7 +289,7 @@ class PluginGlpi2mdtMdt extends CommonDBTM {
                                 AND n.instantiation_type='NetworkPortEthernet' AND n.mac<>'' 
                                 AND c.is_deleted=FALSE AND n.is_deleted=false");
       $macs="MacAddress IN (";
-      unset($values);
+      $values = '';
       $nbrows = 0;
       while ($line = $DB->fetch_array($result)) {
          $mac = $line['mac'];
@@ -323,6 +324,7 @@ class PluginGlpi2mdtMdt extends CommonDBTM {
       $result = $this->queryOrDie("$query", "Can't read IDs");
 
       $mdtids = "ID IN (";
+      $arraymdtids = []; 
       while ($line = $this->fetch_array($result)) {
          $mtdid = $line['ID'];
          $mdtids=$mdtids."'".$mtdid."', ";
