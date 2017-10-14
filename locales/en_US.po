@@ -18,18 +18,6 @@ msgstr ""
 "Language: en_US\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: setup.php:101
-msgid "Incompatible PHP Installation. Requires module mssql or module odbc"
-msgstr "Incompatible PHP Installation. Requires module mssql or module odbc"
-
-#: setup.php:106
-msgid "Incompatible PHP Installation. Requires module"
-msgstr "Incompatible PHP Installation. Requires module"
-
-#: setup.php:125
-msgid "Installed / not configured"
-msgstr "Installed / not configured"
-
 #: inc/crontask.class.php:182 inc/crontask.class.php:219
 #: inc/crontask.class.php:258 inc/crontask.class.php:309
 #: inc/crontask.class.php:354 inc/crontask.class.php:404
@@ -105,7 +93,7 @@ msgstr "Login"
 msgid "Password"
 msgstr "Password"
 
-#: inc/config.class.php:140 inc/mdt.class.php:170
+#: inc/config.class.php:140 inc/mdt.class.php:182
 msgid "Schema"
 msgstr "Schema"
 
@@ -178,6 +166,37 @@ msgstr "Initialise data"
 msgid "A new version of plugin glpi2mdt is available: v%s"
 msgstr "A new version of plugin glpi2mdt is available: v%s"
 
+#: inc/mdt.class.php:124
+#, php-format
+msgid ""
+"Can't connect to MSSQL database using PHP module %s. Check configuration"
+msgstr ""
+"Can't connect to MSSQL database using PHP module %s. Check configuration"
+
+#: inc/mdt.class.php:168
+msgid "Testing connection using PHP module"
+msgstr "Testing connection using PHP module"
+
+#: inc/mdt.class.php:172
+msgid "Database login OK!"
+msgstr "Database login OK!"
+
+#: inc/mdt.class.php:182
+msgid "contains"
+msgstr "contains"
+
+#: inc/mdt.class.php:182
+msgid "tables"
+msgstr "tables"
+
+#: inc/mdt.class.php:186
+msgid "Could not count tables in schema"
+msgstr "Could not count tables in schema"
+
+#: inc/mdt.class.php:191
+msgid "Database login KO!"
+msgstr "Database login KO!"
+
 #: inc/computer.class.php:65 inc/computer.class.php:67
 msgid "Auto Install"
 msgstr "Auto Install"
@@ -204,7 +223,7 @@ msgstr "Task sequence"
 
 #: inc/computer.class.php:347
 msgid "Default task sequence"
-msgstr ""
+msgstr "Default task sequence"
 
 #: inc/computer.class.php:372
 msgid "Applications"
@@ -213,30 +232,6 @@ msgstr "Applications"
 #: inc/computer.class.php:384
 msgid "Roles"
 msgstr "Roles"
-
-#: inc/mdt.class.php:156
-msgid "Testing connection using PHP module"
-msgstr "Testing connection using PHP module"
-
-#: inc/mdt.class.php:160
-msgid "Database login OK!"
-msgstr "Database login OK!"
-
-#: inc/mdt.class.php:170
-msgid "contains"
-msgstr "contains"
-
-#: inc/mdt.class.php:170
-msgid "tables"
-msgstr "tables"
-
-#: inc/mdt.class.php:174
-msgid "Could not count tables in schema"
-msgstr "Could not count tables in schema"
-
-#: inc/mdt.class.php:179
-msgid "Database login KO!"
-msgstr "Database login KO!"
 
 #: front/computer.form.php:36
 msgid "Features"
@@ -251,3 +246,15 @@ msgid ""
 "Glpi2mdt database is corrupted. Please uninstall and reinstall the plugin"
 msgstr ""
 "Glpi2mdt database is corrupted. Please uninstall and reinstall the plugin"
+
+#: setup.php:101
+msgid "Incompatible PHP Installation. Requires module mssql or module odbc"
+msgstr "Incompatible PHP Installation. Requires module mssql or module odbc"
+
+#: setup.php:106
+msgid "Incompatible PHP Installation. Requires module"
+msgstr "Incompatible PHP Installation. Requires module"
+
+#: setup.php:125
+msgid "Installed / not configured"
+msgstr "Installed / not configured"

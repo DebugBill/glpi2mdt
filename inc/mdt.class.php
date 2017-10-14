@@ -119,6 +119,12 @@ class PluginGlpi2mdtMdt extends CommonDBTM {
             mssql_select_db($DBSchema, $DBLink);
          }
       }
+      // Check if connection is successful, die if not
+      if ($DBLink === false) {
+         $error = sprintf(__("Can't connect to MSSQL database using PHP module %s. Check configuration", 'glpi2mdt'), 
+                     $this->DBModule);
+         Session::addMessageAfterRedirect($error, true, ERROR);
+      }
 
       $this->DBLink = $DBLink;
    }
@@ -131,6 +137,11 @@ class PluginGlpi2mdtMdt extends CommonDBTM {
     * @return None
    **/
    function __destruct() {
+      // DBLink is false if no connection could be established
+      if ($this->DBLink === false) {
+         return;
+      }
+
       if ($this->DBModule == "mssql") {
          mssql_close($this->DBLink);
       } else if ($this->DBModule == "odbc") {
@@ -324,7 +335,7 @@ class PluginGlpi2mdtMdt extends CommonDBTM {
       $result = $this->queryOrDie("$query", "Can't read IDs");
 
       $mdtids = "ID IN (";
-      $arraymdtids = []; 
+      $arraymdtids = [];
       while ($line = $this->fetch_array($result)) {
          $mtdid = $line['ID'];
          $mdtids=$mdtids."'".$mtdid."', ";

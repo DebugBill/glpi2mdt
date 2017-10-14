@@ -81,7 +81,7 @@ class PluginGlpi2mdtCronTask extends PluginGlpi2mdtMdt {
             $task->log($error);
          } else {
             if ($messageafterredirect) {
-               Session::addMessageAfterRedirect($error, true, ERROR);
+               Session::addMessageAfterRedirect($error, true, INFO);
             } else {
                return $error;
             }
