@@ -40,7 +40,7 @@ Html::header(__('Setup', 'glpi2mdt'), $_SERVER["PHP_SELF"],
 Session::checkRight("config", UPDATE);
 
 $g2mConfig = new PluginGlpi2mdtConfig();
-$g2mConfig->show();
+$g2mConfig->showPage();
 
 // Save configuration data
 if (isset($_POST['SAVE'])) {

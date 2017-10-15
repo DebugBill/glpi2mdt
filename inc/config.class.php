@@ -81,7 +81,7 @@ class PluginGlpi2mdtConfig extends PluginGlpi2mdtMdt {
  *
  * @return   outputs HTML form
    **/
-   function show() {
+   function showPage() {
 
       $yesno['YES'] = __('YES', 'glpi2mdt');
       $yesno['NO'] = __('NO', 'glpi2mdt');

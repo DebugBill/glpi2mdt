@@ -234,10 +234,10 @@ function plugin_glpi2mdt_install() {
                          array('mode' => 2, 'allowmode' => 3, 'logs_lifetime' => 30,
                                'comment' => 'Update base data from MDT XML files and MS-SQL DB'));
 
-   // Create or update crontask for syncrhonizing data between MDT and GLPI (Master-Master mode)
-   CronTask::Register('PluginGlpi2mdtCrontask', 'syncMasterMaster', 3600,
+   // Create or update crontask for syncrhonizing data between MDT and GLPI (Master-Master & Strict modes)
+   CronTask::Register('PluginGlpi2mdtCrontask', 'syncMasterAndStrict', 3600,
                          array('mode' => 2, 'allowmode' => 3, 'logs_lifetime' => 30,
-                               'comment' => 'Synchronize data between MDT and GLPI in Master-Master mode'));
+                               'comment' => 'Synchronize data between MDT and GLPI in Master-Master and Strict modes'));
 
    // Create or update crontask for disabling "OS Install" flag when expired
    CronTask::Register('PluginGlpi2mdtCrontask', 'expireOSInstallFlag', 300,

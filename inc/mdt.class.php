@@ -121,7 +121,7 @@ class PluginGlpi2mdtMdt extends CommonDBTM {
       }
       // Check if connection is successful, die if not
       if ($DBLink === false) {
-         $error = sprintf(__("Can't connect to MSSQL database using PHP module %s. Check configuration", 'glpi2mdt'), 
+         $error = sprintf(__("Can't connect to MSSQL database using PHP module %s. Check configuration", 'glpi2mdt'),
                      $this->DBModule);
          Session::addMessageAfterRedirect($error, true, ERROR);
       }

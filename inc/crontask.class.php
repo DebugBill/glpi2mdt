@@ -421,28 +421,31 @@ class PluginGlpi2mdtCronTask extends PluginGlpi2mdtMdt {
    }
 
    /**
-   * Task to synchronize data between MDT and GLPI in Master-Master mode
+   * Task to synchronize data between MDT and GLPI in Master-Master
+   * and in Strict modes
    * Can be used atomically to update one machine, or globally by cron
    *
    * @param $task Object of CronTask class for log / stat
-   * @param $id; computer ID to update
+   * @param $id; computer ID to update, 0 means 'ALL'
    *
    * @return integer
    *    >0 : done
    *    <0 : to be run again (not finished)
    *     0 : nothing to be done
    */
-   static function cronSyncMasterMaster($task, $id=0) {
+   static function cronSyncMasterAndStrict($task, $id=0) {
       global $DB;
       $MDT = new PluginGlpi2mdtMdt;
       $globalconfig = $MDT->globalconfig;
-      if ($globalconfig['Mode'] <> "Master") {
-         $task->log("This cron task runs only in Master-Master mode");
+      $mode = $globalconfig['Mode'];
+      if ($mode == "Loose") {
+         $task->log("This cron task does not run in loosely coupled mode");
          return 0;
       }
       // Build array of valid variables
       $variables = $globalconfig['variables'];
       if ($id > 0) {
+         // We are working on one single computer
          $mdt = $MDT->getMdtIds($id);
          $mdtids = "AND c.".$mdt['mdtids'];
          $arraymdtids = $mdt['arraymdtids'];
@@ -450,50 +453,75 @@ class PluginGlpi2mdtCronTask extends PluginGlpi2mdtMdt {
          $mdtids='';
       }
 
-      //GET all computers and settings
+      //GET computer(s) and settings
       $query="SELECT * FROM dbo.ComputerIdentity c, dbo.Settings s WHERE c.id=s.id $mdtids";
       $result = $MDT->queryOrDie($query, "Cannot retreive computers from MDT");
       if (isset($task)) {
+         $task->log("Start data synchronisation in $mode mode");
          $task->setVolume($MDT->numrows($result));
          $task->log("Computer entries found in MDT database");
       }
-      $correspondances = 0;
-      $fields = 0;
-      $previousid = 0;
+      $correspondances = [];
+      $deleted = 0;
       while ($row = $MDT->fetch_array($result)) {
-         // Find correspondance in GLPI
-         $query = "SELECT c.id as id FROM glpi_computers c, glpi_networkports n
+         // Find correspondance in GLPI for all computers found in MDT
+         $query = "SELECT DISTINCT c.id as id FROM glpi_computers c, glpi_networkports n
                     WHERE c.id=n.items_id AND n.itemtype='Computer' AND n.instantiation_type='NetworkPortEthernet' 
                     AND c.is_deleted=FALSE AND n.is_deleted=false AND c.name = '".$row['Description']."' 
                     AND UPPER(n.mac)='".$row['MacAddress']."' AND serial='".$row['SerialNumber']."' AND otherserial='".
                     $row['AssetTag']."' AND uuid='".$row['UUID']."' ORDER BY c.id";
          $glpi = $DB->queryOrDie($query, "Can't find correspondance in GLPI");
          if ($DB->numrows($glpi) == 1) {
+            $correspondances[$id] = true;
             $array = $DB->fetch_array($glpi);
             $id = $array['id'];
-            // Mark settings that may have to be deleted only if first iteration on this computer
-            if ($previousid<>$id) {
+            // We have found a correspondance between GLPI and MDT (more than one would be an error, dont process it)
+            // If mode is master-master, copy data from MDT to GLPI (as any modification in GLPI is immedialtly pushed to MDT)
+            // If mode is Strict, remove any computer that is not active anymore in GLPI
+            if ($mode == "Master") {
+               // Mark settings that may have to be deleted 
                $DB->query("UPDATE glpi_plugin_glpi2mdt_settings SET is_in_sync=false WHERE type='C' AND category='C' AND id=$id");
-            }
-            $previousid = $id;
-            $correspondances += 1;
-            // Update GLPI with data from MDT
-            foreach ($row as $key=>$value) {
-               if (isset($variables[$key]) AND $value <>'' AND $value<>null) {
-                  $DB->queryOrDie("INSERT INTO glpi_plugin_glpi2mdt_settings (ID, type, category, `key`, `value`, `is_in_sync`) 
+               // Update GLPI with data from MDT
+               $fields = 0;
+               foreach ($row as $key=>$value) {
+                  if (isset($variables[$key]) AND $value <>'' AND $value<>null) {
+                     $DB->queryOrDie("INSERT INTO glpi_plugin_glpi2mdt_settings (ID, type, category, `key`, `value`, `is_in_sync`) 
                               VALUES ($id, 'C', 'C', '$key', '$value', true)
                               ON DUPLICATE KEY UPDATE `key`='$key', value='$value', is_in_sync=true;", "Can't insert setting");
-                  $fields += 1;
+                     $fields += 1;
+                  }
                }
+               // Keep the highest number of fields updated for one single comuputer in GLPI
+               $correspondances[$id] = max($correspondances[$id], $fields);
+               $DB->query("DELETE FROM glpi_plugin_glpi2mdt_settings WHERE type='C' AND category='C' AND is_in_sync=false AND id=$id");
+            } else if ($mode == "Loose") {
+              // Check if computer is active in GLPI. If not, remove from MDT
+              $active = $DB->query("SELECT key FROM glpi_plugin_glpi2mdt_settings WHERE type='C' AND category='C' AND id=$id");
+              $OSIntall = 'NO';
+              if ($DB->numrows($active) == 1) {
+                 $OSInstall = reset($active);
+              }
+              if ($OSInstall == 'NO') {
+                 $MDT->QueryOrDie("DELETE from dbo.Settings WHERE Type='C' AND id=".$row['id']);
+                 $MDT->QueryOrDie("DELETE from dbo.ComputerIdentity WHERE id=".$row['id']);
+                 $deleted +=1;
+              }
             }
-            $DB->query("DELETE FROM glpi_plugin_glpi2mdt_settings WHERE type='C' AND category='C' AND is_in_sync=false AND id=$id");
          }
       }
       if (isset($task)) {
-         $task->setVolume($correspondances);
+         if ($mode == 'Master') {
+         // Some computers in GLPI may have been updated several times (once per mac address)
+         $task->setVolume(count($correspondances));
          $task->log("computers updated in GLPI");
-         $task->setVolume($fields);
+         $task->setVolume($array_sum($correspondances));
          $task->log("settings updated in GLPI");
+         } elseif ($mode == 'Loose') {
+         $task->setVolume(count($correspondances));
+         $task->log("computers checked in GLPI");
+         $task->setVolume($deleted);
+         $task->log("Computers deleted in MDT");
+         } 
          return 1;
       }
       return 0;
