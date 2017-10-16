@@ -472,9 +472,9 @@ class PluginGlpi2mdtCronTask extends PluginGlpi2mdtMdt {
                     $row['AssetTag']."' AND uuid='".$row['UUID']."' ORDER BY c.id";
          $glpi = $DB->queryOrDie($query, "Can't find correspondance in GLPI");
          if ($DB->numrows($glpi) == 1) {
-            $correspondances[$id] = true;
             $array = $DB->fetch_array($glpi);
             $id = $array['id'];
+            $correspondances[$id] = 0;
             // We have found a correspondance between GLPI and MDT (more than one would be an error, dont process it)
             // If mode is master-master, copy data from MDT to GLPI (as any modification in GLPI is immedialtly pushed to MDT)
             // If mode is Strict, remove any computer that is not active anymore in GLPI
@@ -514,7 +514,7 @@ class PluginGlpi2mdtCronTask extends PluginGlpi2mdtMdt {
          // Some computers in GLPI may have been updated several times (once per mac address)
          $task->setVolume(count($correspondances));
          $task->log("computers updated in GLPI");
-         $task->setVolume($array_sum($correspondances));
+         $task->setVolume(array_sum($correspondances));
          $task->log("settings updated in GLPI");
          } elseif ($mode == 'Loose') {
          $task->setVolume(count($correspondances));
