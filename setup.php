@@ -26,7 +26,7 @@
  --------------------------------------------------------------------------
  */
 
-define('PLUGIN_GLPI2MDT_VERSION', '0.1.4');
+define('PLUGIN_GLPI2MDT_VERSION', '0.2.0');
 
 /**
  * Init hooks of the plugin.
