@@ -1,6 +1,17 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [0.2.0] - 2017-10-22
+### Added
+ - New variables to control installation assistant dialogs and supersede default settings
+
+## Changed
+ - Master and Strict coupling modes improved
+
+## Removed
+ - Support for PHP MSSQL module removed due to lack of functionalities
+
+
 ## [0.1.3] - 2017-10-09
 ### Added
  - None

@@ -41,8 +41,8 @@ class PluginGlpi2mdtMdt extends CommonDBTM {
    // Post parameters valid for configuration form and their expected content
    protected $validkeys=array(
                  'DBVersion' => 'txt',
-                 'DBDriver' =>'txt',
                  'DBServer' => 'txt',
+                 'DBDriver' => 'txt',
                  'DBLogin' => 'txt',
                  'DBPassword' => 'txt',
                  'DBSchema' => 'txt',
@@ -56,7 +56,7 @@ class PluginGlpi2mdtMdt extends CommonDBTM {
                  'LatestVersion' => 'txt'
                 );
    protected $globalconfig;
-   protected $DBLink, $DBModule;
+   protected $DBLink, $DBDriver;
 
    /**
     * Load plugin settings, connect to MSSQL;
@@ -95,9 +95,7 @@ class PluginGlpi2mdtMdt extends CommonDBTM {
       $DBSchema = $this->globalconfig['DBSchema'];
       $DBLogin = $this->globalconfig['DBLogin'];
       $DBPassword = $this->globalconfig['DBPassword'];
-      if (isset($this->globalconfig['DBDriver'])) {
-         $DBDriver = $this->globalconfig['DBDriver'];
-      }
+      $DBDriver = $this->globalconfig['DBDriver'];
 
       // Plugin version check
       $currentversion = PLUGIN_GLPI2MDT_VERSION;
@@ -108,21 +106,11 @@ class PluginGlpi2mdtMdt extends CommonDBTM {
 
       // Connection to MSSQL using ODBC PHP module
       if (extension_loaded('odbc')) {
-         $this->DBModule = 'odbc';
          $DBLink = odbc_connect("Driver=$DBDriver;Server=$DBServer,$DBPort;Database=$DBSchema;", $DBLogin, $DBPassword);
-
-         // Conection to MSSQL using native MSSQL PHP module available until PHP 5.6
-      } else if (extension_loaded('mssql')) {
-         $this->DBModule = 'mssql';
-         $DBLink = mssql_connect($DBServer.":".$DBPort, $DBLogin, $DBPassword);
-         if ($DBLink) {
-            mssql_select_db($DBSchema, $DBLink);
-         }
       }
       // Check if connection is successful, die if not
       if ($DBLink === false) {
-         $error = sprintf(__("Can't connect to MSSQL database using PHP module %s. Check configuration", 'glpi2mdt'),
-                     $this->DBModule);
+         $error = __("Can't connect to MSSQL database using PHP ODBC module. Check configuration", 'glpi2mdt');
          Session::addMessageAfterRedirect($error, true, ERROR);
       }
 
@@ -141,12 +129,7 @@ class PluginGlpi2mdtMdt extends CommonDBTM {
       if ($this->DBLink === false) {
          return;
       }
-
-      if ($this->DBModule == "mssql") {
-         mssql_close($this->DBLink);
-      } else if ($this->DBModule == "odbc") {
-         odbc_close($this->DBLink);
-      }
+      odbc_close($this->DBLink);
 
       // Looks nice.... but fails because there is no destruct over there
       //parent::__destruct();
@@ -165,7 +148,7 @@ class PluginGlpi2mdtMdt extends CommonDBTM {
 
       echo '<table class="tab_cadre_fixe">';
       echo '<tr class="tab_bg_1">';
-      echo '<th>'.__("Testing connection using PHP module", 'glpi2mdt')." ".$this->DBModule.'</th></tr><tr><td>';
+      echo '<th>'.__("Testing connection using PHP ODBC module", 'glpi2mdt').'</th></tr><tr><td>';
       // Connection to MSSQL
       if ($this->DBLink) {
          echo "<font color='green'>";
@@ -176,7 +159,8 @@ class PluginGlpi2mdtMdt extends CommonDBTM {
          $row = $this->fetch_array($version);
          echo "Server is: <br>".reset($row)."<br>";
          $result = $this->query("SELECT COUNT(*) FROM $dbschema.information_schema.tables WHERE table_type='base table'");
-         $nb = reset($this->fetch_array($result));
+         $array_result = $this->fetch_array($result);
+         $nb = reset($array_result);
          if ($nb > 0) {
             echo "<font color='green'>";
             echo __("Schema", 'glpi2mdt')." ".$dbschema." ".__("contains", 'glpi2mdt')." ".$nb." ".__("tables", 'glpi2mdt').".";
@@ -198,75 +182,43 @@ class PluginGlpi2mdtMdt extends CommonDBTM {
 
    /**
     * Several functions to interact with MDT database
-    * Uses PHP module odbc or mssql as appropriate
+    * Uses PHP odbc
     *
     * @param query, comment or none depending on function purpose
     *
     * @return result set for queries, numbers, or nothin
    **/
    function dberror() {
-      if ($this->DBModule == 'mssql') {
-         return mssql_get_last_message();
-      } else if ($this->DBModule == 'odbc') {
-         return odbc_errormsg($this->DBLink);
-      }
+      return odbc_errormsg($this->DBLink);
    }
 
    function query($query ) {
-      if ($this->DBModule == 'mssql') {
-         return mssql_query($query, $this->DBLink);
-      } else if ($this->DBModule == 'odbc') {
-         return odbc_exec($this->DBLink, $query);
-      }
+      return odbc_exec($this->DBLink, $query);
    }
 
    function queryOrDie($query, $message = '' ) {
-      if ($this->DBModule == 'mssql') {
-         $result = mssql_query($query, $this->DBLink) or die ($message."<br><br>".$query."<br><br>".mssql_get_last_message());
-      } else if ($this->DBModule == 'odbc') {
-         $result = odbc_exec($this->DBLink, $query) or die ($message."<br><br>".$query."<br><br>".odbc_errormsg($this->DBLink));
-      }
+      $result = odbc_exec($this->DBLink, $query) or die ($message."<br><br>".$query."<br><br>".odbc_errormsg($this->DBLink));
       return $result;
    }
 
    function numrows($result) {
-      if ($this->DBModule == 'mssql') {
-         return mssql_num_rows($result);
-      } else if ($this->DBModule == 'odbc') {
-         return odbc_num_rows($result);
-      }
+      return odbc_num_rows($result);
    }
 
    function fetch_array($result) {
-      if ($this->DBModule == 'mssql') {
-         return mssql_fetch_array($result);
-      } else if ($this->DBModule == 'odbc') {
-         return odbc_fetch_array($result);
-      }
+      return odbc_fetch_array($result);
    }
 
    function fetch_row($result) {
-      if ($this->DBModule == 'mssql') {
-         return mssql_fetch_row($result);
-      } else if ($this->DBModule == 'odbc') {
-         return odbc_fetch_row($result);
-      }
+      return odbc_fetch_row($result);
    }
 
    function fetch_assoc($result) {
-      if ($this->DBModule == 'mssql') {
-         return mssql_fetch_assoc($result);
-      } else if ($this->DBModule == 'odbc') {
-         return odbc_fetch_into($result);
-      }
+      return odbc_fetch_into($result);
    }
 
    function free_result($result) {
-      if ($this->DBModule == 'mssql') {
-         return mssql_free_result($result);
-      } else if ($this->DBModule == 'odbc') {
-         return odbc_free_result($result);
-      }
+      return odbc_free_result($result);
    }
 
    /**

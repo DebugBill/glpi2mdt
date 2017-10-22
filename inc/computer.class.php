@@ -302,7 +302,7 @@ class PluginGlpi2mdtComputer extends PluginGlpi2mdtMdt {
          Dropdown::showFromArray($variable, $values,
            array('value' => (isset($settings[$variable])?$settings[$variable]:'*undef*')));
          echo '</td>';
-      } 
+      }
 
       $query = "SELECT `category`, `key`, `value` FROM glpi_plugin_glpi2mdt_settings WHERE type='C' AND id='$id'";
       $result = $DB->query($query);
@@ -396,15 +396,15 @@ class PluginGlpi2mdtComputer extends PluginGlpi2mdtMdt {
       showSelectBox('BitLocker dialog', 'SkipBitLocker', $skip, $settings);
 
       // Capture
-      showSelectBox('Image capture dialog','SkipCapture', $skip, $settings);
+      showSelectBox('Image capture dialog', 'SkipCapture', $skip, $settings);
 
       echo '</tr><tr>';
 
-      // Computer Backup 
-      showSelectBox('Computer backup dialog','SkipComputerBackup', $skip, $settings);
+      // Computer Backup
+      showSelectBox('Computer backup dialog', 'SkipComputerBackup', $skip, $settings);
 
       // User Data
-      showSelectBox('User data dialog','SkipUserData', $skip, $settings);
+      showSelectBox('User data dialog', 'SkipUserData', $skip, $settings);
 
       echo '</tr><tr>';
 
@@ -420,7 +420,7 @@ class PluginGlpi2mdtComputer extends PluginGlpi2mdtMdt {
       showSelectBox('Package display dialog', 'SkipPackageDisplay', $skip, $settings);
 
       echo '</tr>';
-      echo '</table>'; 
+      echo '</table>';
 
       // Show the save button only if user has rights to do so.
       if (PluginGlpi2mdtComputer::canUpdate()) {

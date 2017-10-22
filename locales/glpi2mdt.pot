@@ -19,58 +19,16 @@ msgstr ""
 
 
 
-#: inc/crontask.class.php:182 inc/crontask.class.php:219
-#: inc/crontask.class.php:258 inc/crontask.class.php:309
-#: inc/crontask.class.php:354 inc/crontask.class.php:404
-msgid "lines loaded into table"
+#: hook.php:251
+msgid ""
+"Glpi2mdt database is corrupted. Please uninstall and reinstall the plugin"
 msgstr ""
 
-#: inc/crontask.class.php:190 inc/crontask.class.php:267
-#: inc/crontask.class.php:320 inc/crontask.class.php:363
-#: inc/crontask.class.php:415
-msgid "lines deleted from table"
-msgstr ""
-
-#: inc/crontask.class.php:554
-msgid "Glpi2mdt Plugin"
-msgstr ""
-
-#: inc/crontask.class.php:571
-msgid "Check for new updates"
-msgstr ""
-
-#: inc/crontask.class.php:574
-msgid "Update base data from MDT XML files and MS-SQL DB"
-msgstr ""
-
-#: inc/crontask.class.php:577
-msgid "Synchronize data between MDT and GLPI in Master-Master mode"
-msgstr ""
-
-#: inc/crontask.class.php:580
-msgid "Disable \"OS Install\" flag when expired"
-msgstr ""
-
-#: inc/crontask.class.php:599
-#, php-format
-msgid "File '%s' not found."
-msgstr ""
-
-#: inc/crontask.class.php:607
-#, php-format
-msgid "Looks like '%s' exists but is not readable. "
-msgstr ""
-
-#: inc/crontask.class.php:617
-#, php-format
-msgid "File '%s' contains no valid data. Check MDT configuration"
-msgstr ""
-
-#: inc/config.class.php:86 inc/computer.class.php:320
+#: inc/config.class.php:86 inc/computer.class.php:291
 msgid "YES"
 msgstr ""
 
-#: inc/config.class.php:87 inc/computer.class.php:321
+#: inc/config.class.php:87 inc/computer.class.php:292
 msgid "NO"
 msgstr ""
 
@@ -94,7 +52,7 @@ msgstr ""
 msgid "Password"
 msgstr ""
 
-#: inc/config.class.php:140 inc/mdt.class.php:182
+#: inc/config.class.php:140 inc/mdt.class.php:166
 msgid "Schema"
 msgstr ""
 
@@ -162,75 +120,125 @@ msgstr ""
 msgid "Initialise data"
 msgstr ""
 
-#: inc/config.class.php:236 inc/computer.class.php:404
+#: inc/config.class.php:236 inc/computer.class.php:443
 #, php-format
 msgid "A new version of plugin glpi2mdt is available: v%s"
 msgstr ""
 
-#: inc/mdt.class.php:124
-#, php-format
+#: inc/mdt.class.php:113
 msgid ""
-"Can't connect to MSSQL database using PHP module %s. Check configuration"
+"Can't connect to MSSQL database using PHP ODBC module. Check configuration"
 msgstr ""
 
-#: inc/mdt.class.php:168
-msgid "Testing connection using PHP module"
+#: inc/mdt.class.php:151
+msgid "Testing connection using PHP ODBC module"
 msgstr ""
 
-#: inc/mdt.class.php:172
+#: inc/mdt.class.php:155
 msgid "Database login OK!"
 msgstr ""
 
-#: inc/mdt.class.php:182
+#: inc/mdt.class.php:166
 msgid "contains"
 msgstr ""
 
-#: inc/mdt.class.php:182
+#: inc/mdt.class.php:166
 msgid "tables"
 msgstr ""
 
-#: inc/mdt.class.php:186
+#: inc/mdt.class.php:170
 msgid "Could not count tables in schema"
 msgstr ""
 
-#: inc/mdt.class.php:191
+#: inc/mdt.class.php:175
 msgid "Database login KO!"
 msgstr ""
 
-#: inc/computer.class.php:65 inc/computer.class.php:67
+#: inc/crontask.class.php:182 inc/crontask.class.php:219
+#: inc/crontask.class.php:258 inc/crontask.class.php:309
+#: inc/crontask.class.php:354 inc/crontask.class.php:404
+msgid "lines loaded into table"
+msgstr ""
+
+#: inc/crontask.class.php:190 inc/crontask.class.php:267
+#: inc/crontask.class.php:320 inc/crontask.class.php:363
+#: inc/crontask.class.php:415
+msgid "lines deleted from table"
+msgstr ""
+
+#: inc/crontask.class.php:582
+msgid "Glpi2mdt Plugin"
+msgstr ""
+
+#: inc/crontask.class.php:599
+msgid "Check for new updates"
+msgstr ""
+
+#: inc/crontask.class.php:602
+msgid "Update base data from MDT XML files and MS-SQL DB"
+msgstr ""
+
+#: inc/crontask.class.php:605
+msgid "Synchronize data between MDT and GLPI in Master-Master mode"
+msgstr ""
+
+#: inc/crontask.class.php:608
+msgid "Disable \"OS Install\" flag when expired"
+msgstr ""
+
+#: inc/crontask.class.php:627
+#, php-format
+msgid "File '%s' not found."
+msgstr ""
+
+#: inc/crontask.class.php:635
+#, php-format
+msgid "Looks like '%s' exists but is not readable. "
+msgstr ""
+
+#: inc/crontask.class.php:645
+#, php-format
+msgid "File '%s' contains no valid data. Check MDT configuration"
+msgstr ""
+
+#: inc/computer.class.php:67 inc/computer.class.php:69
 msgid "Auto Install"
 msgstr ""
 
-#: inc/computer.class.php:314
-msgid "Automatic installation"
-msgstr ""
-
-#: inc/computer.class.php:318
-msgid "Enable automatic installation"
-msgstr ""
-
-#: inc/computer.class.php:322
+#: inc/computer.class.php:290 inc/computer.class.php:388
 msgid "Default"
 msgstr ""
 
-#: inc/computer.class.php:331
+#: inc/computer.class.php:330
+msgid "Automatic installation"
+msgstr ""
+
+#: inc/computer.class.php:338
 msgid "Reset after (empty for permanent):"
 msgstr ""
 
-#: inc/computer.class.php:341
-msgid "Task sequence"
-msgstr ""
-
-#: inc/computer.class.php:347
+#: inc/computer.class.php:350
 msgid "Default task sequence"
 msgstr ""
 
-#: inc/computer.class.php:372
+#: inc/computer.class.php:373
 msgid "Applications"
 msgstr ""
 
-#: inc/computer.class.php:384
+#: inc/computer.class.php:385
 msgid "Roles"
+msgstr ""
+
+#: inc/computer.class.php:389
+msgid "Activate"
+msgstr ""
+
+#: inc/computer.class.php:390
+msgid "Skip"
+msgstr ""
+
+#: inc/computer.class.php:392
+msgid "Enable Installation Assistant dialogs"
 msgstr ""
 
 #: front/computer.form.php:36
@@ -241,13 +249,8 @@ msgstr ""
 msgid "Setup"
 msgstr ""
 
-#: hook.php:251
-msgid ""
-"Glpi2mdt database is corrupted. Please uninstall and reinstall the plugin"
-msgstr ""
-
 #: setup.php:101
-msgid "Incompatible PHP Installation. Requires module mssql or module odbc"
+msgid "Incompatible PHP Installation. Requires PHP module ODBC"
 msgstr ""
 
 #: setup.php:106

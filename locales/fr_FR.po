@@ -10,7 +10,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-09-02 16:20+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Blaise Thauvin <blaise@thauvin.org>, 2017\n"
+"Last-Translator: Blaise Thauvin <glpi2mdt@thauvin.org>, 2017\n"
 "Language-Team: French (https://www.transifex.com/glpi2mdt/teams/78175/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -18,63 +18,18 @@ msgstr ""
 "Language: fr\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: inc/crontask.class.php:182 inc/crontask.class.php:219
-#: inc/crontask.class.php:258 inc/crontask.class.php:309
-#: inc/crontask.class.php:354 inc/crontask.class.php:404
-msgid "lines loaded into table"
-msgstr "ligne(s) chargée(s) dans la table"
-
-#: inc/crontask.class.php:190 inc/crontask.class.php:267
-#: inc/crontask.class.php:320 inc/crontask.class.php:363
-#: inc/crontask.class.php:415
-msgid "lines deleted from table"
-msgstr "ligne(s) supprimée(s) de la table"
-
-#: inc/crontask.class.php:554
-msgid "Glpi2mdt Plugin"
-msgstr "Plugin Glpi2mdt"
-
-#: inc/crontask.class.php:571
-msgid "Check for new updates"
-msgstr "Vérification de la présence de mises à jour"
-
-#: inc/crontask.class.php:574
-msgid "Update base data from MDT XML files and MS-SQL DB"
+#: hook.php:251
+msgid ""
+"Glpi2mdt database is corrupted. Please uninstall and reinstall the plugin"
 msgstr ""
-"Mise à jour des données de base depuis les fichiers XML et la base MS-SQL de"
-" MDT. "
+"La base de données de glpi2mdt est corrompue. Merci de désinstaller et "
+"réinstaller le plugin"
 
-#: inc/crontask.class.php:577
-msgid "Synchronize data between MDT and GLPI in Master-Master mode"
-msgstr "Synchronisation des données entre MDT et GLPI en mode maître-maître"
-
-#: inc/crontask.class.php:580
-msgid "Disable \"OS Install\" flag when expired"
-msgstr "Désactivation de l'installation automatique après expiration."
-
-#: inc/crontask.class.php:599
-#, php-format
-msgid "File '%s' not found."
-msgstr "Fichier '%s' introuvable."
-
-#: inc/crontask.class.php:607
-#, php-format
-msgid "Looks like '%s' exists but is not readable. "
-msgstr ""
-"Il semble que le fichier '%s' existe mais ne soit pas autorisé en lecture."
-
-#: inc/crontask.class.php:617
-#, php-format
-msgid "File '%s' contains no valid data. Check MDT configuration"
-msgstr ""
-"Le fichier '%s' ne contient aucune donnée valide. Vérifiez la configuration "
-"de MDT."
-
-#: inc/config.class.php:86 inc/computer.class.php:320
+#: inc/config.class.php:86 inc/computer.class.php:291
 msgid "YES"
 msgstr "Oui"
 
-#: inc/config.class.php:87 inc/computer.class.php:321
+#: inc/config.class.php:87 inc/computer.class.php:292
 msgid "NO"
 msgstr "Non"
 
@@ -98,7 +53,7 @@ msgstr "Identifiant"
 msgid "Password"
 msgstr "Mot de passe"
 
-#: inc/config.class.php:140 inc/mdt.class.php:182
+#: inc/config.class.php:140 inc/mdt.class.php:166
 msgid "Schema"
 msgstr "Schéma"
 
@@ -168,78 +123,131 @@ msgstr "Tester la connexion"
 msgid "Initialise data"
 msgstr "Initialiser les données"
 
-#: inc/config.class.php:236 inc/computer.class.php:404
+#: inc/config.class.php:236 inc/computer.class.php:443
 #, php-format
 msgid "A new version of plugin glpi2mdt is available: v%s"
 msgstr "Une nouvelle version du plugin glpi2mdt est disponible: v%s"
 
-#: inc/mdt.class.php:124
-#, php-format
+#: inc/mdt.class.php:113
 msgid ""
-"Can't connect to MSSQL database using PHP module %s. Check configuration"
+"Can't connect to MSSQL database using PHP ODBC module. Check configuration"
 msgstr ""
-"Impossible de se connecter à la base MSSQL avec le module PHP %s. Vérifiez "
-"la configuration"
 
-#: inc/mdt.class.php:168
-msgid "Testing connection using PHP module"
-msgstr "Test de la connexion avec le module PHP"
+#: inc/mdt.class.php:151
+msgid "Testing connection using PHP ODBC module"
+msgstr ""
 
-#: inc/mdt.class.php:172
+#: inc/mdt.class.php:155
 msgid "Database login OK!"
 msgstr "Connexion à la base réussie!"
 
-#: inc/mdt.class.php:182
+#: inc/mdt.class.php:166
 msgid "contains"
 msgstr "contient"
 
-#: inc/mdt.class.php:182
+#: inc/mdt.class.php:166
 msgid "tables"
 msgstr "tables"
 
-#: inc/mdt.class.php:186
+#: inc/mdt.class.php:170
 msgid "Could not count tables in schema"
 msgstr "Impossible de compter les tables du schéma"
 
-#: inc/mdt.class.php:191
+#: inc/mdt.class.php:175
 msgid "Database login KO!"
 msgstr "Echec de connexion à la base!"
 
-#: inc/computer.class.php:65 inc/computer.class.php:67
+#: inc/crontask.class.php:182 inc/crontask.class.php:219
+#: inc/crontask.class.php:258 inc/crontask.class.php:309
+#: inc/crontask.class.php:354 inc/crontask.class.php:404
+msgid "lines loaded into table"
+msgstr "ligne(s) chargée(s) dans la table"
+
+#: inc/crontask.class.php:190 inc/crontask.class.php:267
+#: inc/crontask.class.php:320 inc/crontask.class.php:363
+#: inc/crontask.class.php:415
+msgid "lines deleted from table"
+msgstr "ligne(s) supprimée(s) de la table"
+
+#: inc/crontask.class.php:582
+msgid "Glpi2mdt Plugin"
+msgstr "Plugin Glpi2mdt"
+
+#: inc/crontask.class.php:599
+msgid "Check for new updates"
+msgstr "Vérification de la présence de mises à jour"
+
+#: inc/crontask.class.php:602
+msgid "Update base data from MDT XML files and MS-SQL DB"
+msgstr ""
+"Mise à jour des données de base depuis les fichiers XML et la base MS-SQL de"
+" MDT. "
+
+#: inc/crontask.class.php:605
+msgid "Synchronize data between MDT and GLPI in Master-Master mode"
+msgstr "Synchronisation des données entre MDT et GLPI en mode maître-maître"
+
+#: inc/crontask.class.php:608
+msgid "Disable \"OS Install\" flag when expired"
+msgstr "Désactivation de l'installation automatique après expiration."
+
+#: inc/crontask.class.php:627
+#, php-format
+msgid "File '%s' not found."
+msgstr "Fichier '%s' introuvable."
+
+#: inc/crontask.class.php:635
+#, php-format
+msgid "Looks like '%s' exists but is not readable. "
+msgstr ""
+"Il semble que le fichier '%s' existe mais ne soit pas autorisé en lecture."
+
+#: inc/crontask.class.php:645
+#, php-format
+msgid "File '%s' contains no valid data. Check MDT configuration"
+msgstr ""
+"Le fichier '%s' ne contient aucune donnée valide. Vérifiez la configuration "
+"de MDT."
+
+#: inc/computer.class.php:67 inc/computer.class.php:69
 msgid "Auto Install"
 msgstr "Install auto"
 
-#: inc/computer.class.php:314
-msgid "Automatic installation"
-msgstr "Installation automatique"
-
-#: inc/computer.class.php:318
-msgid "Enable automatic installation"
-msgstr "Activer l'installation automatique"
-
-#: inc/computer.class.php:322
+#: inc/computer.class.php:290 inc/computer.class.php:388
 msgid "Default"
 msgstr "Défault"
 
-#: inc/computer.class.php:331
+#: inc/computer.class.php:330
+msgid "Automatic installation"
+msgstr "Installation automatique"
+
+#: inc/computer.class.php:338
 msgid "Reset after (empty for permanent):"
 msgstr "Annuler après (vide pour jamais)"
 
-#: inc/computer.class.php:341
-msgid "Task sequence"
-msgstr "Séquence de tâches"
-
-#: inc/computer.class.php:347
+#: inc/computer.class.php:350
 msgid "Default task sequence"
 msgstr "Séquence de tâches par defaut"
 
-#: inc/computer.class.php:372
+#: inc/computer.class.php:373
 msgid "Applications"
 msgstr "Applications"
 
-#: inc/computer.class.php:384
+#: inc/computer.class.php:385
 msgid "Roles"
 msgstr "Rôles"
+
+#: inc/computer.class.php:389
+msgid "Activate"
+msgstr ""
+
+#: inc/computer.class.php:390
+msgid "Skip"
+msgstr ""
+
+#: inc/computer.class.php:392
+msgid "Enable Installation Assistant dialogs"
+msgstr ""
 
 #: front/computer.form.php:36
 msgid "Features"
@@ -249,17 +257,9 @@ msgstr "Fonctions"
 msgid "Setup"
 msgstr "Configuration"
 
-#: hook.php:251
-msgid ""
-"Glpi2mdt database is corrupted. Please uninstall and reinstall the plugin"
-msgstr ""
-"La base de données de glpi2mdt est corrompue. Merci de désinstaller et "
-"réinstaller le plugin"
-
 #: setup.php:101
-msgid "Incompatible PHP Installation. Requires module mssql or module odbc"
+msgid "Incompatible PHP Installation. Requires PHP module ODBC"
 msgstr ""
-"Configuration PHP incompatible. Un module PHP MSSQL ou ODBC est nécessaire"
 
 #: setup.php:106
 msgid "Incompatible PHP Installation. Requires module"

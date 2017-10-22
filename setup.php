@@ -97,8 +97,8 @@ function plugin_glpi2mdt_check_prerequisites() {
    }
 
    // The plugin needs to access the MSSQL MDT database, PHP modules needed
-   if (!extension_loaded("mssql") and !extension_loaded("odbc")) {
-      echo __('Incompatible PHP Installation. Requires module mssql or module odbc', 'glpi2mdt');
+   if (!extension_loaded("odbc")) {
+      echo __('Incompatible PHP Installation. Requires PHP module ODBC', 'glpi2mdt');
       return false;
    }
    // The plugin needs to process some XML files from the MDT deployment share, PHP module needed

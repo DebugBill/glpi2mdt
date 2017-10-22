@@ -479,7 +479,7 @@ class PluginGlpi2mdtCronTask extends PluginGlpi2mdtMdt {
             // If mode is master-master, copy data from MDT to GLPI (as any modification in GLPI is immedialtly pushed to MDT)
             // If mode is Strict, remove any computer that is not active anymore in GLPI
             if ($mode == "Master") {
-               // Mark settings that may have to be deleted 
+               // Mark settings that may have to be deleted
                $DB->query("UPDATE glpi_plugin_glpi2mdt_settings SET is_in_sync=false WHERE type='C' AND category='C' AND id=$id");
                // Update GLPI with data from MDT
                $fields = 0;
@@ -495,33 +495,33 @@ class PluginGlpi2mdtCronTask extends PluginGlpi2mdtMdt {
                $correspondances[$id] = max($correspondances[$id], $fields);
                $DB->query("DELETE FROM glpi_plugin_glpi2mdt_settings WHERE type='C' AND category='C' AND is_in_sync=false AND id=$id");
             } else if ($mode == "Loose") {
-              // Check if computer is active in GLPI. If not, remove from MDT
-              $active = $DB->query("SELECT key FROM glpi_plugin_glpi2mdt_settings WHERE type='C' AND category='C' AND id=$id");
-              $OSIntall = 'NO';
-              if ($DB->numrows($active) == 1) {
-                 $OSInstall = reset($active);
-              }
-              if ($OSInstall == 'NO') {
-                 $MDT->QueryOrDie("DELETE from dbo.Settings WHERE Type='C' AND id=".$row['id']);
-                 $MDT->QueryOrDie("DELETE from dbo.ComputerIdentity WHERE id=".$row['id']);
-                 $deleted +=1;
-              }
+               // Check if computer is active in GLPI. If not, remove from MDT
+               $active = $DB->query("SELECT key FROM glpi_plugin_glpi2mdt_settings WHERE type='C' AND category='C' AND id=$id");
+               $OSIntall = 'NO';
+               if ($DB->numrows($active) == 1) {
+                  $OSInstall = reset($active);
+               }
+               if ($OSInstall == 'NO') {
+                  $MDT->QueryOrDie("DELETE from dbo.Settings WHERE Type='C' AND id=".$row['id']);
+                  $MDT->QueryOrDie("DELETE from dbo.ComputerIdentity WHERE id=".$row['id']);
+                  $deleted +=1;
+               }
             }
          }
       }
       if (isset($task)) {
          if ($mode == 'Master') {
-         // Some computers in GLPI may have been updated several times (once per mac address)
-         $task->setVolume(count($correspondances));
-         $task->log("computers updated in GLPI");
-         $task->setVolume(array_sum($correspondances));
-         $task->log("settings updated in GLPI");
-         } elseif ($mode == 'Loose') {
-         $task->setVolume(count($correspondances));
-         $task->log("computers checked in GLPI");
-         $task->setVolume($deleted);
-         $task->log("Computers deleted in MDT");
-         } 
+            // Some computers in GLPI may have been updated several times (once per mac address)
+            $task->setVolume(count($correspondances));
+            $task->log("computers updated in GLPI");
+            $task->setVolume(array_sum($correspondances));
+            $task->log("settings updated in GLPI");
+         } else if ($mode == 'Loose') {
+            $task->setVolume(count($correspondances));
+            $task->log("computers checked in GLPI");
+            $task->setVolume($deleted);
+            $task->log("Computers deleted in MDT");
+         }
          return 1;
       }
       return 0;
