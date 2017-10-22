@@ -51,7 +51,7 @@ class PluginGlpi2mdtToolbox extends PluginGlpi2mdtMdt {
    * @param $prefix : prefix to be added to all ids to build POST variables
    * @return none, but outputs HTML
    */
-   function showMultiSelect($items, $values, $title, $prefix) {
+   static function showMultiSelect($items, $values, $title, $prefix) {
 
       echo '<table class="tab_cadre_fixe" width="100%">';
       $group = '';

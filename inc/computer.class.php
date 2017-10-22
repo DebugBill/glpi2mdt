@@ -35,6 +35,7 @@ if (!defined('GLPI_ROOT')) {
    die("Sorry. You can't access directly to this file");
 }
 
+
 class PluginGlpi2mdtComputer extends PluginGlpi2mdtMdt {
 
    /**
@@ -43,6 +44,7 @@ class PluginGlpi2mdtComputer extends PluginGlpi2mdtMdt {
     * @var string
     */
    static $rightname = 'computer';
+
 
    /**
    * This function is called from GLPI to allow the plugin to insert one or more items
@@ -84,7 +86,7 @@ class PluginGlpi2mdtComputer extends PluginGlpi2mdtMdt {
          return false;
       }
 
-      // Build array of valid variables for post variables
+      // Retreive array of valid variables for post variables
       $variables = $this->globalconfig['variables'];
 
       if (isset($post['id']) and ($post['id'] > 0)) {
@@ -229,8 +231,8 @@ class PluginGlpi2mdtComputer extends PluginGlpi2mdtMdt {
             $value='';
          }
          $query = "UPDATE dbo.Settings SET $key='$value' WHERE $mdtids;";
-         // Check if key is a valid field for database "settings"
-         if ($variables[$key]) {
+         // Check if key is a valid field for database "settings" in order to filter OSInstallExpire for example
+         if (isset($variables[$key])) {
             $this->queryOrDie("$query");
          }
       }
@@ -281,6 +283,26 @@ class PluginGlpi2mdtComputer extends PluginGlpi2mdtMdt {
       $id = $item->getID();
       $osinstall = 'NO';
       $osinstallexpire = date('Y-m-d H:i', 300*ceil(time()/300) + (3600*24));
+      $settings = [];
+      $appvalues = [];
+      $rolevalues = [];
+
+      $yesno['*undef*'] = __('Default', 'glpi2mdt');
+      $yesno['YES'] = __('YES', 'glpi2mdt');
+      $yesno['NO'] = __('NO', 'glpi2mdt');
+
+      /**
+      * Internal function to factorise dropbox creation
+      *
+      */
+      function showSelectBox($message, $variable, $values, $settings) {
+         echo '<td>';
+         echo __($message, 'glpi2mdt');
+         echo "</td><td>";
+         Dropdown::showFromArray($variable, $values,
+           array('value' => (isset($settings[$variable])?$settings[$variable]:'*undef*')));
+         echo '</td>';
+      } 
 
       $query = "SELECT `category`, `key`, `value` FROM glpi_plugin_glpi2mdt_settings WHERE type='C' AND id='$id'";
       $result = $DB->query($query);
@@ -296,12 +318,6 @@ class PluginGlpi2mdtComputer extends PluginGlpi2mdtMdt {
          }
       }
 
-      if (isset($settings['OSInstall'])) {
-         $osinstall = $settings['OSInstall'];
-      }
-      if (isset($settings['TaskSequenceID'])) {
-         $tasksequence = $settings['TaskSequenceID'];
-      }
       if (isset($settings['OSInstallExpire'])) {
          $osinstallexpire = date('Y-m-d H:i', $settings['OSInstallExpire']);
       }
@@ -312,24 +328,15 @@ class PluginGlpi2mdtComputer extends PluginGlpi2mdtMdt {
       echo '<div class="spaced" id="tabsbody">';
       echo '<table class="tab_cadre_fixe" width="100%">';
       echo '<tr class="headerRow"><th colspan="3">'.__('Automatic installation', 'glpi2mdt').'<br></th></tr>';
-      // Enable OS install
-      echo '          <tr class="tab_bg_1">';
-      echo "<td>";
-      echo __('Enable automatic installation', 'glpi2mdt');
-      echo "</td><td>";
-      $yesno['YES'] = __('YES', 'glpi2mdt');
-      $yesno['NO'] = __('NO', 'glpi2mdt');
-      $yesno['*undef*'] = __('Default', 'glpi2mdt');
-      Dropdown::showFromArray("OSInstall", $yesno,
-        array(
-       'value' => "$osinstall")
-       );
-      echo '</td>';
+      echo '<tr class="tab_bg_1">';
+
+      // OS Install
+      showSelectBox('Enable automatic installation', 'OSInstall', $yesno, $settings);
 
       // Reset after...
       echo '<td>';
       echo __('Reset after (empty for permanent):', 'glpi2mdt');
-      Html::showDateTimeField("OSInstallExpire", array('value'      => $osinstallexpire,
+      Html::showDateTimeField("OSInstallExpire", @array('value'      => $osinstallexpire,
        'timestep'   => 5,
        'mindate'    => date('Y-m-d H:i:s'),
        'maybeempty' => true));
@@ -337,10 +344,6 @@ class PluginGlpi2mdtComputer extends PluginGlpi2mdtMdt {
 
       // Task sequences
       echo '<tr class="tab_bg_1">';
-      echo '<td>';
-      echo __("Task sequence", 'glpi2mdt');
-      echo ': &nbsp;&nbsp;&nbsp;</td>';
-      echo "<td>";
        $result = $DB->query("SELECT id, name FROM glpi_plugin_glpi2mdt_task_sequences 
                                 WHERE is_deleted=false AND hide=false AND enable=true");
       // first value in array is "default"
@@ -348,9 +351,7 @@ class PluginGlpi2mdtComputer extends PluginGlpi2mdtMdt {
       while ($row = $DB->fetch_array($result)) {
          $tasksequenceids[$row['id']]=$row['name'];
       }
-      Dropdown::showFromArray("TaskSequenceID", $tasksequenceids,
-        array('value' => "$tasksequence"));
-      echo "</td>";
+      showSelectBox('Default task sequence', 'TaskSequenceID', $tasksequenceids, $settings);
       echo '</tr>';
 
       // Applications
@@ -383,6 +384,44 @@ class PluginGlpi2mdtComputer extends PluginGlpi2mdtMdt {
       }
       PluginGlpi2mdtToolbox::showMultiSelect($roles, $rolevalues, __('Roles', 'glpi2mdt'), "Roles-");
 
+      // Assistant
+      $skip['*undef*'] = __('Default', 'glpi2mdt');
+      $skip['NO'] = __('Activate', 'glpi2mdt');
+      $skip['YES'] = __('Skip', 'glpi2mdt');
+      echo '<table class="tab_cadre_fixe" width="100%">';
+      echo '<tr class="headerRow"><th colspan="4">'.__('Enable Installation Assistant dialogs', 'glpi2mdt').'<br></th></tr>';
+      echo '<tr class="tab_bg_1">';
+
+      // BitLocker
+      showSelectBox('BitLocker dialog', 'SkipBitLocker', $skip, $settings);
+
+      // Capture
+      showSelectBox('Image capture dialog','SkipCapture', $skip, $settings);
+
+      echo '</tr><tr>';
+
+      // Computer Backup 
+      showSelectBox('Computer backup dialog','SkipComputerBackup', $skip, $settings);
+
+      // User Data
+      showSelectBox('User data dialog','SkipUserData', $skip, $settings);
+
+      echo '</tr><tr>';
+
+      // Locale Selection
+      showSelectBox('Locale selection dialog', 'SkipLocaleSelection', $skip, $settings);
+
+      // Time Zone
+      showSelectBox('TimeZone dialog', 'SkipTimeZone', $skip, $settings);
+
+      echo '</tr><tr>';
+
+      // Package Display
+      showSelectBox('Package display dialog', 'SkipPackageDisplay', $skip, $settings);
+
+      echo '</tr>';
+      echo '</table>'; 
+
       // Show the save button only if user has rights to do so.
       if (PluginGlpi2mdtComputer::canUpdate()) {
          echo '<tr class="tab_bg_1">';
@@ -396,7 +435,7 @@ class PluginGlpi2mdtComputer extends PluginGlpi2mdtMdt {
          // Plugin version check
          $currentversion = PLUGIN_GLPI2MDT_VERSION;
          $version = $DB->query("SELECT value_char FROM glpi_plugin_glpi2mdt_parameters WHERE parameter='LAtestVersion' AND scope='global'");
-         if ($DB-numrows == 1) {
+         if ($DB->numrows($version) == 1) {
             $latestversion = $DB->fetch_array($version)['value_char'];
          }
          if (version_compare($currentversion, $latestversion, '<')) {
