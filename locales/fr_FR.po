@@ -217,7 +217,7 @@ msgstr "Install auto"
 
 #: inc/computer.class.php:290 inc/computer.class.php:388
 msgid "Default"
-msgstr "Défault"
+msgstr "Défaut"
 
 #: inc/computer.class.php:330
 msgid "Automatic installation"
