@@ -494,16 +494,13 @@ class PluginGlpi2mdtCronTask extends PluginGlpi2mdtMdt {
                // Keep the highest number of fields updated for one single comuputer in GLPI
                $correspondances[$id] = max($correspondances[$id], $fields);
                $DB->query("DELETE FROM glpi_plugin_glpi2mdt_settings WHERE type='C' AND category='C' AND is_in_sync=false AND id=$id");
-            } else if ($mode == "Loose") {
+            } else if ($mode == "Strict") {
                // Check if computer is active in GLPI. If not, remove from MDT
-               $active = $DB->query("SELECT key FROM glpi_plugin_glpi2mdt_settings WHERE type='C' AND category='C' AND id=$id");
-               $OSIntall = 'NO';
-               if ($DB->numrows($active) == 1) {
-                  $OSInstall = reset($active);
-               }
-               if ($OSInstall == 'NO') {
-                  $MDT->QueryOrDie("DELETE from dbo.Settings WHERE Type='C' AND id=".$row['id']);
-                  $MDT->QueryOrDie("DELETE from dbo.ComputerIdentity WHERE id=".$row['id']);
+               $active = $DB->query("SELECT value FROM glpi_plugin_glpi2mdt_settings WHERE type='C' AND category='C' 
+                                            AND `key`='OSInstall' AND value='YES' AND id=$id");
+               if ($DB->numrows($active) <> 1) {
+                  $MDT->QueryOrDie("DELETE from dbo.Settings WHERE Type='C' AND id=".$row['ID']);
+                  $MDT->QueryOrDie("DELETE from dbo.ComputerIdentity WHERE id=".$row['ID']);
                   $deleted +=1;
                }
             }
@@ -516,7 +513,7 @@ class PluginGlpi2mdtCronTask extends PluginGlpi2mdtMdt {
             $task->log("computers updated in GLPI");
             $task->setVolume(array_sum($correspondances));
             $task->log("settings updated in GLPI");
-         } else if ($mode == 'Loose') {
+         } else if ($mode == 'Strict') {
             $task->setVolume(count($correspondances));
             $task->log("computers checked in GLPI");
             $task->setVolume($deleted);
@@ -526,7 +523,6 @@ class PluginGlpi2mdtCronTask extends PluginGlpi2mdtMdt {
       }
       return 0;
    }
-
 
 
    /**
