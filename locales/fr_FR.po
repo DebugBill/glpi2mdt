@@ -132,10 +132,12 @@ msgstr "Une nouvelle version du plugin glpi2mdt est disponible: v%s"
 msgid ""
 "Can't connect to MSSQL database using PHP ODBC module. Check configuration"
 msgstr ""
+"Impossible de se connecter à la base MS-SQL avec le module PHP ODBC. "
+"Vérifiez la configuration"
 
 #: inc/mdt.class.php:151
 msgid "Testing connection using PHP ODBC module"
-msgstr ""
+msgstr "Test de connexion avec le module PHP ODBC"
 
 #: inc/mdt.class.php:155
 msgid "Database login OK!"
@@ -169,40 +171,40 @@ msgstr "ligne(s) chargée(s) dans la table"
 msgid "lines deleted from table"
 msgstr "ligne(s) supprimée(s) de la table"
 
-#: inc/crontask.class.php:582
+#: inc/crontask.class.php:578
 msgid "Glpi2mdt Plugin"
 msgstr "Plugin Glpi2mdt"
 
-#: inc/crontask.class.php:599
+#: inc/crontask.class.php:595
 msgid "Check for new updates"
 msgstr "Vérification de la présence de mises à jour"
 
-#: inc/crontask.class.php:602
+#: inc/crontask.class.php:598
 msgid "Update base data from MDT XML files and MS-SQL DB"
 msgstr ""
 "Mise à jour des données de base depuis les fichiers XML et la base MS-SQL de"
 " MDT. "
 
-#: inc/crontask.class.php:605
+#: inc/crontask.class.php:601
 msgid "Synchronize data between MDT and GLPI in Master-Master mode"
 msgstr "Synchronisation des données entre MDT et GLPI en mode maître-maître"
 
-#: inc/crontask.class.php:608
+#: inc/crontask.class.php:604
 msgid "Disable \"OS Install\" flag when expired"
 msgstr "Désactivation de l'installation automatique après expiration."
 
-#: inc/crontask.class.php:627
+#: inc/crontask.class.php:623
 #, php-format
 msgid "File '%s' not found."
 msgstr "Fichier '%s' introuvable."
 
-#: inc/crontask.class.php:635
+#: inc/crontask.class.php:631
 #, php-format
 msgid "Looks like '%s' exists but is not readable. "
 msgstr ""
 "Il semble que le fichier '%s' existe mais ne soit pas autorisé en lecture."
 
-#: inc/crontask.class.php:645
+#: inc/crontask.class.php:641
 #, php-format
 msgid "File '%s' contains no valid data. Check MDT configuration"
 msgstr ""
@@ -239,15 +241,15 @@ msgstr "Rôles"
 
 #: inc/computer.class.php:389
 msgid "Activate"
-msgstr ""
+msgstr "Activer"
 
 #: inc/computer.class.php:390
 msgid "Skip"
-msgstr ""
+msgstr "Ignorer"
 
 #: inc/computer.class.php:392
 msgid "Enable Installation Assistant dialogs"
-msgstr ""
+msgstr "Activer les dialogues de l'assistant d'installation"
 
 #: front/computer.form.php:36
 msgid "Features"
@@ -259,7 +261,7 @@ msgstr "Configuration"
 
 #: setup.php:101
 msgid "Incompatible PHP Installation. Requires PHP module ODBC"
-msgstr ""
+msgstr "Installation PHP incompatible. Le module PHP ODBC est nécessaire"
 
 #: setup.php:106
 msgid "Incompatible PHP Installation. Requires module"

@@ -166,37 +166,37 @@ msgstr ""
 msgid "lines deleted from table"
 msgstr ""
 
-#: inc/crontask.class.php:582
+#: inc/crontask.class.php:578
 msgid "Glpi2mdt Plugin"
 msgstr ""
 
-#: inc/crontask.class.php:599
+#: inc/crontask.class.php:595
 msgid "Check for new updates"
 msgstr ""
 
-#: inc/crontask.class.php:602
+#: inc/crontask.class.php:598
 msgid "Update base data from MDT XML files and MS-SQL DB"
 msgstr ""
 
-#: inc/crontask.class.php:605
+#: inc/crontask.class.php:601
 msgid "Synchronize data between MDT and GLPI in Master-Master mode"
 msgstr ""
 
-#: inc/crontask.class.php:608
+#: inc/crontask.class.php:604
 msgid "Disable \"OS Install\" flag when expired"
 msgstr ""
 
-#: inc/crontask.class.php:627
+#: inc/crontask.class.php:623
 #, php-format
 msgid "File '%s' not found."
 msgstr ""
 
-#: inc/crontask.class.php:635
+#: inc/crontask.class.php:631
 #, php-format
 msgid "Looks like '%s' exists but is not readable. "
 msgstr ""
 
-#: inc/crontask.class.php:645
+#: inc/crontask.class.php:641
 #, php-format
 msgid "File '%s' contains no valid data. Check MDT configuration"
 msgstr ""
