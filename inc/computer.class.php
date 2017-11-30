@@ -59,7 +59,7 @@ class PluginGlpi2mdtComputer extends PluginGlpi2mdtMdt {
                              WHERE scope='global' AND parameter='Mode';");
       $mode = $DB->fetch_array($result)['mode'];
       if ($mode == 'Master') {
-         PluginGlpi2mdtCrontask::cronSyncMasterMaster(null, $id);
+         PluginGlpi2mdtCrontask::cronSyncMasterAndStrict(null, $id);
       }
       $result = $DB->query("SELECT value FROM glpi_plugin_glpi2mdt_settings 
                               WHERE type='C' AND category='C' AND `key`='OSInstall' AND id=$id");
