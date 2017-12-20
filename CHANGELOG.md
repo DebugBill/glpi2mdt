@@ -1,6 +1,17 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [0.2.1] - 2017-12-20
+### Added
+ - Russian language now available thanks to Nikolaï (AircraftRu)
+
+## Changed
+ - None
+
+## Removed
+ - None
+
+
 ## [0.2.0] - 2017-10-22
 ### Added
  - New variables to control installation assistant dialogs and supersede default settings
