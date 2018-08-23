@@ -5,10 +5,16 @@
             <logo>https://raw.githubusercontent.com/DebugBill/glpi2mdt/master/logo_40x40.png</logo>
             <description>
                <short>
+		  <cs>Automatizované nasazení Windows: spravujte Microsoft Deployment Toolkit (MDT) z GLPI</cs>
                   <en>Windows Automatic Deployment: manage Microsoft Deployment Toolkit (MDT) from GLPI</en>
                   <fr>Déploiement Automatisé de Windows: Gérez Microsoft Deployment Toolkit (MDT) depuis GLPI </fr>
                </short>
                <long>
+		  <cs>Tento zásuvný modul synchronizuje databáze GLPI a MDT pro docílení správy automatizovaného nasazování Windows z GLPI v závislosti na datech z něj. 
+
+Verze 0.2.1 je funkční a provozovaná v našem produkčním prostředí. Soubory README a INSTALL v archivu vydání poskytnou další informace o tom, co je k dispozici a co je v plánu přidat. Fugnuje na mém konkrétním nastavení (MDT 2013 na Server 2012 + MS-SQL 2012, a GLPI 9.1.6 na Linux s PHP 5.5). Je vyvíjeno a zkoušeno pouze v tomto prostředí. Pokud se setkáte s problémem při odlišném uspořádání, nahlaste to prostřednictvím GitHub (odkaz níže). 
+
+Pokud vás tento modul zajímá, neváhejte se obrátit na autora a popsat vaši stávající architekturu aby mohl zajistit, že modul bude kompatibilní s většinou prostředí</cs>
                   <en>This plugin synchronises GLPI and MDT databases in order to manage Windows automatic deployment from GLPI and based on its data. 
 
 Version 0.2.1 is functionnal and running in production in our environmnent. The README and INSTALL files in the distribution package will give you more information as to what is already available and what I plan to deliver next. It works on my specific configuration (MDT 2013 on Server 2012 + MS-SQL 2012, and GLPI 9.1.6 on Linux PHP 5.5). It is developed and tested in this environment only. If you experience problem with a different configuration please report the issue on GitHub (link below). 
@@ -36,12 +42,22 @@ Si ce plugin vous intéresse n'hésitez pas à contacter l'auteur avec une descr
                </version>
             </versions>
             <langs>
+               <lang>cs_CZ</lang> 
                <lang>en_GB</lang>
                <lang>fr_FR</lang>
                <lang>ru_RU</lang>
             </langs>
             <license>GPL v3.0</license>
             <tags>
+	       <cs>
+                  <tag>MDT</tag>
+				  <tag>Microsoft Deployment Toolkit</tag>
+				  <tag>Nasazení</tag>
+                                  <tag>MDT</tag>
+                                  <tag>SCCM</tag>
+                                  <tag>Automatizace</tag>
+				  <tag>Zajištění</tag>
+               </cs>
                <en>
                   <tag>MDT</tag>
 				  <tag>Microsoft Deployment Toolkit</tag>
