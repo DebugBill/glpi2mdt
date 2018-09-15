@@ -4,3 +4,4 @@ vendor/
 *.min.*
 test*
 locales/glpi2mdt.header
+kickstart/
