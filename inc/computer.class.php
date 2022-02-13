@@ -365,7 +365,7 @@ class PluginGlpi2mdtComputer extends PluginGlpi2mdtMdt {
                     AND g.is_deleted=false AND g.hide=false AND g.enable=true
                     AND l.is_deleted=false";
       $result = $DB->query($query);
-      while ($row = $DB->fetch_assoc($result)) {
+      while ($row = $DB->fetchAssoc($result)) {
          $groupapplications[$row['guid']]['name']=$row['shortname'];
          $groupapplications[$row['guid']]['group']=$row['name'];
          $groupapplications[$row['guid']]['enable']=$row['enable'];
@@ -377,7 +377,7 @@ class PluginGlpi2mdtComputer extends PluginGlpi2mdtMdt {
       $query = "SELECT id, role FROM glpi_plugin_glpi2mdt_roles 
                           WHERE is_deleted=false";
       $result = $DB->query($query);
-      while ($row = $DB->fetch_assoc($result)) {
+      while ($row = $DB->fetchAssoc($result)) {
          $roles[$row['id']]['name']=$row['role'];
          $roles[$row['id']]['group']='';
          $roles[$row['id']]['enable']=true;

@@ -96,7 +96,7 @@ class PluginGlpi2mdtCronTask extends PluginGlpi2mdtMdt {
          // Are we allowed to report usage data?
          $query = "SELECT value_char FROM glpi_plugin_glpi2mdt_parameters
                      WHERE is_deleted=false AND scope='global' AND parameter='ReportUsage'";
-         if ($DB->fetch_assoc($DB->query($query))['value_char'] == 'YES') {
+         if ($DB->fetchAssoc($DB->query($query))['value_char'] == 'YES') {
             $CO = $globalconfig['Mode'];
             $AP = $DB->fetch_row($DB->query("SELECT count(*) FROM glpi_plugin_glpi2mdt_applications WHERE is_deleted=false"))[0];
             $AG = $DB->fetch_row($DB->query("SELECT count(*) FROM glpi_plugin_glpi2mdt_application_groups WHERE is_deleted=false"))[0];

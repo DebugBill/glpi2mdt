@@ -7,6 +7,7 @@ All notable changes to this project will be documented in this file.
 ## Changed
 - Change in the PHP MSSQL module used. Use of sqlsrv instead of odbc
 - Replace function $DB->fetch_array deprecated by $DB->fetchAssoc
+- Compatibility GLPI 9.5.X
 - Change url check version
 
 ## Removed
