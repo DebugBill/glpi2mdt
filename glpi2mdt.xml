@@ -12,17 +12,17 @@
                <long>
 		  <cs>Tento zásuvný modul synchronizuje databáze GLPI a MDT pro docílení správy automatizovaného nasazování Windows z GLPI v závislosti na datech z něj. 
 
-Verze 0.2.1 je funkční a provozovaná v našem produkčním prostředí. Soubory README a INSTALL v archivu vydání poskytnou další informace o tom, co je k dispozici a co je v plánu přidat. Fugnuje na mém konkrétním nastavení (MDT 2013 na Server 2012 + MS-SQL 2012, a GLPI 9.1.6 na Linux s PHP 5.5). Je vyvíjeno a zkoušeno pouze v tomto prostředí. Pokud se setkáte s problémem při odlišném uspořádání, nahlaste to prostřednictvím GitHub (odkaz níže). 
+			  Verze 0.3.0 je funkční a provozovaná v našem produkčním prostředí. Soubory README a INSTALL v archivu vydání poskytnou další informace o tom, co je k dispozici a co je v plánu přidat. Fugnuje na mém konkrétním nastavení (MDT 2013 na Server 2012 + MS-SQL 2012, a GLPI 9.5.x na Linux s PHP 7.3). Je vyvíjeno a zkoušeno pouze v tomto prostředí. Pokud se setkáte s problémem při odlišném uspořádání, nahlaste to prostřednictvím GitHub (odkaz níže). 
 
 Pokud vás tento modul zajímá, neváhejte se obrátit na autora a popsat vaši stávající architekturu aby mohl zajistit, že modul bude kompatibilní s většinou prostředí</cs>
                   <en>This plugin synchronises GLPI and MDT databases in order to manage Windows automatic deployment from GLPI and based on its data. 
 
-Version 0.2.1 is functionnal and running in production in our environmnent. The README and INSTALL files in the distribution package will give you more information as to what is already available and what I plan to deliver next. It works on my specific configuration (MDT 2013 on Server 2012 + MS-SQL 2012, and GLPI 9.1.6 on Linux PHP 5.5). It is developed and tested in this environment only. If you experience problem with a different configuration please report the issue on GitHub (link below). 
+Version 0.3.0 is functionnal and running in production in our environmnent. The README and INSTALL files in the distribution package will give you more information as to what is already available and what I plan to deliver next. It works on my specific configuration (MDT 2013 on Server 2012 + MS-SQL 2012, and GLPI 9.5.x on Linux PHP 7.3). It is developed and tested in this environment only. If you experience problem with a different configuration please report the issue on GitHub (link below). 
 
 If you're insterested in this plugin, don't hesitate to contact the author and describe your current architecture so he can make sure the plugin design is compatible with most environments</en>
                   <fr>Ce plugin synchronise les bases de données MDT et GLPI afin de gérer le déploiement automatique de Windows depuis GLPI et à partir de ses données.
 
-La version 0.2.1 est opérationnelle et en prodution dans notre environement. Les fichiers README et INSTALL de la distribution vous donneront plus de détails sur ce qui est en place et ce qu'il est prévu d'ajouter en priorité. Le plugin fonctionne dans mon environement spécifique (MDT 2013 sur Server 2012 et MS-SQL 2012, associés à GLPI 9.1.6 sur Linux et PHP 5.5). Il est développé et testé uniquement dans ce contexte. Si vous rencontrez des problèmes avec une configuration différente merci d'ouvrir un ticket avec le lien GitHub ci-dessous.
+La version 0.3.0 est opérationnelle et en prodution dans notre environement. Les fichiers README et INSTALL de la distribution vous donneront plus de détails sur ce qui est en place et ce qu'il est prévu d'ajouter en priorité. Le plugin fonctionne dans mon environement spécifique (MDT 2013 sur Server 2012 et MS-SQL 2012, associés à GLPI 9.5.X sur Linux et PHP 7.3). Il est développé et testé uniquement dans ce contexte. Si vous rencontrez des problèmes avec une configuration différente merci d'ouvrir un ticket avec le lien GitHub ci-dessous.
 
 Si ce plugin vous intéresse n'hésitez pas à contacter l'auteur avec une description de votre architecture actuelle afin qu'il s'assure que ses choix de design seront compatibles avec la plupart des environements.</fr>
                </long>
