@@ -41,6 +41,7 @@ Si ce plugin vous intéresse n'hésitez pas à contacter l'auteur avec une descr
                   <compatibility>9.2.x</compatibility>
                   <compatibility>9.3.x</compatibility>
 	       </version>
+	       <version>
                   <num>0.3.0</num>
 	          <compatibility>9.5.x</compatibility>
                </version>
