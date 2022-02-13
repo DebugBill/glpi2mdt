@@ -96,7 +96,7 @@ class PluginGlpi2mdtCronTask extends PluginGlpi2mdtMdt {
          // Are we allowed to report usage data?
          $query = "SELECT value_char FROM glpi_plugin_glpi2mdt_parameters
                      WHERE is_deleted=false AND scope='global' AND parameter='ReportUsage'";
-         if ($DB->fetch_assoc($DB->query($query))['value_char'] == 'YES') {
+         if ($DB->fetchAssoc($DB->query($query))['value_char'] == 'YES') {
             $CO = $globalconfig['Mode'];
             $AP = $DB->fetch_row($DB->query("SELECT count(*) FROM glpi_plugin_glpi2mdt_applications WHERE is_deleted=false"))[0];
             $AG = $DB->fetch_row($DB->query("SELECT count(*) FROM glpi_plugin_glpi2mdt_application_groups WHERE is_deleted=false"))[0];
@@ -182,7 +182,7 @@ class PluginGlpi2mdtCronTask extends PluginGlpi2mdtMdt {
          echo "<tr class='tab_bg_1'><td>$nb ".__("lines loaded into table", 'glpi2mdt')."'descriptions'.".'</td>';
       }
       $result = $DB->query("SELECT count(*) as nb FROM `glpi_plugin_glpi2mdt_descriptions` WHERE `is_in_sync`=false");
-      $row = $DB->fetch_array($result);
+      $row = $DB->fetchAssoc($result);
       $nb = $row['nb'];
       $DB->query("UPDATE glpi_plugin_glpi2mdt_descriptions SET is_in_sync=true, is_deleted=true 
                       WHERE is_in_sync=false AND is_deleted=false");
@@ -259,7 +259,7 @@ class PluginGlpi2mdtCronTask extends PluginGlpi2mdtMdt {
          }
          // Mark lines which are not in MDT anymore as deleted
          $result = $DB->query("SELECT count(*) as nb FROM glpi_plugin_glpi2mdt_applications WHERE `is_in_sync`=false");
-         $row = $DB->fetch_array($result);
+         $row = $DB->fetchAssoc($result);
          $nb = $row['nb'];
          $DB->query("UPDATE glpi_plugin_glpi2mdt_applications SET is_in_sync=true, is_deleted=true 
                       WHERE is_in_sync=false AND is_deleted=false");
@@ -310,7 +310,7 @@ class PluginGlpi2mdtCronTask extends PluginGlpi2mdtMdt {
          }
          // Mark lines which are not in MDT anymore as deleted
          $result = $DB->queryOrDie("SELECT count(*) as nb FROM glpi_plugin_glpi2mdt_application_groups WHERE `is_in_sync`=false");
-         $row = $DB->fetch_array($result);
+         $row = $DB->fetchAssoc($result);
          $nb = $row['nb'];
          $DB->queryOrDie("UPDATE glpi_plugin_glpi2mdt_application_groups SET is_in_sync=true, is_deleted=true 
                       WHERE is_in_sync=false AND is_deleted=false");
@@ -355,7 +355,7 @@ class PluginGlpi2mdtCronTask extends PluginGlpi2mdtMdt {
          }
          // Mark lines which are not in MDT anymore as deleted
          $result = $DB->query("SELECT count(*) as nb FROM glpi_plugin_glpi2mdt_task_sequences WHERE `is_in_sync`=false");
-         $row = $DB->fetch_array($result);
+         $row = $DB->fetchAssoc($result);
          $nb = $row['nb'];
          $DB->query("UPDATE glpi_plugin_glpi2mdt_task_sequences SET is_in_sync=true, is_deleted=true 
                       WHERE is_in_sync=false AND is_deleted=false");
@@ -405,7 +405,7 @@ class PluginGlpi2mdtCronTask extends PluginGlpi2mdtMdt {
          }
          // Mark lines which are not in MDT anymore as deleted
          $result = $DB->query("SELECT count(*) as nb FROM glpi_plugin_glpi2mdt_task_sequence_groups WHERE `is_in_sync`=false");
-         $row = $DB->fetch_array($result);
+         $row = $DB->fetchAssoc($result);
          $nb = $row['nb'];
          $DB->query("UPDATE glpi_plugin_glpi2mdt_task_sequence_groups SET is_in_sync=true, is_deleted=true 
                       WHERE is_in_sync=false AND is_deleted=false");
@@ -472,7 +472,7 @@ class PluginGlpi2mdtCronTask extends PluginGlpi2mdtMdt {
                     $row['AssetTag']."' AND uuid='".$row['UUID']."' ORDER BY c.id";
          $glpi = $DB->queryOrDie($query, "Can't find correspondance in GLPI");
          if ($DB->numrows($glpi) == 1) {
-            $array = $DB->fetch_array($glpi);
+            $array = $DB->fetchAssoc($glpi);
             $id = $array['id'];
             $correspondances[$id] = 0;
             // We have found a correspondance between GLPI and MDT (more than one would be an error, dont process it)
@@ -548,7 +548,7 @@ class PluginGlpi2mdtCronTask extends PluginGlpi2mdtMdt {
          return 0;
       }
       $nb = 0;
-      while ($row=$DB->fetch_array($result)) {
+      while ($row=$DB->fetchAssoc($result)) {
          $nb += 1;
          $id = $row['id'];
          $ids = $MDT->getMdtIDs($id);

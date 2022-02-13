@@ -1,16 +1,19 @@
-# Srings to be translated for glpi2mdt.
-# Copyright (C) 2017 Blaise Thauvin
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Copyright (C) 2022 Blaise Thauvin
 # This file is distributed under the same license as the glpi2mdt package.
-# Blaise Thauvin <glpi2mdt at thauvin.org>, 2017.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# 
+# Translators:
+# Blaise Thauvin <glpi2mdt@thauvin.org>, 2022
 # 
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: 0.0.1\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-09-02 16:20+0200\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Blaise Thauvin <glpi2mdt@thauvin.org>, 2017\n"
+"Project-Id-Version: glpi2mdt 0.3.0\n"
+"Report-Msgid-Bugs-To: glpi2mdt at thauvin.org\n"
+"POT-Creation-Date: 2022-02-13 22:44+0100\n"
+"PO-Revision-Date: 2017-08-27 20:05+0000\n"
+"Last-Translator: Blaise Thauvin <glpi2mdt@thauvin.org>, 2022\n"
 "Language-Team: English (United States) (https://www.transifex.com/glpi2mdt/teams/78175/en_US/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -18,19 +21,60 @@ msgstr ""
 "Language: en_US\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: hook.php:251
+#: inc/config.class.php:236 inc/computer.class.php:443
+#: inc/crontask.class.php:121 inc/mdt.class.php:104 inc/config.class.php:223
+#, php-format
+msgid "A new version of plugin glpi2mdt is available: v%s"
+msgstr "A new version of plugin glpi2mdt is available: v%s"
+
+#: inc/computer.class.php:389
+msgid "Activate"
+msgstr "Activate"
+
+#: inc/computer.class.php:373
+msgid "Applications"
+msgstr "Applications"
+
+#: inc/computer.class.php:67 inc/computer.class.php:69
+msgid "Auto Install"
+msgstr "Auto Install"
+
+#: inc/computer.class.php:330
+msgid "Automatic installation"
+msgstr "Automatic installation"
+
+#: inc/config.class.php:192 inc/config.class.php:179
+msgid "Automatically check for new versions"
+msgstr "Automatically check for new versions"
+
+#: inc/mdt.class.php:113
 msgid ""
-"Glpi2mdt database is corrupted. Please uninstall and reinstall the plugin"
-msgstr ""
-"Glpi2mdt database is corrupted. Please uninstall and reinstall the plugin"
+"Can't connect to MSSQL database using PHP SQLSRV module. Check configuration"
+msgstr "Can't connect to MSSQL database using PHP SQLSRV "
 
-#: inc/config.class.php:86 inc/computer.class.php:291
-msgid "YES"
-msgstr "Yes"
+#: inc/mdt.class.php:113
+msgid "Can't connect to MSSQL. Check configuration"
+msgstr "Can't connect to MSSQL database using PHP SQLSRV "
 
-#: inc/config.class.php:87 inc/computer.class.php:292
-msgid "NO"
-msgstr "No"
+#: inc/crontask.class.php:595
+msgid "Check for new updates"
+msgstr "Check for new updates"
+
+#: inc/config.class.php:216 inc/config.class.php:203
+msgid "Check new version"
+msgstr "Check new version"
+
+#: inc/mdt.class.php:170 inc/mdt.class.php:171
+msgid "Could not count tables in schema"
+msgstr "Could not count tables in schema"
+
+#: inc/mdt.class.php:175 inc/mdt.class.php:176
+msgid "Database login KO!"
+msgstr "Database login KO!"
+
+#: inc/mdt.class.php:155 inc/mdt.class.php:156
+msgid "Database login OK!"
+msgstr "Database login OK!"
 
 #: inc/config.class.php:95
 msgid "Database server name"
@@ -40,203 +84,17 @@ msgstr "Database server name"
 msgid "Database server port"
 msgstr "Database server port"
 
-#: inc/config.class.php:113
-msgid "ODBC Driver name"
-msgstr "ODBC Driver name"
-
-#: inc/config.class.php:124
-msgid "Login"
-msgstr "Login"
-
-#: inc/config.class.php:132
-msgid "Password"
-msgstr "Password"
-
-#: inc/config.class.php:140 inc/mdt.class.php:166
-msgid "Schema"
-msgstr "Schema"
-
-#: inc/config.class.php:148
-msgid "Local path to deployment share control directory"
-msgstr "Local path to deployment share control directory"
-
-#: inc/config.class.php:156
-msgid "Local admin password"
-msgstr "Local admin password"
-
-#: inc/config.class.php:165
-msgid "Local admin password complexity"
-msgstr "Local admin password complexity"
-
-#: inc/config.class.php:168
-msgid "Same password on all machines"
-msgstr "Same password on all machines"
-
-#: inc/config.class.php:169
-msgid "Password is hostname"
-msgstr "Password is hostname"
-
-#: inc/config.class.php:170
-msgid "append '-%hostname%' to password"
-msgstr "append '-%hostname%' to password"
-
-#: inc/config.class.php:179
-msgid "Link mode"
-msgstr "Link mode"
-
-#: inc/config.class.php:182
-msgid "Strict Master-Slave"
-msgstr "Strict Master-Slave"
-
-#: inc/config.class.php:183
-msgid "Loose Master-Slave"
-msgstr "Loose Master-Slave"
-
-#: inc/config.class.php:184
-msgid "Master-Master"
-msgstr "Master-Master"
-
-#: inc/config.class.php:192
-msgid "Automatically check for new versions"
-msgstr "Automatically check for new versions"
-
-#: inc/config.class.php:203
-msgid "Report usage data (anonymous data to help in designing the plugin)"
-msgstr "Report usage data (anonymous data to help in designing the plugin)"
-
-#: inc/config.class.php:213
-msgid "Save"
-msgstr "Save"
-
-#: inc/config.class.php:216
-msgid "Check new version"
-msgstr "Check new version"
-
-#: inc/config.class.php:221
-msgid "Test connection"
-msgstr "Test connection"
-
-#: inc/config.class.php:223
-msgid "Initialise data"
-msgstr "Initialise data"
-
-#: inc/config.class.php:236 inc/computer.class.php:443
-#, php-format
-msgid "A new version of plugin glpi2mdt is available: v%s"
-msgstr "A new version of plugin glpi2mdt is available: v%s"
-
-#: inc/mdt.class.php:113
-msgid ""
-"Can't connect to MSSQL database using PHP ODBC module. Check configuration"
-msgstr ""
-"Can't connect to MSSQL database using PHP ODBC module. Check configuration"
-
-#: inc/mdt.class.php:151
-msgid "Testing connection using PHP ODBC module"
-msgstr "Testing connection using PHP ODBC module"
-
-#: inc/mdt.class.php:155
-msgid "Database login OK!"
-msgstr "Database login OK!"
-
-#: inc/mdt.class.php:166
-msgid "contains"
-msgstr "contains"
-
-#: inc/mdt.class.php:166
-msgid "tables"
-msgstr "tables"
-
-#: inc/mdt.class.php:170
-msgid "Could not count tables in schema"
-msgstr "Could not count tables in schema"
-
-#: inc/mdt.class.php:175
-msgid "Database login KO!"
-msgstr "Database login KO!"
-
-#: inc/crontask.class.php:182 inc/crontask.class.php:219
-#: inc/crontask.class.php:258 inc/crontask.class.php:309
-#: inc/crontask.class.php:354 inc/crontask.class.php:404
-msgid "lines loaded into table"
-msgstr "line(s) loaded into table"
-
-#: inc/crontask.class.php:190 inc/crontask.class.php:267
-#: inc/crontask.class.php:320 inc/crontask.class.php:363
-#: inc/crontask.class.php:415
-msgid "lines deleted from table"
-msgstr "line's) deleted from table"
-
-#: inc/crontask.class.php:578
-msgid "Glpi2mdt Plugin"
-msgstr "Glpi2mdt Plugin"
-
-#: inc/crontask.class.php:595
-msgid "Check for new updates"
-msgstr "Check for new updates"
-
-#: inc/crontask.class.php:598
-msgid "Update base data from MDT XML files and MS-SQL DB"
-msgstr "Update base data from MDT XML files and MS-SQL DB"
-
-#: inc/crontask.class.php:601
-msgid "Synchronize data between MDT and GLPI in Master-Master mode"
-msgstr "Synchronize data between MDT and GLPI in Master-Master mode"
-
-#: inc/crontask.class.php:604
-msgid "Disable \"OS Install\" flag when expired"
-msgstr "Disable \"OS Install\" flag when expired"
-
-#: inc/crontask.class.php:623
-#, php-format
-msgid "File '%s' not found."
-msgstr "File '%s' not found."
-
-#: inc/crontask.class.php:631
-#, php-format
-msgid "Looks like '%s' exists but is not readable. "
-msgstr "Looks like '%s' exists but is not readable. "
-
-#: inc/crontask.class.php:641
-#, php-format
-msgid "File '%s' contains no valid data. Check MDT configuration"
-msgstr "File '%s' contains no valid data. Check MDT configuration"
-
-#: inc/computer.class.php:67 inc/computer.class.php:69
-msgid "Auto Install"
-msgstr "Auto Install"
-
 #: inc/computer.class.php:290 inc/computer.class.php:388
 msgid "Default"
 msgstr "Default"
-
-#: inc/computer.class.php:330
-msgid "Automatic installation"
-msgstr "Automatic installation"
-
-#: inc/computer.class.php:338
-msgid "Reset after (empty for permanent):"
-msgstr "Reset after (empty for permanent):"
 
 #: inc/computer.class.php:350
 msgid "Default task sequence"
 msgstr "Default task sequence"
 
-#: inc/computer.class.php:373
-msgid "Applications"
-msgstr "Applications"
-
-#: inc/computer.class.php:385
-msgid "Roles"
-msgstr "Roles"
-
-#: inc/computer.class.php:389
-msgid "Activate"
-msgstr "Activate"
-
-#: inc/computer.class.php:390
-msgid "Skip"
-msgstr "Skip"
+#: inc/crontask.class.php:604
+msgid "Disable \"OS Install\" flag when expired"
+msgstr "Disable \"OS Install\" flag when expired"
 
 #: inc/computer.class.php:392
 msgid "Enable Installation Assistant dialogs"
@@ -246,18 +104,183 @@ msgstr "Enable Installation Assistant dialogs"
 msgid "Features"
 msgstr "Features"
 
-#: front/config.form.php:36
-msgid "Setup"
-msgstr "Setup"
+#: inc/crontask.class.php:641
+#, php-format
+msgid "File '%s' contains no valid data. Check MDT configuration"
+msgstr "File '%s' contains no valid data. Check MDT configuration"
+
+#: inc/crontask.class.php:623
+#, php-format
+msgid "File '%s' not found."
+msgstr "File '%s' not found."
+
+#: inc/crontask.class.php:578
+msgid "Glpi2mdt Plugin"
+msgstr "Glpi2mdt Plugin"
+
+#: hook.php:251
+msgid ""
+"Glpi2mdt database is corrupted. Please uninstall and reinstall the plugin"
+msgstr ""
+"Glpi2mdt database is corrupted. Please uninstall and reinstall the plugin"
 
 #: setup.php:101
 msgid "Incompatible PHP Installation. Requires PHP module ODBC"
 msgstr "Incompatible PHP Installation. Requires PHP module ODBC"
 
-#: setup.php:106
+#: setup.php:113
+msgid "Incompatible PHP Installation. Requires PHP module SQLSRV"
+msgstr "Incompatible PHP Installation. Requires SQLSRV PHP module"
+
+#: setup.php:106 setup.php:118
 msgid "Incompatible PHP Installation. Requires module"
 msgstr "Incompatible PHP Installation. Requires module"
+
+#: inc/config.class.php:223 inc/config.class.php:210
+msgid "Initialise data"
+msgstr "Initialise data"
 
 #: setup.php:125
 msgid "Installed / not configured"
 msgstr "Installed / not configured"
+
+#: inc/config.class.php:179 inc/config.class.php:166
+msgid "Link mode"
+msgstr "Link mode"
+
+#: inc/config.class.php:156 inc/config.class.php:143
+msgid "Local admin password"
+msgstr "Local admin password"
+
+#: inc/config.class.php:165 inc/config.class.php:152
+msgid "Local admin password complexity"
+msgstr "Local admin password complexity"
+
+#: inc/config.class.php:148 inc/config.class.php:135
+msgid "Local path to deployment share control directory"
+msgstr "Local path to deployment share control directory"
+
+#: inc/config.class.php:124 inc/config.class.php:111
+msgid "Login"
+msgstr "Login"
+
+#: inc/crontask.class.php:631
+#, php-format
+msgid "Looks like '%s' exists but is not readable. "
+msgstr "Looks like '%s' exists but is not readable. "
+
+#: inc/config.class.php:183 inc/config.class.php:170
+msgid "Loose Master-Slave"
+msgstr "Loose Master-Slave"
+
+#: inc/config.class.php:184 inc/config.class.php:171
+msgid "Master-Master"
+msgstr "Master-Master"
+
+#: inc/config.class.php:87 inc/computer.class.php:292
+#: inc/computer.class.php:69
+msgid "NO"
+msgstr "No"
+
+#: inc/config.class.php:113
+msgid "ODBC Driver name"
+msgstr "ODBC Driver name"
+
+#: inc/config.class.php:132 inc/config.class.php:119
+msgid "Password"
+msgstr "Password"
+
+#: inc/config.class.php:169 inc/config.class.php:156
+msgid "Password is hostname"
+msgstr "Password is hostname"
+
+#: inc/config.class.php:203 inc/config.class.php:190
+msgid "Report usage data (anonymous data to help in designing the plugin)"
+msgstr "Report usage data (anonymous data to help in designing the plugin)"
+
+#: inc/computer.class.php:338
+msgid "Reset after (empty for permanent):"
+msgstr "Reset after (empty for permanent):"
+
+#: inc/computer.class.php:385
+msgid "Roles"
+msgstr "Roles"
+
+#: inc/config.class.php:168 inc/config.class.php:155
+msgid "Same password on all machines"
+msgstr "Same password on all machines"
+
+#: inc/config.class.php:213 inc/config.class.php:200
+msgid "Save"
+msgstr "Save"
+
+#: inc/config.class.php:140 inc/mdt.class.php:166 inc/mdt.class.php:167
+#: inc/config.class.php:127
+msgid "Schema"
+msgstr "Schema"
+
+#: front/config.form.php:36
+msgid "Setup"
+msgstr "Setup"
+
+#: inc/computer.class.php:390
+msgid "Skip"
+msgstr "Skip"
+
+#: inc/config.class.php:182 inc/config.class.php:169
+msgid "Strict Master-Slave"
+msgstr "Strict Master-Slave"
+
+#: inc/crontask.class.php:601
+msgid "Synchronize data between MDT and GLPI in Master-Master mode"
+msgstr "Synchronize data between MDT and GLPI in Master-Master mode"
+
+#: inc/config.class.php:221 inc/config.class.php:208
+msgid "Test connection"
+msgstr "Test connection"
+
+#: inc/mdt.class.php:151 inc/mdt.class.php:152
+msgid "Testing connection using PHP ODBC module"
+msgstr "Testing connection using PHP ODBC module"
+
+#: inc/mdt.class.php:151
+msgid "Testing connection using PHP SQLSRV module"
+msgstr "Testing connection using PHP SQLSRV module"
+
+#: inc/crontask.class.php:598
+msgid "Update base data from MDT XML files and MS-SQL DB"
+msgstr "Update base data from MDT XML files and MS-SQL DB"
+
+#: inc/config.class.php:86 inc/computer.class.php:291
+#: inc/computer.class.php:67
+msgid "YES"
+msgstr "Yes"
+
+#: inc/crontask.class.php:123
+#, php-format
+msgid "You have the latest available version of glpi2mdti: v%s"
+msgstr "You have the latest available version of glpi2mdti: v%s"
+
+#: inc/config.class.php:170 inc/config.class.php:157
+msgid "append '-%hostname%' to password"
+msgstr "append '-%hostname%' to password"
+
+#: inc/mdt.class.php:166 inc/mdt.class.php:167
+msgid "contains"
+msgstr "contains"
+
+#: inc/crontask.class.php:190 inc/crontask.class.php:267
+#: inc/crontask.class.php:320 inc/crontask.class.php:363
+#: inc/crontask.class.php:415
+msgid "lines deleted from table"
+msgstr "line's) deleted from table"
+
+#: inc/crontask.class.php:182 inc/crontask.class.php:219
+#: inc/crontask.class.php:258 inc/crontask.class.php:309
+#: inc/crontask.class.php:354 inc/crontask.class.php:404
+msgid "lines loaded into table"
+msgstr "line(s) loaded into table"
+
+#: inc/mdt.class.php:166 inc/mdt.class.php:167
+msgid "tables"
+msgstr "tables"

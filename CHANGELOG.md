@@ -1,5 +1,17 @@
 # Changelog
 All notable changes to this project will be documented in this file.
+## [0.3.0] - 2022-02-13
+## Added
+- None
+
+## Changed
+- Change in the PHP MSSQL module used. Use of SQLSRV instead of ODBC
+- Replace function $DB->fetch_array deprecated by $DB->fetchAssoc
+- Compatibility GLPI 9.5.X
+
+## Removed
+- None
+
 
 ## [0.2.1] - 2017-12-20
 ### Added
@@ -85,4 +97,3 @@ All notable changes to this project will be documented in this file.
  - None
 ### Fixed
  -None
-

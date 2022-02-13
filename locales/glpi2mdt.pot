@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glpi2mdt 0.3.0\n"
 "Report-Msgid-Bugs-To: glpi2mdt at thauvin.org\n"
-"POT-Creation-Date: 2022-02-13 21:30+0100\n"
+"POT-Creation-Date: 2022-02-13 22:44+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #: inc/config.class.php:236 inc/computer.class.php:443
-#: inc/crontask.class.php:121 inc/mdt.class.php:104
+#: inc/crontask.class.php:121 inc/mdt.class.php:104 inc/config.class.php:223
 #, php-format
 msgid "A new version of plugin glpi2mdt is available: v%s"
 msgstr ""
@@ -39,8 +39,13 @@ msgstr ""
 msgid "Automatic installation"
 msgstr ""
 
-#: inc/config.class.php:192
+#: inc/config.class.php:192 inc/config.class.php:179
 msgid "Automatically check for new versions"
+msgstr ""
+
+#: inc/mdt.class.php:113
+msgid ""
+"Can't connect to MSSQL database using PHP SQLSRV module. Check configuration"
 msgstr ""
 
 #: inc/mdt.class.php:113
@@ -51,7 +56,7 @@ msgstr ""
 msgid "Check for new updates"
 msgstr ""
 
-#: inc/config.class.php:216
+#: inc/config.class.php:216 inc/config.class.php:203
 msgid "Check new version"
 msgstr ""
 
@@ -118,11 +123,15 @@ msgstr ""
 msgid "Incompatible PHP Installation. Requires PHP module ODBC"
 msgstr ""
 
-#: setup.php:106
+#: setup.php:113
+msgid "Incompatible PHP Installation. Requires PHP module SQLSRV"
+msgstr ""
+
+#: setup.php:106 setup.php:118
 msgid "Incompatible PHP Installation. Requires module"
 msgstr ""
 
-#: inc/config.class.php:223
+#: inc/config.class.php:223 inc/config.class.php:210
 msgid "Initialise data"
 msgstr ""
 
@@ -130,23 +139,23 @@ msgstr ""
 msgid "Installed / not configured"
 msgstr ""
 
-#: inc/config.class.php:179
+#: inc/config.class.php:179 inc/config.class.php:166
 msgid "Link mode"
 msgstr ""
 
-#: inc/config.class.php:156
+#: inc/config.class.php:156 inc/config.class.php:143
 msgid "Local admin password"
 msgstr ""
 
-#: inc/config.class.php:165
+#: inc/config.class.php:165 inc/config.class.php:152
 msgid "Local admin password complexity"
 msgstr ""
 
-#: inc/config.class.php:148
+#: inc/config.class.php:148 inc/config.class.php:135
 msgid "Local path to deployment share control directory"
 msgstr ""
 
-#: inc/config.class.php:124
+#: inc/config.class.php:124 inc/config.class.php:111
 msgid "Login"
 msgstr ""
 
@@ -155,11 +164,11 @@ msgstr ""
 msgid "Looks like '%s' exists but is not readable. "
 msgstr ""
 
-#: inc/config.class.php:183
+#: inc/config.class.php:183 inc/config.class.php:170
 msgid "Loose Master-Slave"
 msgstr ""
 
-#: inc/config.class.php:184
+#: inc/config.class.php:184 inc/config.class.php:171
 msgid "Master-Master"
 msgstr ""
 
@@ -171,15 +180,15 @@ msgstr ""
 msgid "ODBC Driver name"
 msgstr ""
 
-#: inc/config.class.php:132
+#: inc/config.class.php:132 inc/config.class.php:119
 msgid "Password"
 msgstr ""
 
-#: inc/config.class.php:169
+#: inc/config.class.php:169 inc/config.class.php:156
 msgid "Password is hostname"
 msgstr ""
 
-#: inc/config.class.php:203
+#: inc/config.class.php:203 inc/config.class.php:190
 msgid "Report usage data (anonymous data to help in designing the plugin)"
 msgstr ""
 
@@ -191,15 +200,16 @@ msgstr ""
 msgid "Roles"
 msgstr ""
 
-#: inc/config.class.php:168
+#: inc/config.class.php:168 inc/config.class.php:155
 msgid "Same password on all machines"
 msgstr ""
 
-#: inc/config.class.php:213
+#: inc/config.class.php:213 inc/config.class.php:200
 msgid "Save"
 msgstr ""
 
 #: inc/config.class.php:140 inc/mdt.class.php:166 inc/mdt.class.php:167
+#: inc/config.class.php:127
 msgid "Schema"
 msgstr ""
 
@@ -211,7 +221,7 @@ msgstr ""
 msgid "Skip"
 msgstr ""
 
-#: inc/config.class.php:182
+#: inc/config.class.php:182 inc/config.class.php:169
 msgid "Strict Master-Slave"
 msgstr ""
 
@@ -219,12 +229,16 @@ msgstr ""
 msgid "Synchronize data between MDT and GLPI in Master-Master mode"
 msgstr ""
 
-#: inc/config.class.php:221
+#: inc/config.class.php:221 inc/config.class.php:208
 msgid "Test connection"
 msgstr ""
 
 #: inc/mdt.class.php:151 inc/mdt.class.php:152
 msgid "Testing connection using PHP ODBC module"
+msgstr ""
+
+#: inc/mdt.class.php:151
+msgid "Testing connection using PHP SQLSRV module"
 msgstr ""
 
 #: inc/crontask.class.php:598
@@ -240,7 +254,7 @@ msgstr ""
 msgid "You have the latest available version of glpi2mdti: v%s"
 msgstr ""
 
-#: inc/config.class.php:170
+#: inc/config.class.php:170 inc/config.class.php:157
 msgid "append '-%hostname%' to password"
 msgstr ""
 

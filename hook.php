@@ -36,7 +36,7 @@ function plugin_glpi2mdt_install() {
    $dbversion = 1;
 
    // Global plugin settings
-   if (!TableExists("glpi_plugin_glpi2mdt_parameters")) {
+   if (!$DB->tableExists("glpi_plugin_glpi2mdt_parameters")) {
       $query = "CREATE TABLE `glpi_plugin_glpi2mdt_parameters` (
                    `id` int(11) NOT NULL AUTO_INCREMENT,
                    `parameter` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
@@ -58,7 +58,7 @@ function plugin_glpi2mdt_install() {
    }
 
    // Individual settings for computers, models and roles
-   if (!TableExists("glpi_plugin_glpi2mdt_settings")) {
+   if (!$DB->tableExists("glpi_plugin_glpi2mdt_settings")) {
       $query = "CREATE TABLE `glpi_plugin_glpi2mdt_settings` (
                  `id` int(11) NOT NULL auto_increment,
                  `category` varchar(1) COLLATE utf8_unicode_ci NOT NULL,
@@ -76,7 +76,7 @@ function plugin_glpi2mdt_install() {
    }
 
    // Available roles extracted from MDT database
-   if (!TableExists("glpi_plugin_glpi2mdt_roles")) {
+   if (!$DB->tableExists("glpi_plugin_glpi2mdt_roles")) {
       $query = "CREATE TABLE `glpi_plugin_glpi2mdt_roles` (
                   `id` int(11) NOT NULL,
                   `role` varchar(255) collate utf8_unicode_ci default NULL,
@@ -91,7 +91,7 @@ function plugin_glpi2mdt_install() {
    }
 
    // Available applications, extracted from XML file on installation share
-   if (!TableExists("glpi_plugin_glpi2mdt_applications")) {
+   if (!$DB->tableExists("glpi_plugin_glpi2mdt_applications")) {
       $query = "CREATE TABLE `glpi_plugin_glpi2mdt_applications` (  
                    `guid` varchar(255) COLLATE utf8_unicode_ci NOT NULL,  
                    `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,  
@@ -109,7 +109,7 @@ function plugin_glpi2mdt_install() {
       $DB->query($query) or die("error creating glpi_plugin_glpi2mdt_applications ". $DB->error());
    }
 
-   if (!TableExists("glpi_plugin_glpi2mdt_application_groups")) {
+   if (!$DB->tableExists("glpi_plugin_glpi2mdt_application_groups")) {
       $query = "CREATE TABLE `glpi_plugin_glpi2mdt_application_groups` (  
                    `guid` varchar(255) COLLATE utf8_unicode_ci NOT NULL,  
                    `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
@@ -125,7 +125,7 @@ function plugin_glpi2mdt_install() {
       $DB->query($query) or die("error creating glpi_plugin_glpi2mdt_application_groups ". $DB->error());
    }
 
-   if (!TableExists("glpi_plugin_glpi2mdt_application_group_links")) {
+   if (!$DB->tableExists("glpi_plugin_glpi2mdt_application_group_links")) {
       $query = "CREATE TABLE `glpi_plugin_glpi2mdt_application_group_links` (  
                    `group_guid` varchar(38) COLLATE utf8_unicode_ci NOT NULL,  
                    `application_guid` varchar(38) COLLATE utf8_unicode_ci NOT NULL,  
@@ -140,7 +140,7 @@ function plugin_glpi2mdt_install() {
    }
 
    // Available task sequences, extracted from XML file on installation share
-   if (!TableExists("glpi_plugin_glpi2mdt_task_sequences")) {
+   if (!$DB->tableExists("glpi_plugin_glpi2mdt_task_sequences")) {
       $query = "CREATE TABLE `glpi_plugin_glpi2mdt_task_sequences` (  
                    `id` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
                    `guid` varchar(38) COLLATE utf8_unicode_ci NOT NULL,  
@@ -157,7 +157,7 @@ function plugin_glpi2mdt_install() {
       $DB->query($query) or die("error creating glpi_plugin_glpi2mdt_task_sequences ". $DB->error());
    }
 
-   if (!TableExists("glpi_plugin_glpi2mdt_task_sequence_groups")) {
+   if (!$DB->tableExists("glpi_plugin_glpi2mdt_task_sequence_groups")) {
       $query = "CREATE TABLE `glpi_plugin_glpi2mdt_task_sequence_groups` (  
                    `guid` varchar(38) COLLATE utf8_unicode_ci NOT NULL,  
                    `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,  
@@ -173,7 +173,7 @@ function plugin_glpi2mdt_install() {
       $DB->query($query) or die("error creating glpi_plugin_glpi2mdt_task_sequence_groups ". $DB->error());
    }
 
-   if (!TableExists("glpi_plugin_glpi2mdt_task_sequence_group_links")) {
+   if (!$DB->tableExists("glpi_plugin_glpi2mdt_task_sequence_group_links")) {
       $query = "CREATE TABLE `glpi_plugin_glpi2mdt_task_sequence_group_links` (  
                    `group_guid` varchar(38) COLLATE utf8_unicode_ci NOT NULL,  
                    `sequence_guid` varchar(38) COLLATE utf8_unicode_ci NOT NULL,  
@@ -188,7 +188,7 @@ function plugin_glpi2mdt_install() {
    }
 
    // Make and Models association
-   if (!TableExists("glpi_plugin_glpi2mdt_models")) {
+   if (!$DB->tableExists("glpi_plugin_glpi2mdt_models")) {
       $query = "CREATE TABLE `glpi_plugin_glpi2mdt_models` (
                  `id` int(11) NOT NULL,
                  `make` varchar(50) NOT NULL,
@@ -206,7 +206,7 @@ function plugin_glpi2mdt_install() {
    }
 
    // All valid parameters for MDT objects
-   if (!TableExists("glpi_plugin_glpi2mdt_descriptions")) {
+   if (!$DB->tableExists("glpi_plugin_glpi2mdt_descriptions")) {
       $query = "CREATE TABLE `glpi_plugin_glpi2mdt_descriptions` (
                   `column_name` varchar(255) collate utf8_unicode_ci NOT NULL,
                   `category_order` integer collate utf8_unicode_ci NOT NULL default 0,
@@ -251,7 +251,7 @@ function plugin_glpi2mdt_install() {
       die(__("Glpi2mdt database is corrupted. Please uninstall and reinstall the plugin", 'glpi2mdt'));
    }
    if ($DB->numrows($result) == 1) {
-      $currentdbversion = $DB->fetch_array($result)['version'];
+      $currentdbversion = $DB->fetchAssoc($result)['version'];
    }
 
    // Upgrade to version 2 of the database

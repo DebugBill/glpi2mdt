@@ -4,6 +4,7 @@
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 # 
 # Translators:
+# Pavel Borecki <pavel.borecki@gmail.com>, 2018
 # Blaise Thauvin <glpi2mdt@thauvin.org>, 2022
 # 
 #, fuzzy
@@ -14,214 +15,211 @@ msgstr ""
 "POT-Creation-Date: 2022-02-13 22:44+0100\n"
 "PO-Revision-Date: 2017-08-27 20:05+0000\n"
 "Last-Translator: Blaise Thauvin <glpi2mdt@thauvin.org>, 2022\n"
-"Language-Team: French (https://www.transifex.com/glpi2mdt/teams/78175/fr/)\n"
+"Language-Team: Czech (Czech Republic) (https://www.transifex.com/glpi2mdt/teams/78175/cs_CZ/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: fr_FR\n"
-"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"Language: cs\n"
+"Plural-Forms: nplurals=4; plural=(n == 1 && n % 1 == 0) ? 0 : (n >= 2 && n <= 4 && n % 1 == 0) ? 1: (n % 1 != 0 ) ? 2 : 3;\n"
 
 #: inc/config.class.php:236 inc/computer.class.php:443
 #: inc/crontask.class.php:121 inc/mdt.class.php:104 inc/config.class.php:223
 #, php-format
 msgid "A new version of plugin glpi2mdt is available: v%s"
-msgstr "Une nouvelle version du plugin glpi2mdt est disponible: v%s"
+msgstr "Je k dispozici nová verze zásuvného modulu glpi2mtd: v%s"
 
 #: inc/computer.class.php:389
 msgid "Activate"
-msgstr "Activer"
+msgstr "Aktivovat"
 
 #: inc/computer.class.php:373
 msgid "Applications"
-msgstr "Applications"
+msgstr "Aplikace"
 
 #: inc/computer.class.php:67 inc/computer.class.php:69
 msgid "Auto Install"
-msgstr "Install auto"
+msgstr "Automatická instalace"
 
 #: inc/computer.class.php:330
 msgid "Automatic installation"
-msgstr "Installation automatique"
+msgstr "Automatická instalace"
 
 #: inc/config.class.php:192 inc/config.class.php:179
 msgid "Automatically check for new versions"
-msgstr "Rechercher automatiquement de nouvelles versions"
+msgstr "Automaticky zjišťovat nové verze"
 
 #: inc/mdt.class.php:113
 msgid ""
 "Can't connect to MSSQL database using PHP SQLSRV module. Check configuration"
 msgstr ""
-"Impossible de se connecter à MSSQL avec le module PHP SQLSRV. Vérifiez votre"
-" configuration"
+"Nedaří se spojit s MSSQL databází pomocí PHP SQLSRV modulu. Zkontrolujte "
+"nastavení"
 
 #: inc/mdt.class.php:113
 msgid "Can't connect to MSSQL. Check configuration"
-msgstr "Impossible de se connecter à MSSQL. Vérifiez votre configuration"
+msgstr ""
+"\"Nedaří se spojit s MSSQL databází pomocí PHP ODBC modulu. Zkontrolujte \"\n"
+"\"nastavení\""
 
 #: inc/crontask.class.php:595
 msgid "Check for new updates"
-msgstr "Vérification de la présence de mises à jour"
+msgstr "Zjistit dostupnost případných aktualizací"
 
 #: inc/config.class.php:216 inc/config.class.php:203
 msgid "Check new version"
-msgstr "Vérifier si une nouvelle version est disponible"
+msgstr "Zjistit dostupnost případné nové verze"
 
 #: inc/mdt.class.php:170 inc/mdt.class.php:171
 msgid "Could not count tables in schema"
-msgstr "Impossible de compter les tables du schéma"
+msgstr "Nepodařilo se spočítat tabulky ve schématu"
 
 #: inc/mdt.class.php:175 inc/mdt.class.php:176
 msgid "Database login KO!"
-msgstr "Echec de connexion à la base!"
+msgstr "Přihlášení do databáze se nezdařilo!"
 
 #: inc/mdt.class.php:155 inc/mdt.class.php:156
 msgid "Database login OK!"
-msgstr "Connexion à la base réussie!"
+msgstr "V pořádku přihlášeno do databáze!"
 
 #: inc/config.class.php:95
 msgid "Database server name"
-msgstr "Nom DNS du serveur de base de données"
+msgstr "Název databázového serveru"
 
 #: inc/config.class.php:103
 msgid "Database server port"
-msgstr "Port de base de données"
+msgstr "Port databázového serveru"
 
 #: inc/computer.class.php:290 inc/computer.class.php:388
 msgid "Default"
-msgstr "Défaut"
+msgstr "Výchozí"
 
 #: inc/computer.class.php:350
 msgid "Default task sequence"
-msgstr "Séquence de tâches par defaut"
+msgstr "Výchozí posloupnost úlohy"
 
 #: inc/crontask.class.php:604
 msgid "Disable \"OS Install\" flag when expired"
-msgstr "Désactivation de l'installation automatique après expiration."
+msgstr "Když skončí platnost, vypnout příznak „Instalace operačního systému“"
 
 #: inc/computer.class.php:392
 msgid "Enable Installation Assistant dialogs"
-msgstr "Activer les dialogues de l'assistant d'installation"
+msgstr "Zapnout dialogy instalačního asistenta"
 
 #: front/computer.form.php:36
 msgid "Features"
-msgstr "Fonctions"
+msgstr "Funkce"
 
 #: inc/crontask.class.php:641
 #, php-format
 msgid "File '%s' contains no valid data. Check MDT configuration"
-msgstr ""
-"Le fichier '%s' ne contient aucune donnée valide. Vérifiez la configuration "
-"de MDT."
+msgstr "Soubor „%s“ obsahuje neplatná data. Zkontrolujte nastavení MDT"
 
 #: inc/crontask.class.php:623
 #, php-format
 msgid "File '%s' not found."
-msgstr "Fichier '%s' introuvable."
+msgstr "Soubor „%s“ nenalezen."
 
 #: inc/crontask.class.php:578
 msgid "Glpi2mdt Plugin"
-msgstr "Plugin Glpi2mdt"
+msgstr "Zásuvný modul GLPI2MDT"
 
 #: hook.php:251
 msgid ""
 "Glpi2mdt database is corrupted. Please uninstall and reinstall the plugin"
 msgstr ""
-"La base de données de glpi2mdt est corrompue. Merci de désinstaller et "
-"réinstaller le plugin"
+"Databáze glpi2mdt je porušená. Odinstalujte a nainstalujte tento zásuvný "
+"modul"
 
 #: setup.php:101
 msgid "Incompatible PHP Installation. Requires PHP module ODBC"
-msgstr "Installation PHP incompatible. Le module PHP ODBC est nécessaire"
+msgstr "Nekompatibilní instalace PHP. Vyžaduje PHP modul ODBC"
 
 #: setup.php:113
 msgid "Incompatible PHP Installation. Requires PHP module SQLSRV"
-msgstr ""
-"Votre configuration PHP n'est pas compatible. Le module SQLSRV est requis."
+msgstr "Nekompatibilní instalace PHP. Vyžaduje PHP modul SQLSRV"
 
 #: setup.php:106 setup.php:118
 msgid "Incompatible PHP Installation. Requires module"
-msgstr "Installation de PHP incompatible. Nécessite le module"
+msgstr "Nekompatibilní instalace PHP. Vyžaduje modul"
 
 #: inc/config.class.php:223 inc/config.class.php:210
 msgid "Initialise data"
-msgstr "Initialiser les données"
+msgstr "Inicializovat data"
 
 #: setup.php:125
 msgid "Installed / not configured"
-msgstr "Installé / Non configuré"
+msgstr "Nainstalováno/nenastaveno"
 
 #: inc/config.class.php:179 inc/config.class.php:166
 msgid "Link mode"
-msgstr "Mode de jumelage"
+msgstr "Režim propojení"
 
 #: inc/config.class.php:156 inc/config.class.php:143
 msgid "Local admin password"
-msgstr "Mot de passe administrateur local"
+msgstr "Heslo místního správce"
 
 #: inc/config.class.php:165 inc/config.class.php:152
 msgid "Local admin password complexity"
-msgstr "Complexité du mot de passe admin local"
+msgstr "Komplexita hesla místního správce"
 
 #: inc/config.class.php:148 inc/config.class.php:135
 msgid "Local path to deployment share control directory"
-msgstr "Chemin local vers le répertoire \"control\" du partage de déploiement"
+msgstr "Popis místního umístění řídící složky sdílení nasazení"
 
 #: inc/config.class.php:124 inc/config.class.php:111
 msgid "Login"
-msgstr "Identifiant"
+msgstr "Uživatelské jméno"
 
 #: inc/crontask.class.php:631
 #, php-format
 msgid "Looks like '%s' exists but is not readable. "
-msgstr ""
-"Il semble que le fichier '%s' existe mais ne soit pas autorisé en lecture."
+msgstr "Vypadá to, že „%s“ existuje ale není čitelné."
 
 #: inc/config.class.php:183 inc/config.class.php:170
 msgid "Loose Master-Slave"
-msgstr "Maître-Esclave souple"
+msgstr "Volný hlavni-podřízený"
 
 #: inc/config.class.php:184 inc/config.class.php:171
 msgid "Master-Master"
-msgstr "Maître-Maître"
+msgstr "Hlavní-hlavní"
 
 #: inc/config.class.php:87 inc/computer.class.php:292
 #: inc/computer.class.php:69
 msgid "NO"
-msgstr "Non"
+msgstr "NE"
 
 #: inc/config.class.php:113
 msgid "ODBC Driver name"
-msgstr "Nom de driver ODBC"
+msgstr "Název ODBC ovladače"
 
 #: inc/config.class.php:132 inc/config.class.php:119
 msgid "Password"
-msgstr "Mot de passe"
+msgstr "Heslo"
 
 #: inc/config.class.php:169 inc/config.class.php:156
 msgid "Password is hostname"
-msgstr "Le mot de passe est le nom de machine"
+msgstr "Heslo je název stroje"
 
 #: inc/config.class.php:203 inc/config.class.php:190
 msgid "Report usage data (anonymous data to help in designing the plugin)"
 msgstr ""
-"Remonter des données quantitatives d'utilisation (données anonymes servant à"
-" faciliter le design du plugin)"
+"Hlásit data o využití (anonymní data pro pomoc s návrhem zásuvného modulu)"
 
 #: inc/computer.class.php:338
 msgid "Reset after (empty for permanent):"
-msgstr "Annuler après (vide pour jamais)"
+msgstr "Resetovat po uplynutí (nevyplněné znamená trvalé):"
 
 #: inc/computer.class.php:385
 msgid "Roles"
-msgstr "Rôles"
+msgstr "Role"
 
 #: inc/config.class.php:168 inc/config.class.php:155
 msgid "Same password on all machines"
-msgstr "Mot de passe identique sur toutes les machines"
+msgstr "Stejné heslo na všech strojích"
 
 #: inc/config.class.php:213 inc/config.class.php:200
 msgid "Save"
-msgstr "Enregistrer"
+msgstr "Uložit"
 
 #: inc/config.class.php:140 inc/mdt.class.php:166 inc/mdt.class.php:167
 #: inc/config.class.php:127
@@ -230,68 +228,66 @@ msgstr "Schéma"
 
 #: front/config.form.php:36
 msgid "Setup"
-msgstr "Configuration"
+msgstr "Nastavení"
 
 #: inc/computer.class.php:390
 msgid "Skip"
-msgstr "Ignorer"
+msgstr "Přeskočit"
 
 #: inc/config.class.php:182 inc/config.class.php:169
 msgid "Strict Master-Slave"
-msgstr "Maître-Esclave strict"
+msgstr "Striktní hlavní-podřízený"
 
 #: inc/crontask.class.php:601
 msgid "Synchronize data between MDT and GLPI in Master-Master mode"
-msgstr "Synchronisation des données entre MDT et GLPI en mode maître-maître"
+msgstr "Synchronizovat data mezi MDT a GLPI v režimu hlavni-hlavní"
 
 #: inc/config.class.php:221 inc/config.class.php:208
 msgid "Test connection"
-msgstr "Tester la connexion"
+msgstr "Vyzkoušet spojení"
 
 #: inc/mdt.class.php:151 inc/mdt.class.php:152
 msgid "Testing connection using PHP ODBC module"
-msgstr "Test de connexion avec le module PHP ODBC"
+msgstr "Zkouší se spojení pomocí PHP ODBC modulu"
 
 #: inc/mdt.class.php:151
 msgid "Testing connection using PHP SQLSRV module"
-msgstr "Test de connexion avec le module PHP SQLSRV"
+msgstr "Zkouší se spojení pomocí PHP SQLSRV modulu"
 
 #: inc/crontask.class.php:598
 msgid "Update base data from MDT XML files and MS-SQL DB"
-msgstr ""
-"Mise à jour des données de base depuis les fichiers XML et la base MS-SQL de"
-" MDT. "
+msgstr "Aktualizovat základní data z MTD XML souborů a MS-SQL databáze"
 
 #: inc/config.class.php:86 inc/computer.class.php:291
 #: inc/computer.class.php:67
 msgid "YES"
-msgstr "Oui"
+msgstr "ANO"
 
 #: inc/crontask.class.php:123
 #, php-format
 msgid "You have the latest available version of glpi2mdti: v%s"
-msgstr "Vous utilisez la dernière verions de glpi2mdt: v%s"
+msgstr "Máte nejnovější dostupnou verzi glpi2mdti: v%s"
 
 #: inc/config.class.php:170 inc/config.class.php:157
 msgid "append '-%hostname%' to password"
-msgstr "Ajouter \"-%hostname%\" au mot de passe"
+msgstr "připojit k heslu „-%hostname%“"
 
 #: inc/mdt.class.php:166 inc/mdt.class.php:167
 msgid "contains"
-msgstr "contient"
+msgstr "obsahuje"
 
 #: inc/crontask.class.php:190 inc/crontask.class.php:267
 #: inc/crontask.class.php:320 inc/crontask.class.php:363
 #: inc/crontask.class.php:415
 msgid "lines deleted from table"
-msgstr "ligne(s) supprimée(s) de la table"
+msgstr "řádků vymazaných z tabulky"
 
 #: inc/crontask.class.php:182 inc/crontask.class.php:219
 #: inc/crontask.class.php:258 inc/crontask.class.php:309
 #: inc/crontask.class.php:354 inc/crontask.class.php:404
 msgid "lines loaded into table"
-msgstr "ligne(s) chargée(s) dans la table"
+msgstr "řádků načtených do tabulky"
 
 #: inc/mdt.class.php:166 inc/mdt.class.php:167
 msgid "tables"
-msgstr "tables"
+msgstr "tabulky"

@@ -26,7 +26,12 @@
  --------------------------------------------------------------------------
  */
 
-define('PLUGIN_GLPI2MDT_VERSION', '0.2.1');
+define('PLUGIN_GLPI2MDT_VERSION', '0.3.0');
+
+// Minimal GLPI version, inclusive
+define("PLUGIN_GLPI2MDT_MIN_GLPI", "9.5");
+// Maximum GLPI version, exclusive
+//define("PLUGIN_GLPI2MDT_MAX_GLPI", "9.6");
 
 /**
  * Init hooks of the plugin.
@@ -70,14 +75,21 @@ function plugin_init_glpi2mdt() {
  * @return array
  */
 function plugin_version_glpi2mdt() {
-   return array('name'           => 'GLPI 2 MDT',
-                'shortname'      => 'glpi2mdt',
-                'version'        => PLUGIN_GLPI2MDT_VERSION,
-                'author'         => 'Blaise Thauvin',
-                'license'        => 'GPLv3+',
-                'homepage'       => 'https://github.com/DebugBill/glpi2mdt',
-                'minGlpiVersion' => '9.1.1');
-
+   return [
+		'name'           => 'GLPI 2 MDT',
+		'shortname'      => 'glpi2mdt',
+		'version'        => PLUGIN_GLPI2MDT_VERSION,
+		'author'         => 'Blaise Thauvin',
+		'homepage'       => 'https://github.com/DebugBill/glpi2mdt',
+		'license'        => 'GPLv3+',
+		'requirements'   => [
+			'glpi' => [
+				'min' => PLUGIN_GLPI2MDT_MIN_GLPI,
+//				'max' =>dd PLUGIN_GLPI2MDT_MAX_GLPI,  Who knows if it will be compatible with next version. Maybe yes
+				'dev' => true, //Required to allow 9.2-dev
+			]
+		]
+	];
 }
 
 /**
@@ -87,18 +99,18 @@ function plugin_version_glpi2mdt() {
  */
 function plugin_glpi2mdt_check_prerequisites() {
    // GLPI 9.1.1 is the strict minimum in any case
-   if (version_compare(GLPI_VERSION, '9.1', 'lt')) {
+   if (version_compare(GLPI_VERSION, '9.5', 'lt')) {
       if (method_exists('Plugin', 'messageIncompatible')) {
-         echo Plugin::messageIncompatible('core', '9.1');
+         echo Plugin::messageIncompatible('core', '9.5');
       } else {
-         echo "This plugin requires GLPI >= 9.1";
+         echo "This plugin requires GLPI >= 9.5";
       }
       return false;
    }
 
    // The plugin needs to access the MSSQL MDT database, PHP modules needed
-   if (!extension_loaded("odbc")) {
-      echo __('Incompatible PHP Installation. Requires PHP module ODBC', 'glpi2mdt');
+   if (!extension_loaded("sqlsrv")) {
+      echo __('Incompatible PHP Installation. Requires PHP module SQLSRV', 'glpi2mdt');
       return false;
    }
    // The plugin needs to process some XML files from the MDT deployment share, PHP module needed

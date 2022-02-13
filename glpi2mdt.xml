@@ -28,7 +28,7 @@ Si ce plugin vous intéresse n'hésitez pas à contacter l'auteur avec une descr
                </long>
             </description>
             <homepage>https://github.com/DebugBill/glpi2mdt</homepage>
-            <download>https://github.com/DebugBill/glpi2mdt/releases/download/0.2.1/glpi2mdt-0.2.1.tar.gz</download>
+            <download>https://github.com/DebugBill/glpi2mdt/releases/download/0.3.0/glpi2mdt-0.3.0.tar.gz</download>
             <issues>https://github.com/DebugBill/glpi2mdt/issues</issues>
             <readme>https://raw.githubusercontent.com/DebugBill/glpi2mdt/master/README.md</readme>
             <authors>
@@ -40,6 +40,9 @@ Si ce plugin vous intéresse n'hésitez pas à contacter l'auteur avec une descr
                   <compatibility>9.1.x</compatibility>
                   <compatibility>9.2.x</compatibility>
                   <compatibility>9.3.x</compatibility>
+	       </version>
+                  <num>0.3.0</num>
+	          <compatibility>9.5.x</compatibility>
                </version>
             </versions>
             <langs>

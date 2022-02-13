@@ -10,8 +10,9 @@ xgettext --keyword=__  --sort-output -L PHP \
 	--from-code=UTF-8 \
 	--package-version='0.3.0' \
 	--msgid-bugs-address='glpi2mdt at thauvin.org' \
-	-o /locales/glpi2mdt.pot *.php inc/*.php front/*.php  
+	-o locales/glpi2mdt.pot *.php inc/*.php front/*.php  
 
+tx push -s
 
 #xgettext /tmp/temp.pot locales/glpi2mdt.pot -o /temp2.pot
 tx pull -a
@@ -19,7 +20,6 @@ cd locales
 msgfmt cs_CZ.po -o cs_CZ.mo  
 msgfmt en_US.po -o en_US.mo  
 msgfmt fr.po -o fr.mo 
-msgfmt fr_FR.po -o fr_FR.mo 
 msgfmt ru_RU.po -o ru_RU.mo
 
 # Srings to be translated for glpi2mdt.
