@@ -110,7 +110,7 @@ class PluginGlpi2mdtMdt extends CommonDBTM {
       }
       // Check if connection is successful, die if not
       if ($DBLink === false) {
-         $error = __("Can't connect to MSSQL database using PHP ODBC module. Check configuration", 'glpi2mdt');
+         $error = __("Can't connect to MSSQL. Check configuration", 'glpi2mdt');
          Session::addMessageAfterRedirect($error, true, ERROR);
       }
 

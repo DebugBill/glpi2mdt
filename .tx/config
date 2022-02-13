@@ -6,4 +6,3 @@ file_filter = locales/<lang>.po
 source_file = locales/glpi2mdt.pot
 source_lang = en
 type = PO
-
