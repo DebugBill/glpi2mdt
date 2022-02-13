@@ -57,13 +57,13 @@ class PluginGlpi2mdtComputer extends PluginGlpi2mdtMdt {
       $id = $item->getID();
       $result = $DB->query("SELECT value_char as mode FROM glpi_plugin_glpi2mdt_parameters 
                              WHERE scope='global' AND parameter='Mode';");
-      $mode = $DB->fetch_array($result)['mode'];
+      $mode = $DB->fetchAssoc($result)['mode'];
       if ($mode == 'Master') {
          PluginGlpi2mdtCrontask::cronSyncMasterAndStrict(null, $id);
       }
       $result = $DB->query("SELECT value FROM glpi_plugin_glpi2mdt_settings 
                               WHERE type='C' AND category='C' AND `key`='OSInstall' AND id=$id");
-      if (($DB->numrows($result) == 1) AND ($DB->fetch_array($result)['value'] == 'YES')) {
+      if (($DB->numrows($result) == 1) AND ($DB->fetchAssoc($result)['value'] == 'YES')) {
          return self::createTabEntry(__('Auto Install', 'glpi2mdt'), __('YES'));
       } else {
          return self::createTabEntry(__('Auto Install', 'glpi2mdt'), __('NO'));
@@ -117,7 +117,7 @@ class PluginGlpi2mdtComputer extends PluginGlpi2mdtMdt {
             if ((substr($key, 0, 6) == 'Roles-') and ($value <> 'none') and ($value == 'on')) {
                $guid = substr($key, 6, strlen($key)-6);
                $roles = $DB->query("SELECT role FROM glpi_plugin_glpi2mdt_roles WHERE id='$guid';");
-               $role = $DB->fetch_array($roles)['role'];
+               $role = $DB->fetchAssoc($roles)['role'];
                $query = "INSERT INTO glpi_plugin_glpi2mdt_settings 
                              (`id`, `category`, `type`, `key`, `value`, `is_in_sync`)
                              VALUES ($id, 'R','C', '$guid', '$role', true)
@@ -224,7 +224,7 @@ class PluginGlpi2mdtComputer extends PluginGlpi2mdtMdt {
       // Update settings with additional variables
       $query = "SELECT `key`, `value` FROM glpi_plugin_glpi2mdt_settings WHERE id=$id AND category='C' AND type='C';";
       $result = $DB->queryOrDie($query, "Cannot select additional variables.<br>");
-      while ($pair = $DB->fetch_array($result)) {
+      while ($pair = $DB->fetchAssoc($result)) {
          $key = $pair['key'];
          $value = $pair['value'];
          if ($value == '*undef*') {
@@ -239,7 +239,7 @@ class PluginGlpi2mdtComputer extends PluginGlpi2mdtMdt {
       // Update applications table
       $query = "SELECT `key`, `value` FROM glpi_plugin_glpi2mdt_settings WHERE id=$id AND category='A' AND type='C';";
       $result = $DB->queryOrDie($query, "Cannot select additional applications.");
-      while ($pair = $DB->fetch_array($result)) {
+      while ($pair = $DB->fetchAssoc($result)) {
          $key = $pair['key'];
          $value = $pair['value'];
          reset($arraymdtids);
@@ -255,7 +255,7 @@ class PluginGlpi2mdtComputer extends PluginGlpi2mdtMdt {
       // Update Roles table
       $query = "SELECT `key`, `value` FROM glpi_plugin_glpi2mdt_settings WHERE id=$id AND category='R' AND type='C';";
       $result = $DB->queryOrDie($query, "Cannot select additional roles.");
-      while ($pair = $DB->fetch_array($result)) {
+      while ($pair = $DB->fetchAssoc($result)) {
          $key = $pair['key'];
          $value = $pair['value'];
          reset($arraymdtids);
@@ -306,7 +306,7 @@ class PluginGlpi2mdtComputer extends PluginGlpi2mdtMdt {
 
       $query = "SELECT `category`, `key`, `value` FROM glpi_plugin_glpi2mdt_settings WHERE type='C' AND id='$id'";
       $result = $DB->query($query);
-      while ($row=$DB->fetch_array($result)) {
+      while ($row=$DB->fetchAssoc($result)) {
          if ($row['category'] == 'C') {
             $settings[$row['key']] = $row['value'];
          }
@@ -348,7 +348,7 @@ class PluginGlpi2mdtComputer extends PluginGlpi2mdtMdt {
                                 WHERE is_deleted=false AND hide=false AND enable=true");
       // first value in array is "default"
       $tasksequenceids['*undef*']=__("Default task sequence", 'glpi2mdt');
-      while ($row = $DB->fetch_array($result)) {
+      while ($row = $DB->fetchAssoc($result)) {
          $tasksequenceids[$row['id']]=$row['name'];
       }
       showSelectBox('Default task sequence', 'TaskSequenceID', $tasksequenceids, $settings);
@@ -434,9 +434,9 @@ class PluginGlpi2mdtComputer extends PluginGlpi2mdtMdt {
 
          // Plugin version check
          $currentversion = PLUGIN_GLPI2MDT_VERSION;
-         $version = $DB->query("SELECT value_char FROM glpi_plugin_glpi2mdt_parameters WHERE parameter='LAtestVersion' AND scope='global'");
+         $version = $DB->query("SELECT value_char FROM glpi_plugin_glpi2mdt_parameters WHERE parameter='LatestVersion' AND scope='global'");
          if ($DB->numrows($version) == 1) {
-            $latestversion = $DB->fetch_array($version)['value_char'];
+            $latestversion = $DB->fetchAssoc($version)['value_char'];
          }
          if (version_compare($currentversion, $latestversion, '<')) {
             echo "<div class='center'><font color='red'>";

@@ -29,7 +29,7 @@
 // ----------------------------------------------------------------------
 // Original Author of file: Blaise Thauvin
 // Purpose of file: Base class to connect to MS-SQL MDT
-// This class will use either ODBC or the mssql php extension available until php 5.5
+// This class will use SQLSRV php extension available until php 7.3
 // Other classes in for the plugin will extend it
 // ----------------------------------------------------------------------
 
@@ -42,7 +42,6 @@ class PluginGlpi2mdtMdt extends CommonDBTM {
    protected $validkeys=array(
                  'DBVersion' => 'txt',
                  'DBServer' => 'txt',
-                 'DBDriver' => 'txt',
                  'DBLogin' => 'txt',
                  'DBPassword' => 'txt',
                  'DBSchema' => 'txt',
@@ -56,7 +55,7 @@ class PluginGlpi2mdtMdt extends CommonDBTM {
                  'LatestVersion' => 'txt'
                 );
    protected $globalconfig;
-   protected $DBLink, $DBDriver;
+   protected $DBLink;
 
    /**
     * Load plugin settings, connect to MSSQL;
@@ -73,7 +72,7 @@ class PluginGlpi2mdtMdt extends CommonDBTM {
                 FROM `glpi_plugin_glpi2mdt_parameters`
                 WHERE `is_deleted` = false AND `scope`= 'global'";
       $result=$DB->query($query) or die("Error loading parameters from GLPI database ". $DB->error());
-      while ($data = $DB->fetch_array($result)) {
+      while ($data = $DB->fetchAssoc($result)) {
          if (isset($this->validkeys[$data['parameter']])) {
             if ($this->validkeys[$data['parameter']] == 'txt') {
                $this->globalconfig[$data['parameter']] = $data['value_char'];
@@ -85,17 +84,17 @@ class PluginGlpi2mdtMdt extends CommonDBTM {
 
       // Build array of valid variables
       $result = $DB->query("SELECT column_name FROM glpi_plugin_glpi2mdt_descriptions WHERE is_deleted=false");
-      while ($line = $DB->fetch_array($result)) {
+      while ($line = $DB->fetchAssoc($result)) {
          $this->globalconfig['variables'][$line['column_name']] = true;
       }
 
       // Shortcut variables
       $DBServer = $this->globalconfig['DBServer'];
       $DBPort = $this->globalconfig['DBPort'];
-      $DBSchema = $this->globalconfig['DBSchema'];
-      $DBLogin = $this->globalconfig['DBLogin'];
-      $DBPassword = $this->globalconfig['DBPassword'];
-      $DBDriver = $this->globalconfig['DBDriver'];
+      $DBOption = array(
+					"Database" => $this->globalconfig['DBSchema'],
+					"Uid" => $this->globalconfig['DBLogin'],
+					"PWD" => $this->globalconfig['DBPassword']);
 
       // Plugin version check
       $currentversion = PLUGIN_GLPI2MDT_VERSION;
@@ -104,13 +103,13 @@ class PluginGlpi2mdtMdt extends CommonDBTM {
          $this->globalconfig['newversion'] = sprintf(__('A new version of plugin glpi2mdt is available: v%s'), $latestversion);
       }
 
-      // Connection to MSSQL using ODBC PHP module
-      if (extension_loaded('odbc')) {
-         $DBLink = odbc_connect("Driver=$DBDriver;Server=$DBServer,$DBPort;Database=$DBSchema;", $DBLogin, $DBPassword);
+      // Connection to MSSQL using SQLSRV PHP module
+      if (extension_loaded('sqlsrv')) {
+         $DBLink = sqlsrv_connect($DBServer,$DBOption);
       }
       // Check if connection is successful, die if not
       if ($DBLink === false) {
-         $error = __("Can't connect to MSSQL database using PHP ODBC module. Check configuration", 'glpi2mdt');
+         $error = __("Can't connect to MSSQL database using PHP SQLSRV module. Check configuration", 'glpi2mdt');
          Session::addMessageAfterRedirect($error, true, ERROR);
       }
 
@@ -129,7 +128,7 @@ class PluginGlpi2mdtMdt extends CommonDBTM {
       if ($this->DBLink === false) {
          return;
       }
-      odbc_close($this->DBLink);
+      sqlsrv_close($this->DBLink);
 
       // Looks nice.... but fails because there is no destruct over there
       //parent::__destruct();
@@ -148,7 +147,7 @@ class PluginGlpi2mdtMdt extends CommonDBTM {
 
       echo '<table class="tab_cadre_fixe">';
       echo '<tr class="tab_bg_1">';
-      echo '<th>'.__("Testing connection using PHP ODBC module", 'glpi2mdt').'</th></tr><tr><td>';
+      echo '<th>'.__("Testing connection using PHP SQLSRV module", 'glpi2mdt').'</th></tr><tr><td>';
       // Connection to MSSQL
       if ($this->DBLink) {
          echo "<font color='green'>";
@@ -182,43 +181,43 @@ class PluginGlpi2mdtMdt extends CommonDBTM {
 
    /**
     * Several functions to interact with MDT database
-    * Uses PHP odbc
+    * Uses PHP SQLSRV
     *
     * @param query, comment or none depending on function purpose
     *
     * @return result set for queries, numbers, or nothin
    **/
    function dberror() {
-      return odbc_errormsg($this->DBLink);
+      return sqlsrv_errors();
    }
 
    function query($query ) {
-      return odbc_exec($this->DBLink, $query);
+      return sqlsrv_query($this->DBLink, $query);
    }
 
    function queryOrDie($query, $message = '' ) {
-      $result = odbc_exec($this->DBLink, $query) or die ($message."<br><br>".$query."<br><br>".odbc_errormsg($this->DBLink));
+      $result = sqlsrv_query($this->DBLink, $query) or die ($message."<br><br>".$query."<br><br>".sqlsrv_errors());
       return $result;
    }
 
    function numrows($result) {
-      return odbc_num_rows($result);
+      return sqlsrv_num_rows($result);
    }
 
    function fetch_array($result) {
-      return odbc_fetch_array($result);
+      return sqlsrv_fetch_array($result);
    }
 
    function fetch_row($result) {
-      return odbc_fetch_row($result);
+      return sqlsrv_fetch($result);
    }
 
    function fetch_assoc($result) {
-      return odbc_fetch_into($result);
+      return sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC );
    }
 
    function free_result($result) {
-      return odbc_free_result($result);
+      return sqlsrv_free_stmt($result);
    }
 
    /**
@@ -239,7 +238,7 @@ class PluginGlpi2mdtMdt extends CommonDBTM {
       // Get data for current computer
       $query = "SELECT name, uuid, serial, otherserial FROM glpi_computers WHERE id=$id AND is_deleted=false";
       $result = $DB->query($query) or $task->log("Database error: ". $DB->error()."<br><br>".$query);
-      $common = $DB->fetch_array($result);
+      $common = $DB->fetchAssoc($result);
       $uuid = $common['uuid'];
       $name = $common['name'];
       $serial = $common['serial'];
@@ -254,7 +253,7 @@ class PluginGlpi2mdtMdt extends CommonDBTM {
       $macs="MacAddress IN (";
       $values = '';
       $nbrows = 0;
-      while ($line = $DB->fetch_array($result)) {
+      while ($line = $DB->fetchAssoc($result)) {
          $mac = $line['mac'];
          $macs=$macs."'".$mac."', ";
          $values = $values."('$name', '$uuid', '$serial', '$otherserial', '$mac'), ";

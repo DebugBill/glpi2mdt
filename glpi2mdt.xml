@@ -5,30 +5,23 @@
             <logo>https://raw.githubusercontent.com/DebugBill/glpi2mdt/master/logo_40x40.png</logo>
             <description>
                <short>
-		  <cs>Automatizované nasazení Windows: spravujte Microsoft Deployment Toolkit (MDT) z GLPI</cs>
                   <en>Windows Automatic Deployment: manage Microsoft Deployment Toolkit (MDT) from GLPI</en>
                   <fr>Déploiement Automatisé de Windows: Gérez Microsoft Deployment Toolkit (MDT) depuis GLPI </fr>
                </short>
                <long>
-		  <cs>Tento zásuvný modul synchronizuje databáze GLPI a MDT pro docílení správy automatizovaného nasazování Windows z GLPI v závislosti na datech z něj. 
-
-Verze 0.2.1 je funkční a provozovaná v našem produkčním prostředí. Soubory README a INSTALL v archivu vydání poskytnou další informace o tom, co je k dispozici a co je v plánu přidat. Fugnuje na mém konkrétním nastavení (MDT 2013 na Server 2012 + MS-SQL 2012, a GLPI 9.1.6 na Linux s PHP 5.5). Je vyvíjeno a zkoušeno pouze v tomto prostředí. Pokud se setkáte s problémem při odlišném uspořádání, nahlaste to prostřednictvím GitHub (odkaz níže). 
-
-Pokud vás tento modul zajímá, neváhejte se obrátit na autora a popsat vaši stávající architekturu aby mohl zajistit, že modul bude kompatibilní s většinou prostředí</cs>
                   <en>This plugin synchronises GLPI and MDT databases in order to manage Windows automatic deployment from GLPI and based on its data. 
 
-Version 0.2.1 is functionnal and running in production in our environmnent. The README and INSTALL files in the distribution package will give you more information as to what is already available and what I plan to deliver next. It works on my specific configuration (MDT 2013 on Server 2012 + MS-SQL 2012, and GLPI 9.1.6 on Linux PHP 5.5). It is developed and tested in this environment only. If you experience problem with a different configuration please report the issue on GitHub (link below). 
+Version 0.2.2 is functionnal and running in production in our environmnent. The README and INSTALL files in the distribution package will give you more information as to what is already available and what I plan to deliver next. It works on my specific configuration (MDT 2013 on Windows Server 2016 + MS-SQL Server 2012, and GLPI 9.5.5 on Windows Server 2012 R2 with Wampserver 3 and PHP 7.3.27). It is developed and tested in this environment only. If you experience problem with a different configuration please report the issue on GitHub (link below). 
 
 If you're insterested in this plugin, don't hesitate to contact the author and describe your current architecture so he can make sure the plugin design is compatible with most environments</en>
                   <fr>Ce plugin synchronise les bases de données MDT et GLPI afin de gérer le déploiement automatique de Windows depuis GLPI et à partir de ses données.
 
-La version 0.2.1 est opérationnelle et en prodution dans notre environement. Les fichiers README et INSTALL de la distribution vous donneront plus de détails sur ce qui est en place et ce qu'il est prévu d'ajouter en priorité. Le plugin fonctionne dans mon environement spécifique (MDT 2013 sur Server 2012 et MS-SQL 2012, associés à GLPI 9.1.6 sur Linux et PHP 5.5). Il est développé et testé uniquement dans ce contexte. Si vous rencontrez des problèmes avec une configuration différente merci d'ouvrir un ticket avec le lien GitHub ci-dessous.
+La version 0.2.2 est opérationnelle et en prodution dans notre environement. Les fichiers README et INSTALL de la distribution vous donneront plus de détails sur ce qui est en place et ce qu'il est prévu d'ajouter en priorité. Le plugin fonctionne dans mon environement spécifique (MDT 2013 sur Windows Server 2016 et MS-SQL Server 2012, associés à GLPI 9.5.5 sur Windows Server 2012 R2 avec Wampserver 3 et PHP 7.3.27). Il est développé et testé uniquement dans ce contexte. Si vous rencontrez des problèmes avec une configuration différente merci d'ouvrir un ticket avec le lien GitHub ci-dessous.
 
 Si ce plugin vous intéresse n'hésitez pas à contacter l'auteur avec une description de votre architecture actuelle afin qu'il s'assure que ses choix de design seront compatibles avec la plupart des environements.</fr>
-               </long>
             </description>
             <homepage>https://github.com/DebugBill/glpi2mdt</homepage>
-            <download>https://github.com/DebugBill/glpi2mdt/releases/download/0.2.1/glpi2mdt-0.2.1.tar.gz</download>
+            <download>https://github.com/DebugBill/glpi2mdt/releases/download/1.0.0/glpi2mdt-1.0.0.tar.gz</download>
             <issues>https://github.com/DebugBill/glpi2mdt/issues</issues>
             <readme>https://raw.githubusercontent.com/DebugBill/glpi2mdt/master/README.md</readme>
             <authors>
@@ -36,29 +29,17 @@ Si ce plugin vous intéresse n'hésitez pas à contacter l'auteur avec une descr
             </authors>
             <versions>
                <version>
-                  <num>0.2.1</num>
-                  <compatibility>9.1.x</compatibility>
-                  <compatibility>9.2.x</compatibility>
-                  <compatibility>9.3.x</compatibility>
+                  <num>0.2.2</num>
+                  <compatibility>9.5.x</compatibility>
                </version>
             </versions>
             <langs>
-               <lang>cs_CZ</lang> 
                <lang>en_GB</lang>
                <lang>fr_FR</lang>
                <lang>ru_RU</lang>
             </langs>
             <license>GPL v3.0</license>
             <tags>
-	       <cs>
-                  <tag>MDT</tag>
-				  <tag>Microsoft Deployment Toolkit</tag>
-				  <tag>Nasazení</tag>
-                                  <tag>MDT</tag>
-                                  <tag>SCCM</tag>
-                                  <tag>Automatizace</tag>
-				  <tag>Zajištění</tag>
-               </cs>
                <en>
                   <tag>MDT</tag>
 				  <tag>Microsoft Deployment Toolkit</tag>

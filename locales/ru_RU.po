@@ -41,10 +41,6 @@ msgstr "Наименование сервера базы данных"
 msgid "Database server port"
 msgstr "Порт сервера базы данных"
 
-#: inc/config.class.php:113
-msgid "ODBC Driver name"
-msgstr "Наименование драйвера ODBC"
-
 #: inc/config.class.php:124
 msgid "Login"
 msgstr "Логин"
@@ -130,14 +126,14 @@ msgstr "Доступна новая версия плагина: v%s"
 
 #: inc/mdt.class.php:113
 msgid ""
-"Can't connect to MSSQL database using PHP ODBC module. Check configuration"
+"Can't connect to MSSQL database using PHP SQLSRV module. Check configuration"
 msgstr ""
-"Не удается подключиться к базе данных MSSQL, используя модуль PHP ODBC. "
+"Не удается подключиться к базе данных MSSQL, используя модуль PHP SQLSRV. "
 "Проверьте настройки"
 
 #: inc/mdt.class.php:151
-msgid "Testing connection using PHP ODBC module"
-msgstr "Тестирование подключения с использованием модуля PHP ODBC"
+msgid "Testing connection using PHP SQLSRV module"
+msgstr "Тестирование подключения с использованием модуля PHP SQLSRV"
 
 #: inc/mdt.class.php:155
 msgid "Database login OK!"
@@ -255,8 +251,8 @@ msgid "Setup"
 msgstr "Настройка"
 
 #: setup.php:101
-msgid "Incompatible PHP Installation. Requires PHP module ODBC"
-msgstr "Несовместимая установка PHP. Требуется PHP модуль ODBC"
+msgid "Incompatible PHP Installation. Requires PHP module SQLSRV"
+msgstr "Несовместимая установка PHP. Требуется PHP модуль SQLSRV"
 
 #: setup.php:106
 msgid "Incompatible PHP Installation. Requires module"

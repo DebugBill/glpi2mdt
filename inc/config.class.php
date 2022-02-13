@@ -106,19 +106,6 @@ class PluginGlpi2mdtConfig extends PluginGlpi2mdtMdt {
              autocomplete="off" inputmode="numeric" placeholder="1433" min="1024" max="65535" required> &nbsp;&nbsp;&nbsp;' ?>
       </td>
      </tr>
-      <?php
-      if (extension_loaded("odbc")) {
-         echo '<tr class="tab_bg_1">';
-         echo "<td>";
-         echo __('ODBC Driver name', 'glpi2mdt');
-         echo ' : &nbsp;&nbsp;&nbsp;';
-         echo '</td><td>';
-         echo '<input type="text" name="DBDriver" value="'.$this->globalconfig['DBDriver'].'" size="60" class="ui-autocomplete-input" 
-        autocomplete="off" inputmode="numeric" placeholder="{ODBC Driver 13 for SQL Server}" required> &nbsp;&nbsp;&nbsp;';
-         echo '</td>';
-         echo '</tr>';
-      }
-      ?>
      <tr class="tab_bg_1">
       <td>
          <?php echo __('Login', 'glpi2mdt'); ?> : &nbsp;&nbsp;&nbsp;

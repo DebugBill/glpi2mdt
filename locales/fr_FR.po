@@ -41,10 +41,6 @@ msgstr "Nom DNS du serveur de base de données"
 msgid "Database server port"
 msgstr "Port de base de données"
 
-#: inc/config.class.php:113
-msgid "ODBC Driver name"
-msgstr "Nom de driver ODBC"
-
 #: inc/config.class.php:124
 msgid "Login"
 msgstr "Identifiant"
@@ -130,14 +126,14 @@ msgstr "Une nouvelle version du plugin glpi2mdt est disponible: v%s"
 
 #: inc/mdt.class.php:113
 msgid ""
-"Can't connect to MSSQL database using PHP ODBC module. Check configuration"
+"Can't connect to MSSQL database using PHP SQLSRV module. Check configuration"
 msgstr ""
-"Impossible de se connecter à la base MS-SQL avec le module PHP ODBC. "
+"Impossible de se connecter à la base MS-SQL avec le module PHP SQLSRV. "
 "Vérifiez la configuration"
 
 #: inc/mdt.class.php:151
-msgid "Testing connection using PHP ODBC module"
-msgstr "Test de connexion avec le module PHP ODBC"
+msgid "Testing connection using PHP SQLSRV module"
+msgstr "Test de connexion avec le module PHP SQLSRV"
 
 #: inc/mdt.class.php:155
 msgid "Database login OK!"
@@ -260,8 +256,8 @@ msgid "Setup"
 msgstr "Configuration"
 
 #: setup.php:101
-msgid "Incompatible PHP Installation. Requires PHP module ODBC"
-msgstr "Installation PHP incompatible. Le module PHP ODBC est nécessaire"
+msgid "Incompatible PHP Installation. Requires PHP module SQLSRV"
+msgstr "Installation PHP incompatible. Le module PHP SQLSRV est nécessaire"
 
 #: setup.php:106
 msgid "Incompatible PHP Installation. Requires module"
