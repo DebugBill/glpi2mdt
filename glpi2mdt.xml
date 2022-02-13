@@ -35,12 +35,6 @@ Si ce plugin vous intéresse n'hésitez pas à contacter l'auteur avec une descr
                <author>Blaise Thauvin</author>
             </authors>
             <versions>
-               <version>
-                  <num>0.2.1</num>
-                  <compatibility>9.1.x</compatibility>
-                  <compatibility>9.2.x</compatibility>
-                  <compatibility>9.3.x</compatibility>
-	       </version>
 	       <version>
                   <num>0.3.0</num>
 	          <compatibility>9.5.x</compatibility>
